@@ -1,3 +1,6 @@
 from imports import *
-print(np.ones(2))
 
+
+
+def a_int(j):
+    pass
