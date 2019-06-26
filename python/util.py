@@ -1,5 +1,6 @@
 # This file will implement helper functions written in the matlab files.
 from imports import *
+from recursions import alpha_array, gamma_array
 # TODO
 
 def address_from_index(level, index):
@@ -318,3 +319,52 @@ def rotate_address(level, address, rotate_num):
     for i in range(level+1):
         new_address[i] = (address[i] + rotate_num) % 3
     return new_address
+
+
+# The following methods concern the creation of polynomials
+#   P_{j1} and P_{j3}. They will be moved to the monomials.py
+#   file in the future.
+
+def coeff_monomial_3(j, level, address):
+    """Calculate the value of monomial P_{j3} at some junction point
+    
+    Args:
+        j: Order of monomial P_{j3} that we're calculating
+        level: A nonnegative integer representing the level of SG we're 
+            working with.
+        address: np.array of size (level+1) representing the address 
+            vector of a point in some SG graph.
+
+    Returns:
+        val: A number representing value of the monomial P_{j3} 
+            at the input point
+    """
+
+
+    pass
+
+def coeff_monomial_3_all(level, max_order):
+    """Calculate the value of monomial P_{j3} up to some level
+    
+    Args:
+        level: A nonnegative integer representing the highest level of 
+            SG we would like to calculate the monomial.
+        max_order: Maximal order of monomial P_{j3} that we would like 
+            to calculate
+
+    Returns:
+        monomial_mat_3: np.array + size (3^{(level+1)} * (max_order + 1)
+            First coordinate denote the TLR index, the second coordinate 
+            denote order of polynomial.
+    """
+
+    # Initialize the array with all 0's
+    # monomial_mat_3 = np.array((3 ** (level+1), max_order))
+
+    # First initialize the case for boundary points
+    q0_arr = np.zeros(max_order+1)
+    q1_arr = gamma_array(max_order-1)
+
+
+    pass
+
