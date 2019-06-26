@@ -11,7 +11,7 @@ m=7;
 indices = SGedge23(m);
 Q = SGorthoPolyssk(T,level);
 
-edge = zeros(2^(m+1),1);
+edge = zeros(length(indices),1);
 in=1;
 for j=1:3^(m+1)
     if j == indices(in)

@@ -1,6 +1,6 @@
 function SGplotsOverview(T)
 
-Num=14;
+Num=20;
 
 %This reads in the values of the polynomials Pj for j=0,...,19
 %T is a large matrix with the values of the polynomials up to level m=7
@@ -27,14 +27,14 @@ Num=14;
 % %To plot the edges of the OP, do the following:
 % %Num is the number of OP plotted
 % %for the bottom edge of the antisymm OP
-edgeplots(T,Num,1);
-% figure
+%edgeplots(T,Num,1);
+%figure
 % %for the bottom edge of the symm OP
 %edgeplots(T,Num,2);
 % figure
 % %for the side edge of the antisymm OP
-%edgeplots(T,Num,3)
-% figure
+edgeplots(T,Num,3)
+figure
 % 
 % %To plot the zeros along the edges of the OP, do the following:
 % %Num is the number of OP plotted

@@ -10,4 +10,4 @@ for i = 1:m
     y = [qcontract(y,q0); qcontract(y,q1); qcontract(y,q2)];
 end
 
-plot(y(:,1),y(:,2),'.')
+%plot(y(:,1),y(:,2),'.')

@@ -60,7 +60,7 @@ ops_leg = generate_op(j, k, normalized, lam=np.array([0]))
 #     ops[i] = ops_sob[int(i/2)]
 
 
-scipy.io.savemat('..\\data\\coefs.mat', dict(ops=ops_sob))
+#scipy.io.savemat('..\\data\\coefs.mat', dict(ops=ops_sob))
 # scipy.io.savemat('coefs2.mat', dict(ops=ops_leg))
 # scipy.io.savemat('coefscomb.mat', dict(ops=ops))
 

@@ -23,5 +23,5 @@ for j=1:2^(m+1)
 end
 
 indices = sort(indices);
-
+indices(2:2:(length(indices)-1)) = [];
         
