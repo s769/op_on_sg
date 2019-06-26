@@ -200,13 +200,122 @@ def alternate_index(level, index):
     return alt_index
 
 def get_neighbors(level, address):
-    pass
+    """Compute the addresses of the 4 neighbors of a point
 
-def index_alternate_level(level, address):
-    pass
+    Args:
+        level: A nonnegative integer representing the level of SG we're 
+            working with.
+        address: np.array of size (level+1) representing the address 
+            vector of a point in some SG graph.
+
+    Returns:
+        nbhd_mat: np.array of size (4, level+1) representing the 
+            address of the 4 neighbors of the point. 
+    """
+
+    # Find alternate address of the point
+    alt_address = alternate_address(level, address)
+
+    # ones has all coordinates 1
+    # di has only the (m+1)-th term 1, others 0
+    di = np.zeros(level + 1)
+    di[level] = 1
+
+    # Initialize space for nbhd matrix
+    nbhd_mat = np.zeros((4, level+1))
+
+    # The only update happens on the last term, where q_i is replaced by 
+    #   q_(i-1) and q_(i+1). Both cases reduce to mod 3 operations.
+    nbhd_mat[0, :] = np.mod(address - di, 3)
+    nbhd_mat[1, :] = np.mod(address + di, 3)
+    nbhd_mat[2, :] = np.mod(alt_address - di, 3)
+    nbhd_mat[3, :] = np.mod(alt_address + di, 3)
+
+    return nbhd_mat
+
+def index_alternate_level(current_level, target_level, address):
+    """Finds the index of a point in another level of SG
+
+    Args:
+        current_level: A nonnegative integer representing the current
+            level of SG we're working with.
+        target_level: A nonnegative integer representing the target
+            level of SG we're moving our point to. This should be larger
+            than the current level.
+        address: np.array of size (current_level+1) representing the 
+            address vector of a point in some SG graph.
+
+    Returns:
+        target_index: A number in the range [1, 3^(target_level+1)] 
+            representing the TLR index of the point in target_level.
+    
+    Example: 
+        index_alternate_level(1, 1, [0, 1]) = 2
+        index_alternate_level(1, 2, [0, 1]) = 5
+        index_alternate_level(1, 3, [0, 1]) = 14
+    """
+
+    target_address = np.zeros(target_level+1) + address[current_level]
+    target_address[0:current_level] = address[0:current_level]
+    target_index = index_from_address(target_level, target_address)
+
+    return target_index
 
 def sg_edge_index(level, ind1, ind2):
-    pass
+    """Calculates an array of indices on a given edge
+
+    Args:
+        level: A nonnegative integer representing the level of SG we're 
+            working with.
+        ind1: a number representing the index of the first boundary 
+            point (1, 2, or 3)
+        ind2: a number representing the index of the second boundary
+            point (1, 2, or 3, should be larger than ind1)
+    
+    Returns:
+        index_arr: np.array of length 2^(m+1), representing array of 
+            indices on the edge (each point is counted twice except 
+            for the two boundary points.)
+    
+    Example:
+        sg_edge_index(2, 0, 2) = [1, 3, 7, 9, 19, 21, 25, 27]
+    """
+    index_arr = np.zeros(2 ** (level+1))
+    
+    for j in range(2 ** (level+1)):
+        temp_address = np.zeros(level+1)
+        l = j
+        for k in range(level+1):
+            if ((l % 2) == 0):
+                temp_address[level - k] = ind1
+            else:
+                temp_address[level - k] = ind2
+            l = int(l / 2)
+        index_arr[j] = index_from_address(level, temp_address)
+    
+    index_arr = sorted(index_arr)
+    return index_arr
 
 def rotate_address(level, address, rotate_num):
-    pass
+    """Rotates the address with respect to rotational symmetries of SG
+
+    Args:
+        level: A nonnegative integer representing the level of SG we're 
+            working with.
+        address: np.array of size (level+1) representing the address 
+            vector of a point in some SG graph.
+        rotate_num: A number in {0, 1, 2} representing the type of 
+            rotation we're making. 0 represent no rotation, 1 represent
+            counterclockwise 2*np.pi/3, 2 represent counterclockwise 
+            4*np.pi/3.
+    
+    Returns:
+        new_address: np.array of size (level+1) representing the address 
+            vector of the rotated point in some SG graph.
+
+    """
+    new_address = address
+
+    for i in range(level+1):
+        new_address[i] = (address[i] + rotate_num) % 3
+    return new_address
