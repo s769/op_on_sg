@@ -139,3 +139,74 @@ def sg_coordinates(level):
             q_contract(coord_mat, q1), q_contract(coord_mat, q2)))
 
     return coord_mat
+
+
+def alternate_address(level, address):
+    """Computes the alternate address of a point.
+
+    Args:
+        level: A nonnegative integer representing the level of SG we're 
+            working with.
+        address: np.array of size (level+1) representing the address 
+            vector of a point in some SG graph.
+    
+    Returns:
+        alt_address: np.array of size (level+1) representing the 
+            alternate address of the same point in some SG graph.
+    
+    Example:
+        alternate_address(2, [0, 1, 2]) = [0, 2, 1] (F1F0q2 = F2F0q1)
+        alternate_address(2, [1, 0, 0]) = [0, 1, 1] (F0F1q1 = F1F1q0)
+    """
+
+    # Make a copy of the address
+    alt_address = np.copy(address)
+
+    if (level > 0):
+        # Find the index of the last address entry that is not equal 
+        #   to the final value
+        last_val = alt_address[level]
+        temp_index = level - 1
+        while (last_val == address[temp_index] and temp_index > 0):
+            temp_index = temp_index - 1
+        
+        # If there is such an entry, interchange it with the final value
+        temp = alt_address[temp_index]
+        alt_address[temp_index] = alt_address[level]
+        alt_address[level] = temp
+    
+    return alt_address 
+
+def alternate_index(level, index):
+    """Compute the alternate TLR index of a point
+
+    Args:
+        level: A nonnegative integer representing the level of SG we're 
+            working with.
+        index: A number in the range [1, 3^(level+1)] representing the 
+            TLR index of some point in level m.
+    
+    Returns:
+        alt_index: A number in the range [1, 3^(level+1)] representing 
+            the alternate TLR index of the point in level m.
+   
+    Example:
+        alternate_index(1, 2) = 4
+        alternate_index(1, 3) = 7 
+    """
+    current_address = address_from_index(level, index)
+    alt_address = alternate_address(level, current_address)
+    alt_index = index_from_address(level, alt_address)
+    return alt_index
+
+def get_neighbors(level, address):
+    pass
+
+def index_alternate_level(level, address):
+    pass
+
+def sg_edge_index(level, ind1, ind2):
+    pass
+
+def rotate_address(level, address, rotate_num):
+    pass
