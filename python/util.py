@@ -1,7 +1,6 @@
 # This file will implement helper functions written in the matlab files.
-import numpy as np
+from imports import *
 from recursions import alpha_array, gamma_array
-
 # TODO
 
 def address_from_index(level, index):
