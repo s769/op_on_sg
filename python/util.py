@@ -9,13 +9,13 @@ def address_from_index(level, index):
     Returns the address vector of a point with certain TLR index in 
         a graph of SG at some fixed level.
     
-    For point F_{w1} F_{w2} ... F_{wm} q_{l} (0<=wi<=2, 0<=l<=2), we can 
+    For point F_{w1} F_{w2} ... F_{wm} q_{k} (0<=wi<=2, 0<=k<=2), we can 
     represent it in two ways:
-    1. Address Vector: [wm, ..., w1, l] (Note that this represents
+    1. Address Vector: [wm, ..., w1, k] (Note that this represents
         picking transform F_{wm}, ..., F_{w1} in this sequence and then 
-        finding vertex q_{l} in the final triangle. This order is weird 
+        finding vertex q_{k} in the final triangle. This order is weird 
         but will prove to be useful)
-    2. TLR Index: k = wm * 3^m + ... + w1 * 3 + l + 1
+    2. TLR Index: k = wm * 3^m + ... + w1 * 3 + k + 1
 
     This function provides transform 2 -> 1.
 
@@ -56,12 +56,12 @@ def index_from_address(level, address):
     Returns the TLR index of a point with certain address vector in 
         a graph of SG at some fixed level.
     
-    For point F_{w1} F_{w2} ... F_{wm} q_{l} (0<=wi<=2, 0<=l<=2), we can 
-    represent it in two ways:
-    1. Address Vector: [wm, ..., w1, l] (Note that this represents
+    For point F_{w1} F_{w2} ... F_{wm} q_{k} (0<=wi<=2, 0<=k<=2), we 
+        can represent it in two ways:
+    1. Address Vector: [wm, ..., w1, k] (Note that this represents
         picking transform F_{wm}, ..., F_{w1} in this sequence and then 
         finding vertex q_{l} in the final triangle)
-    2. TLR Index: k = wm * 3^m + ... + w1 * 3 + l + 1
+    2. TLR Index: k = wm * 3^m + ... + w1 * 3 + k + 1
 
     This function provides transform 1 -> 2.
 
