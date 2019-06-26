@@ -1,4 +1,5 @@
-from imports import *
+#from imports import *
+import numpy as np
 
 def array(*args, **kwargs):
     kwargs.setdefault("dtype", np.float32)
@@ -50,3 +51,73 @@ def eta(j):
 def ap(j):
   if j==0: return 1/2
   return alpha(j)
+
+
+# Here we calculate an array of values listed above. 
+# These are more efficient if we want to use all the values for 
+#   multiple times.
+
+def alpha_array(max_order):
+  """Calculates the array of alpha_j up to some order
+
+  Args:
+    max_order: Maximum order of j to be calculated (should be >= 1)
+  
+  Returns: 
+    alpha_arr: np.array of length (max_order+1) containing the first 
+      alpha values up to alpha_{max_order}.
+  """
+  alpha_arr = np.zeros((max_order + 1))
+  alpha_arr[0] = 1
+  alpha_arr[1] = 1 / 6
+
+  for j in range(2, max_order+1):
+    for l in range(1, j):
+      alpha_arr[j] = alpha_arr[j] + alpha_arr[j-l] * alpha_arr[l]
+    alpha_arr[j] = alpha_arr[j] * 4 / (5 ** j - 5)
+  
+  return alpha_arr
+
+
+def beta_array(max_order):
+  """Calculates the array of beta_j up to some order
+
+  Args:
+    max_order: Maximum order of j to be calculated (should be >= 1)
+  
+  Returns: 
+    beta_arr: np.array of length (max_order+1) containing the first 
+      alpha values up to beta_{max_order}.
+  """
+  
+  # alpha's are used in the calculation of beta, so we first calculate 
+  #   these
+  alpha_arr = alpha_array(max_order+2)
+
+  # initialize values of beta_arr
+  beta_arr = np.zeros((max_order + 1))
+  beta_arr[0] = -1/2
+
+  for j in range(1, max_order+1):
+    for l in range(0, j):
+      beta_arr[j] = beta_arr[j] + (3 * (5 ** (j-l)) - 
+        5 ** (l + 1) + 6) * alpha_arr[j-l] * beta_arr[l]
+    beta_arr[j] = beta_arr[j] * 2 / (15 * (5 ** j - 1))
+  
+  return beta_arr
+
+
+def gamma_array(max_order):
+  """Calculates the array of gamma_j up to some order
+
+  Args:
+    max_order: Maximum order of j to be calculated (should be >= 1)
+  
+  Returns: 
+    gamma_arr: np.array of length (max_order+1) containing the first 
+      alpha values up to gamma_{max_order}.
+  """
+
+  alpha_arr = alpha_array(max_order+2)
+  gamma_arr = 3 * alpha_arr[1:max_order+2]
+  return gamma_arr
