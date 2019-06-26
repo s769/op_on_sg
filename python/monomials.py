@@ -41,5 +41,62 @@ def big_recursion(j):
     
 
     return np.append(ab_arr, vec2)
-# for j in range(7):
-#     print(big_recursion(j))
+
+def f_lkFiqn(l, k, i, n):
+    p, q = big_recursion(l)[-2:]
+
+    if i == n and i == k:
+        return int(l == 0)
+    if i == k and i != n: return p/5**l
+    if i == n and i != k: return 0
+    if k == n and k != i: return p/5**l
+
+
+    return q/5**l
+
+
+
+
+
+
+
+
+@mem
+def f_jk(addr, j, k):
+    if len(addr) == 1:
+        if j != 0: return 0
+        return int(int(addr[0]) == k)
+    if len(addr) == 2:
+        n = int(addr[0])
+        i = int(addr[1])
+        return f_lkFiqn(j, k, i, n)
+    last = int(addr[-1])
+    addr = addr[:-1]
+    res = 0
+
+    for l in range(j+1):
+        for n in range(3):
+            res += f_lkFiqn(j-l, k, last, n)*f_jk(addr, l, n)
+        res *= (1/5)**l
+
+    return res
+
+
+
+def p_jk(addr, j, k):
+
+    if k == 1:
+        func = alpha
+    if k == 2:
+        func = beta
+    if k == 3:
+        func = gamma
+    res = f_jk(addr, j, 0)
+    for l in range(j+1):
+        res += func(j-l)*(f_jk(addr, l, 1) + f_jk(addr, l, 2))
+    return res
+
+# ans = f_lkFiqn(0, 1, 1, 0)*f_lkFiqn(0,0,1,0)+f_lkFiqn(0,1,1,1)*f_lkFiqn(0,1,1,0)+f_lkFiqn(0,1,1,2)*f_lkFiqn(0,2,1,0)
+# print(ans)
+# #print(f_lkFiqn(0,2,1,0))
+print(p_jk('012201221', 50, 1))
