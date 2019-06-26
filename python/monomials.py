@@ -1,6 +1,9 @@
 from recursions import *
-
-
+from util import *
+from progressbar import AnimatedMarker, Bar, BouncingBar, Counter, ETA, \
+    AdaptiveETA, FileTransferSpeed, FormatLabel, Percentage, \
+    ProgressBar, ReverseBar, RotatingMarker, \
+    SimpleProgress, Timer, UnknownLength
 
 @mem
 def big_recursion(j):
@@ -34,10 +37,9 @@ def big_recursion(j):
         res2 += (p + 2*q)*(a + 2*b)
     vec[0] = 2/(3*(5**j - 1))*res1
     vec[1] = 10/(3*(5**(j+1) - 1))*res2
-
     coefs = np.array([[1, 2], [-4, 7]])
     ab_arr = np.linalg.inv(coefs)@vec
-
+    
     
 
     return np.append(ab_arr, vec2)
@@ -99,4 +101,23 @@ def p_jk(addr, j, k):
 # ans = f_lkFiqn(0, 1, 1, 0)*f_lkFiqn(0,0,1,0)+f_lkFiqn(0,1,1,1)*f_lkFiqn(0,1,1,0)+f_lkFiqn(0,1,1,2)*f_lkFiqn(0,2,1,0)
 # print(ans)
 # #print(f_lkFiqn(0,2,1,0))
-print(p_jk('012201221', 50, 1))
+#print(p_jk('012201221', 50, 1))
+
+def generate_T(level, deg):
+    T = np.zeros((3, 3**(level + 1),deg+1))
+    pbar = ProgressBar(widgets=[Percentage(), Bar()], maxval=3**(level+1)+1).start()
+    for i in range(3**(level + 1)):
+        addr = address_from_index(level, i+1)
+        addr = np.flip(addr)
+        addr = ''.join(str(int(x)) for x in addr)
+        for j in range(deg + 1):
+            for k in range(1, 4):
+                T[k-1, i, j] = p_jk(addr, j, k)
+        pbar.update(i+1)
+    pbar.finish()       
+    return T
+    
+
+
+
+print(generate_T(7, 10))
