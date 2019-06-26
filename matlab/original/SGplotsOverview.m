@@ -15,8 +15,8 @@ Num=20;
 
 % %To plot the symmetric OP, do the following:
 % %Num is the number of OP plotted
-%orthoplotssk(T,Num);
-% figure
+orthoplotssk(T,Num);
+figure
 % 
 % %To plot the ONP, do the following:
 % %Num is the number of OP plotted

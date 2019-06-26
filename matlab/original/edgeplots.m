@@ -5,7 +5,7 @@ function edgeplots(T,Num,flag)
 % flag = 1 plots the edge of the antisymm OP along the bottom edge
 % flag = 2 plots the edge of the symm OP along the bottom edge
 % flag = 3 plots the edge of the antisymm OP along the side edge
-
+clf('reset')
 
 for j=1:Num
     %cla
@@ -14,7 +14,7 @@ for j=1:Num
         titlestring = 'bottomedge';
         xlabelstr = 'bottom edge';
         legstring = 'S_{';
-        filestring = 'images/p';
+        filestring = 'images/bottom/p';
     elseif flag==2
         edge=SGorthoPolyEdge23sk(T,j-1);
         titlestring = 'bottomedge';
@@ -26,7 +26,7 @@ for j=1:Num
         titlestring = 'sideedge';
         xlabelstr = 'side edge';
         legstring = 'S_{';
-        filestring = 'images/p';
+        filestring = 'images/side/p';
     elseif flag==4
         edge=SGorthoPolyEdge23phik(T,j-1);
         titlestring = 'bottomedge';
@@ -41,11 +41,14 @@ for j=1:Num
         filestring = 'images/phi';        
     end
     figure
+    
+    %subplot(Num,2,j)
     clf('reset')
     z=zeros(size(edge));
-    plot(real((edge)), 'LineWidth',4);
+    plot(real((edge)), 'LineWidth',1);
     hold on
-    plot(z,'LineWidth',2,'Color','Black');
+    plot(z,'LineWidth',1,'Color','Black');
+    
     
     %formatting plot
     set(gca,'XLim',[0,length(edge)]);
