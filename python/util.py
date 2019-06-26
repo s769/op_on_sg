@@ -1,6 +1,5 @@
 # This file will implement helper functions written in the matlab files.
-import numpy as np
-
+from imports import *
 # TODO
 
 def address_from_index(level, index):
