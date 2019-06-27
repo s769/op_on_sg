@@ -1,9 +1,7 @@
 from recursions import *
 from util import *
-from progressbar import AnimatedMarker, Bar, BouncingBar, Counter, ETA, \
-    AdaptiveETA, FileTransferSpeed, FormatLabel, Percentage, \
-    ProgressBar, ReverseBar, RotatingMarker, \
-    SimpleProgress, Timer, UnknownLength
+import progressbar as pb
+
 
 @mem
 def big_recursion(j):
@@ -126,4 +124,4 @@ def generate_T(level, deg):
 
 #print(generate_T(7, 10))
 
-print(f_jk('2', 0, 3))
+print(p_jk('2', 0, 3))

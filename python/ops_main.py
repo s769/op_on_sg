@@ -1,7 +1,32 @@
 from Polynomial import *
 
+'''
+This is the main file used for computing the orthogonal polynomials.
+'''
 
 def generate_op(n, k, normalized=True, lam=np.array([1])):
+  '''
+  Generates orthogonal polynomials with respect to a generalized Sobolev inner product.
+  The Gram-Schmidt algorithm is implemented here.
+
+  Args:
+    n: Maximum degree of orthogonal polynomial.
+
+    k: family of monomials to use in Gram-Schmidt (k = 1, 2, or 3)
+
+    normalized: Boolean representing whether the resulting polynomials should be normalized or monic.
+
+    lam: np.array of lambda values for the generalized Sobolev inner product.
+    The default value is 1 (corresponding to the regular Sobolev inner product).
+    If lam = np.array([0]), this is the L2 inner product.
+  
+  Returns:
+    np.array of coefficients of the orthogonal polynomials with respect to the basis {P_0k, P_1k,..., P_nk}.
+    Each row in this array is a polynomial, and there are n+1 rows and n+1 columns.
+
+    If normalized is True, the polynomials will be normalized. Otherwise, the polynomials will be monic.
+    
+  '''
   Polynomial.build_condensed_GM(n+1, k, lam)
 #   basis_mat = np.zeros((n+1, 3*n+3))
   
@@ -18,7 +43,7 @@ def generate_op(n, k, normalized=True, lam=np.array([1])):
     for i in range(r):
       v_i = o_basis_mat[i]
       le = len(u_r)
-      GM = Polynomial.GM[lis2int(lam)][:le, :le]
+      GM = Polynomial.GM[lis2str(lam)][:le, :le]
       proj = Polynomial.fast_inner(u_r, v_i, GM)
       norm = Polynomial.fast_inner(v_i, v_i, GM)
       res += proj/norm*v_i

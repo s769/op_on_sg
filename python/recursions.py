@@ -1,10 +1,23 @@
-#from imports import *
-import numpy as np
+from imports import *
+#import numpy as np
+'''
+This file computes recursively the alpha, beta, gamma, and eta coefficients from the Kasso, Tuley paper OP on SG.
+The recursions are memoized (meaning they store the previously computed values in dictionaries) for increased performance.
+These functions are faster when you require specific values of the coefficients. For large computations, it will be better to
+use the functions alpha_array, beta_array, etc..
+'''
 
+# This is a function that can be used to change the np.array float precision to float32 (double)
 def array(*args, **kwargs):
     kwargs.setdefault("dtype", np.float32)
     return np.array(*args, **kwargs)
-  
+
+
+'''
+This is a decorator function that memoizes the recursive functions. This function is used as a decorator in multiple
+places thoughout the code files.
+
+'''
 def mem(func):
     cache = dict()
 
@@ -17,8 +30,20 @@ def mem(func):
 
     return memoized_func
 
+
+'''
+The follwing five functions compute alpha, beta, gamma, eta, and alpha prime from the Kasso, Tuley paper.
+'''
 @mem
 def alpha(j):
+  '''
+  Calculates alpha_j
+
+  Args: 
+    j: index of coefficient
+  Returns:
+    alpha_j value
+  '''
   if j==0: return 1
   if j==1: return 1/6
   res = 0
@@ -29,6 +54,14 @@ def alpha(j):
 
 @mem
 def beta(j):
+  '''
+  Calculates beta_j
+
+  Args: 
+    j: index of coefficient
+  Returns:
+    beta_j value
+  '''
   if j==0: return -1/2
   res = 0
   for l in range(j):
@@ -37,10 +70,26 @@ def beta(j):
 
 @mem
 def gamma(j):
+  '''
+  Calculates gamma_j
+
+  Args: 
+    j: index of coefficient
+  Returns:
+    gamma_j value
+  '''
   return 3*alpha(j+1)
 
 @mem
 def eta(j):
+  '''
+  Calculates eta_j
+
+  Args: 
+    j: index of coefficient
+  Returns:
+    eta_j value
+  '''
   if j==0: return 0
   res = alpha(j)*(5**j + 1)/2
   for l in range(j):
@@ -49,6 +98,14 @@ def eta(j):
 
 @mem
 def ap(j):
+  '''
+  Calculates alpha'_j
+
+  Args: 
+    j: index of coefficient
+  Returns:
+    alpha'_j value
+  '''
   if j==0: return 1/2
   return alpha(j)
 
