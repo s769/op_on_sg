@@ -358,7 +358,8 @@ def coeff_monomial_3_all(level, max_order):
             # Find the address of the point
             temp_index = k + 1
             temp_address = address_from_index(j, temp_index)
-
+            if (k == 11):
+                print(temp_address)
             # If the address is from the previous layer, we just copy
             # the value. Otherwise, we calculate the value based on 
             # the recurrent formula.
@@ -386,17 +387,26 @@ def coeff_monomial_3_all(level, max_order):
 
                 for l in range(max_order+1):
                     # Calculate the values recursively
-                    if (temp_address[j] == 0):
+                    if ((temp_address[j-1] == 0 and temp_address[j] == 1) 
+                            or (temp_address[j-1] == 1 and temp_address[j] == 0)):
+                        # Perform the first update
                         ind_temp_address_1 = index_from_address(j-1, 
                             temp_address_1) - 1
                         temp_monomial_mat_3[k, l] = (5 ** (-l-1)) * \
                             current_monomial_mat_3[ind_temp_address_1, l]
-                    elif (temp_address[j] == 1):
+                    elif ((temp_address[j-1] == 0 and temp_address[j] == 2) 
+                            or (temp_address[j-1] == 2 and temp_address[j] == 0)):
+                        # Perform the second update
                         ind_temp_address_2 = index_from_address(j-1, 
                             temp_address_2) - 1
                         temp_monomial_mat_3[k, l] = (5 ** (-l-1)) * \
                             current_monomial_mat_3[ind_temp_address_2, l]
+                        if (k == 11):
+                            print(temp_address_2)
+                            print(ind_temp_address_2)
+                            print(current_monomial_mat_3[ind_temp_address_2, l])
                     else:
+                        # Perform the third update
                         rotate_add_1 = rotate_address(j-1, temp_address_2, 2)
                         rotate_add_2 = rotate_address(j-1, temp_address_1, 1)
                         ind_rotate_add_1 = index_from_address(j-1, 
@@ -413,53 +423,99 @@ def coeff_monomial_3_all(level, max_order):
 
 
 
+# The following methods concern the creation of polynomials
+#   P_{j1} and P_{j3}. They will be moved to the monomials.py
+#   file in the future.
 
-
-
-def coeff_monomial_3_all_helper(level, max_order, q0_arr, q1_arr, q2_arr):
-    """Calculate the value of monomial P_{j3} up to some level
+def coeff_monomial_1_all(level, max_order):
+    """Calculate the value of monomial P_{j1} up to some level
     
     Args:
         level: A nonnegative integer representing the highest level of 
             SG we would like to calculate the monomial.
         max_order: Maximal order of monomial P_{j3} that we would like 
             to calculate
-        q0_arr: np.array of size (max_order+1) representing the 
-            values of first boundary point of the monomials 
-        q1_arr: np.array of size (max_order+1) representing the 
-            values of second boundary point of the monomials 
-        q2_arr: np.array of size (max_order+1) representing the 
-            values of third boundary point of the monomials 
 
     Returns:
-        coord_mat_3: np.array + size (3^{(level+1)} * (max_order + 1)
+        monomial_mat_1: np.array + size (3^{(level+1)} * (max_order + 1)
             First coordinate denote the TLR index, the second coordinate 
             denote order of polynomial.
     """
+    # TODO: Change this code to fit P_{j1}
+    # First initialize the case for boundary points
+    q0_arr = np.zeros(max_order+1)
+    q0_arr[0] = 1
+    q1_arr = alpha_array(max_order)
+    q2_arr = q1_arr
 
-    # First store the values of the three nodes
-    val_f0q1 = np.zeros(max_order + 1)
-    val_f0q2 = np.zeros(max_order + 1)
-    val_f1q2 = np.zeros(max_order + 1)
+    # Fetch the monomials at 3. This will be useful later.
+    stored_monomial_mat_3 = coeff_monomial_3_all(level - 1, max_order)
 
-    # 
-    for j in range(max_order+1): 
-        val_f0q1[j] = (5 ** (-j)) * q1_arr[j]
-        val_f0q2[j] = (5 ** (-j)) * q2_arr[j]
-        val_f1q2[j] = ()
+    # First stack the first matrix
+    current_monomial_mat_1 = np.vstack((q0_arr, q1_arr, q2_arr))
+
+    for j in range(1, level+1):
+        # Make space for next-layer matrix
+        temp_monomial_mat_1 = np.zeros((3 ** (j+1), max_order+1))
+
+        # current_monomial_mat_1 (of dimension (3^j * max_order)) 
+        # stores the current matrix
+        for k in range(3 ** (j+1)):
+            # Find the address of the point
+            temp_index = k + 1
+            temp_address = address_from_index(j, temp_index)
+
+            # If the address is from the previous layer, we just copy
+            # the value. Otherwise, we calculate the value based on 
+            # the recurrent formula.
+            if (temp_address[j] == temp_address[j-1]):
+                # Fetch the previous index of the point
+                temp_address = temp_address[0:j]
+                prev_index = index_from_address(j-1, temp_address)
+                
+                # Set the value to be the previous value
+                temp_monomial_mat_1[k, :] =  \
+                    current_monomial_mat_1[prev_index-1, :]
+            else:
+                # Fetch the coordinates of the triangle around the point
+                if (j == 1):
+                    temp_address_0 = np.array([0])
+                    temp_address_1 = np.array([1])
+                    temp_address_2 = np.array([2])
+                else:
+                    temp_address_0 = np.concatenate(
+                        (temp_address[0:(j-1)], np.array([0])))
+                    temp_address_1 = np.concatenate(
+                        (temp_address[0:(j-1)], np.array([1])))
+                    temp_address_2 = np.concatenate(
+                        (temp_address[0:(j-1)], np.array([2])))
+
+                for l in range(max_order+1):
+                    # Calculate the values recursively
+                    if (temp_address[j] == 0):
+                        ind_temp_address_1 = index_from_address(j-1, 
+                            temp_address_1) - 1
+                        temp_monomial_mat_1[k, l] = (5 ** (-l-1)) * \
+                            current_monomial_mat_1[ind_temp_address_1, l]
+                    elif (temp_address[j] == 1):
+                        ind_temp_address_2 = index_from_address(j-1, 
+                            temp_address_2) - 1
+                        temp_monomial_mat_1[k, l] = (5 ** (-l-1)) * \
+                            current_monomial_mat_1[ind_temp_address_2, l]
+                    else:
+                        rotate_add_1 = rotate_address(j-1, temp_address_2, 2)
+                        rotate_add_2 = rotate_address(j-1, temp_address_1, 1)
+                        ind_rotate_add_1 = index_from_address(j-1, 
+                            rotate_add_1) - 1
+                        ind_rotate_add_2 = index_from_address(j-1, 
+                            rotate_add_2) - 1
+                        temp_monomial_mat_1[k, l] = -(5 ** (-l-1)) * \
+                            (current_monomial_mat_1[ind_rotate_add_1, l] + 
+                            current_monomial_mat_1[ind_rotate_add_2, l])
+        
+        current_monomial_mat_1 = temp_monomial_mat_1
+
+    return current_monomial_mat_1
 
 
-    # Stack the three matrices
-    monomial_mat_3 = np.vstack((q0_arr, q1_arr, q2_arr))
-    
-    # Find the 
-
-
-    # Then use recursion to create the latter matrices
-    # Each iteration produces a matrix of coordinates in the next level
-
-    #return coord_mat   
-    pass
-
-
-
+print(coeff_monomial_3_all(2, 3))
