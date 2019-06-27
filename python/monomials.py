@@ -171,7 +171,7 @@ def generate_T(level, deg):
             at each of the 3^(level+1) TLR indices of points on the given level 
             of SG.
     '''
-    T = np.zeros((3, 3**(level + 1), deg+1))
+    T = np.zeros((3**(level + 1), deg+1, 3))
     for i in range(3**(level + 1)):
         # This preparation is due to the different address structure 
         #   used in this file an in util.py
@@ -180,8 +180,8 @@ def generate_T(level, deg):
         addr = ''.join(str(int(x)) for x in addr)
         for j in range(deg + 1):
             for k in range(1, 4):
-                T[k-1, i, j] = p_jk(addr, j, k)
-        #progress(i, 3**(level+1), status='computing monomial values')
+                T[i, j, k-1] = p_jk(addr, j, k)
+        progress(i, 3**(level+1), status='computing monomial values')
     return T
 
 
