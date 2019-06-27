@@ -181,9 +181,9 @@ def generate_T(level, deg):
         for j in range(deg + 1):
             for k in range(1, 4):
                 T[k-1, i, j] = p_jk(addr, j, k)
-        progress(i, 3**(level+1), status='computing monomial values')
+        #progress(i, 3**(level+1), status='computing monomial values')
     return T
 
 
-print(generate_T(5, 10))
+#print(generate_T(5, 10))
 #print(p_jk('2', 0, 3))

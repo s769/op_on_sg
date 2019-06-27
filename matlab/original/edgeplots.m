@@ -14,7 +14,7 @@ for j=1:Num
         titlestring = 'bottomedge';
         xlabelstr = 'bottom edge';
         legstring = 'S_{';
-        filestring = 'images/bottom/p';
+        filestring = 'images/bottom/s';
     elseif flag==2
         edge=SGorthoPolyEdge23sk(T,j-1);
         titlestring = 'bottomedge';
@@ -26,7 +26,7 @@ for j=1:Num
         titlestring = 'sideedge';
         xlabelstr = 'side edge';
         legstring = 'S_{';
-        filestring = 'images/side/p';
+        filestring = 'images/side/s';
     elseif flag==4
         edge=SGorthoPolyEdge23phik(T,j-1);
         titlestring = 'bottomedge';
@@ -61,6 +61,6 @@ for j=1:Num
     %save each plot as an eps file
     %saveas(gca,strcat(filestring,num2str(j-1),titlestring),'eps');
     %save each plot as an jpg file
-    saveas(gca,strcat(filestring,num2str(j-1),titlestring),'png');
+    %saveas(gca,strcat(filestring,num2str(j-1),titlestring),'png');
 end
 
