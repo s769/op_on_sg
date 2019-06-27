@@ -88,22 +88,24 @@ def f_jk(addr, j, k):
 def p_jk(addr, j, k):
 
     if k == 1:
-        func = alpha
         res = f_jk(addr, j, 0)
+        for l in range(j+1):
+            res += alpha(j-l)*(f_jk(addr, l, 1) + f_jk(addr, l, 2))
     if k == 2:
-        func = beta
         res = 0
+        for l in range(j+1):
+            res += beta(j-l)*(f_jk(addr, l, 1) + f_jk(addr, l, 2))
     if k == 3:
-        func = gamma
         res = 0
-    for l in range(j+1):
-        res += func(j-l)*(f_jk(addr, l, 1) + f_jk(addr, l, 2))
+        for l in range(j+1):
+            res += gamma(j-l)*(f_jk(addr, l, 1) - f_jk(addr, l, 2))
+    
     return res
 
 # ans = f_lkFiqn(0, 1, 1, 0)*f_lkFiqn(0,0,1,0)+f_lkFiqn(0,1,1,1)*f_lkFiqn(0,1,1,0)+f_lkFiqn(0,1,1,2)*f_lkFiqn(0,2,1,0)
 # print(ans)
 # #print(f_lkFiqn(0,2,1,0))
-print(f_jk('0', 0, 3))
+#print(f_jk('0', 0, 3))
 
 def generate_T(level, deg):
     T = np.zeros((3, 3**(level + 1),deg+1))
@@ -123,3 +125,5 @@ def generate_T(level, deg):
 
 
 #print(generate_T(7, 10))
+
+print(f_jk('2', 0, 3))
