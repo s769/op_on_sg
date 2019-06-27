@@ -1,18 +1,19 @@
 import numpy as np
-import progressbar
 from recursions import mem, alpha, beta, gamma
 from util import address_from_index
 
 '''
-This file contains the functions that will compute the values of the monomial basis on a given level of SG.
-The recursive functions are memoized (see recursions.py).
+This file contains the functions that will compute the values of the 
+    monomial basis on a given level of SG. The recursive functions are 
+    memoized (see recursions.py).
 '''
 
 
 @mem
 def big_recursion(j):
     '''
-    This function computes the coefficients a_j, b_j, p_j, q_j found in the Splines on Fractals paper.
+    This function computes the coefficients a_j, b_j, p_j, q_j found in 
+        the Splines on Fractals paper.
 
     Args:
         j: index of coefficients
@@ -57,15 +58,15 @@ def big_recursion(j):
 
 def f_lkFiqn(l, k, i, n):
     '''
-    This function computes the values of the easy basis f_lk(F_i (q_n)) (level 1 of SG) based on the Splines on Fractals
-    paper.
+    This function computes the values of the easy basis f_lk(F_i (q_n)) 
+        (level 1 of SG) based on the Splines on Fractals paper.
 
     Args:
-        l, k, i, n: correspond to the indices mentioned in the preceding paragraph.
+        l, k, i, n: correspond to the indices mentioned in the preceding 
+            paragraph.
 
     Returns:
         values of the easy basis f_lk(F_i (q_n))
-
     '''
     p, q = big_recursion(l)[-2:]
 
@@ -84,17 +85,18 @@ def f_lkFiqn(l, k, i, n):
 @mem
 def f_jk(addr, j, k):
     '''
-    This function calculates the value of the easy basis f_jk at a point on SG addressed by addr. This code is based on
-    the Splines on Fractals paper.
+    This function calculates the value of the easy basis f_jk at a point 
+        on SG addressed by addr. This code is based on the Splines on 
+        Fractals paper.
 
     Args:
         j, k: indices mentioned in preceding paragraph.
-        addr: address of evaluation point F_w(q_i) given as a string of digits whose first digit is i and
-        whose following digits are those in w.
+        addr: address of evaluation point F_w(q_i) given as a string of 
+            digits whose first digit is i and whose following digits are 
+            those in w.
 
     Returns:
         value of f_jk(F_w(q_i))
-
     '''
 
     if len(addr) == 1:
@@ -119,17 +121,18 @@ def f_jk(addr, j, k):
 
 def p_jk(addr, j, k):
     '''
-    This function calculates the value of the monomial basis p_jk at a point on SG addressed by addr. This code is based on
-    the Splines on Fractals paper and Calculus on SG I.
+    This function calculates the value of the monomial basis p_jk at a 
+        point on SG addressed by addr. This code is based on the Splines 
+        on Fractals paper and Calculus on SG I.
 
     Args:
         j, k: indices mentioned in preceding paragraph.
-        addr: address of evaluation point F_w(q_i) given as a string of digits whose first digit is i and
-        whose following digits are those in w.
+        addr: address of evaluation point F_w(q_i) given as a string of 
+            digits whose first digit is i and whose following digits are 
+            those in w.
 
     Returns:
         value of p_jk(F_w(q_i))
-
     '''
 
     if k == 1:
@@ -155,7 +158,8 @@ def p_jk(addr, j, k):
 
 def generate_T(level, deg):
     '''
-    This function calculates the values of the monomials up to a certain degree at a given level of SG.
+    This function calculates the values of the monomials up to a certain 
+        degree at a given level of SG.
 
     Args:
         level: level of SG required
@@ -163,23 +167,20 @@ def generate_T(level, deg):
 
     Returns:
         T: np.array with dimensions 3 x 3^(level+1) x deg+1.
-        The kth page of T has values of the monomials P_jk (j = 0...deg) at each of the 3^(level+1) TLR indices of points
-        on the given level of SG.
-
+        The kth page of T has values of the monomials P_jk (j = 0...deg) 
+            at each of the 3^(level+1) TLR indices of points on the given level 
+            of SG.
     '''
     T = np.zeros((3, 3**(level + 1), deg+1))
-    pbar = ProgressBar(widgets=[Percentage(), Bar()],
-                       maxval=3**(level+1)+1).start()
     for i in range(3**(level + 1)):
-        # This preparation is due to the different address structure used in this file an in util.py
+        # This preparation is due to the different address structure 
+        #   used in this file an in util.py
         addr = address_from_index(level, i+1)
         addr = np.flip(addr)
         addr = ''.join(str(int(x)) for x in addr)
         for j in range(deg + 1):
             for k in range(1, 4):
                 T[k-1, i, j] = p_jk(addr, j, k)
-        pbar.update(i+1)
-    pbar.finish()
     return T
 
 

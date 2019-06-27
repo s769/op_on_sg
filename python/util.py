@@ -1,7 +1,8 @@
-# This file will implement helper functions written in the matlab files.
-from imports import *
+import numpy as np
+
 from recursions import alpha_array, gamma_array
-# TODO
+
+# This file will implement helper functions written in the matlab files.
 
 def address_from_index(level, index):
     """Computes address vector from the index.
@@ -374,12 +375,9 @@ def coeff_monomial_3_all(level, max_order):
             else:
                 # Fetch the coordinates of the triangle around the point
                 if (j == 1):
-                    temp_address_0 = np.array([0])
                     temp_address_1 = np.array([1])
                     temp_address_2 = np.array([2])
                 else:
-                    temp_address_0 = np.concatenate(
-                        (temp_address[0:(j-1)], np.array([0])))
                     temp_address_1 = np.concatenate(
                         (temp_address[0:(j-1)], np.array([1])))
                     temp_address_2 = np.concatenate(
@@ -449,7 +447,7 @@ def coeff_monomial_1_all(level, max_order):
     q2_arr = q1_arr
 
     # Fetch the monomials at 3. This will be useful later.
-    stored_monomial_mat_3 = coeff_monomial_3_all(level - 1, max_order)
+    # stored_monomial_mat_3 = coeff_monomial_3_all(level - 1, max_order)
 
     # First stack the first matrix
     current_monomial_mat_1 = np.vstack((q0_arr, q1_arr, q2_arr))
@@ -479,12 +477,9 @@ def coeff_monomial_1_all(level, max_order):
             else:
                 # Fetch the coordinates of the triangle around the point
                 if (j == 1):
-                    temp_address_0 = np.array([0])
                     temp_address_1 = np.array([1])
                     temp_address_2 = np.array([2])
                 else:
-                    temp_address_0 = np.concatenate(
-                        (temp_address[0:(j-1)], np.array([0])))
                     temp_address_1 = np.concatenate(
                         (temp_address[0:(j-1)], np.array([1])))
                     temp_address_2 = np.concatenate(

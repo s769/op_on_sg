@@ -12,18 +12,23 @@ For large computations that use all the coefficients for multiple times,
 it will be better to use the functions alpha_array, beta_array, etc..
 '''
 
-# This is a function that can be used to change the np.array float precision to float32 (double)
+# This is a function that can be used to change the np.array float precision to 
+#   float32 (double)
 
 
 def array(*args, **kwargs):
+    """
+    This is a function that can be used to change the np.array float 
+        precision to float32 (double)
+    """
     kwargs.setdefault("dtype", np.float32)
     return np.array(*args, **kwargs)
 
 
 def mem(func):
     '''
-      This is a decorator function that memoizes the recursive functions. 
-      This function is used as a decorator in multiple places thoughout the 
+    This is a decorator function that memoizes the recursive functions. 
+    This function is used as a decorator in multiple places thoughout the 
         code files.
     '''
     cache = dict()
@@ -40,17 +45,17 @@ def mem(func):
 
 '''
 The follwing five functions compute single values of alpha, beta, gamma, eta, 
-  and alpha prime from the Kasso, Tuley paper.
+    and alpha prime from the Kasso, Tuley paper.
 '''
 
 
 @mem
 def alpha(j):
-    '''
-    Calculates alpha_j
+    '''Calculates alpha_j
 
     Args: 
     j: index of coefficient
+
     Returns:
     alpha_j value
     '''
@@ -66,11 +71,11 @@ def alpha(j):
 
 @mem
 def beta(j):
-    '''
-    Calculates beta_j
+    '''Calculates beta_j
 
     Args: 
     j: index of coefficient
+
     Returns:
     beta_j value
     '''
@@ -84,11 +89,11 @@ def beta(j):
 
 @mem
 def gamma(j):
-    '''
-    Calculates gamma_j
+    '''Calculates gamma_j
 
     Args: 
     j: index of coefficient
+
     Returns:
     gamma_j value
     '''
@@ -97,11 +102,11 @@ def gamma(j):
 
 @mem
 def eta(j):
-    '''
-    Calculates eta_j
+    '''Calculates eta_j
 
     Args: 
     j: index of coefficient
+
     Returns:
     eta_j value
     '''
@@ -115,11 +120,11 @@ def eta(j):
 
 @mem
 def ap(j):
-    '''
-    Calculates alpha'_j
+    '''Calculates alpha'_j
 
     Args: 
     j: index of coefficient
+
     Returns:
     alpha'_j value
     '''
@@ -176,7 +181,7 @@ def beta_array(max_order):
     for j in range(1, max_order+1):
         for l in range(0, j):
             beta_arr[j] = beta_arr[j] + (3 * (5 ** (j-l)) -
-                                        5 ** (l + 1) + 6) * alpha_arr[j-l] * beta_arr[l]
+                            5 ** (l + 1) + 6) * alpha_arr[j-l] * beta_arr[l]
         beta_arr[j] = beta_arr[j] * 2 / (15 * (5 ** j - 1))
 
     return beta_arr

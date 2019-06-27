@@ -3,9 +3,12 @@ from recursions import alpha, beta, gamma, eta, ap
 import functools
 
 '''
-This file contains functions used to compute the L2 inner product between the monomial baisis P_jk.
-The algorithms for computing the inner products are derived from the Kasso, Tuley paper OP on SG.
-There are some slight corrections to the algorithms mentioned in the paper that are implemented here.
+This file contains functions used to compute the L2 inner product 
+between the monomial baisis P_jk. The algorithms for computing the inner 
+products are derived from the Kasso, Tuley paper OP on SG.
+
+There are some slight corrections to the algorithms mentioned in the 
+paper that are implemented here.
 
 '''
 
@@ -39,11 +42,10 @@ def inner0_j1k1(j, k):
     Calculates the L2 inner product <P_j1, P_k1>
 
     Args:
-    j, k: indices for the monomials P_j1, P_k1
+        j, k: indices for the monomials P_j1, P_k1
 
     Returns:
-    L2 inner product <P_j1, P_k1>
-
+        L2 inner product <P_j1, P_k1>
     '''
     ms = min(j, k)
     s1 = 0
@@ -80,11 +82,10 @@ def inner0_j2k2(j, k):
     Calculates the L2 inner product <P_j2, P_k2>
 
     Args:
-    j, k: indices for the monomials P_j2, P_k
+        j, k: indices for the monomials P_j2, P_k
 
     Returns:
-    L2 inner product <P_j2, P_k2>
-
+        L2 inner product <P_j2, P_k2>
     '''
     ms = min(j, k)
     s1 = 0
@@ -121,11 +122,10 @@ def inner0_j3k3(j, k):
     Calculates the L2 inner product <P_j3, P_k3>
 
     Args:
-    j, k: indices for the monomials P_j3, P_k3
+        j, k: indices for the monomials P_j3, P_k3
 
     Returns:
-    L2 inner product <P_j3, P_k3>
-
+        L2 inner product <P_j3, P_k3>
     '''
     ms = min(j, k)
     s1 = 0
@@ -160,10 +160,10 @@ def inner0_j1k2(j, k):
     Calculates the L2 inner product <P_j1, P_k2>
 
     Args:
-    j, k: indices for the monomials P_j1, P_k2
+        j, k: indices for the monomials P_j1, P_k2
 
     Returns:
-    L2 inner product <P_j1, P_k2>
+        L2 inner product <P_j1, P_k2>
 
     '''
     s1 = 0
@@ -185,16 +185,16 @@ def lis2str(lis):
     Convert a list of integers to an integer string using concatenation.
 
     Args:
-    lis: list or np.array of integers
+        lis: list or np.array of integers
 
     Returns:
-    a string which is the concatenation of the numbers in lis
+        a string which is the concatenation of the numbers in lis
 
     Example:
-    lis2str(np.array([1, 2, 3]))
-    >> '123'
-    lis2str([012, 345, 678])
-    >> '012345678'
+        lis2str(np.array([1, 2, 3]))
+        >> '123'
+        lis2str([012, 345, 678])
+        >> '012345678'
     '''
     return ''.join(str(int(x)) for x in lis)
 
@@ -206,17 +206,19 @@ def inner0_j1k3(j, k): return 0
 def inner0_j2k3(j, k): return 0
 
 '''
-This is a dictionary mapping the values (i, i') to the L2 inner product function
-for <P_ji, P_ki'>. This dictionary is used in the construction of the Polynomial class.
+This is a dictionary mapping the values (i, i') to the L2 inner product 
+    function for <P_ji, P_ki'>. This dictionary is used in the 
+    construction of the Polynomial class.
 '''
 inner_dict = {(1, 1): inner0_j1k1, (2, 2): inner0_j2k2, (3, 3): inner0_j3k3,
               (1, 2): inner0_j1k2, (1, 3): inner0_j1k3, (2, 3): inner0_j2k3}
 
 
 '''
-vals_dict maps the values 1, 2, 3 to the functions alpha, beta, and gamma.
-This dictionary, along with norm_dict are used in the computation of the values and normal derivatives
-of the polynomials P_jk (k = 1, 2, 3) on the boundary of SG. The functions are based on the Kasso, Tuley paper.
+vals_dict maps the values 1, 2, 3 to the functions alpha, beta, and 
+    gamma. This dictionary, along with norm_dict are used in the computation 
+    of the values and normal derivatives of the polynomials P_jk (k = 1, 2, 3) 
+    on the boundary of SG. The functions are based on the Kasso, Tuley paper.
 
 '''
 vals_dict = {1: alpha, 2: beta, 3: gamma}
