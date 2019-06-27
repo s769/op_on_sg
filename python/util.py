@@ -2,6 +2,8 @@ import numpy as np
 
 from recursions import alpha_array, gamma_array
 
+import sys
+
 # This file will implement helper functions written in the matlab files.
 
 def address_from_index(level, index):
@@ -513,4 +515,26 @@ def coeff_monomial_1_all(level, max_order):
     return current_monomial_mat_1
 
 
-print(coeff_monomial_3_all(2, 3))
+def progress(count, total, status=''):
+    '''
+    Add progress bar to function.
+    
+    Args:
+        count: iteration of loop
+        total: total number of loop iterations
+        status: name of loop
+
+
+    '''
+    bar_len = 60
+    filled_len = int(round(bar_len * count / float(total)))
+
+    percents = round(100.0 * count / float(total), 1)
+    bar = '=' * filled_len + '-' * (bar_len - filled_len)
+
+    sys.stdout.write('[%s] %s%s ...%s\r' % (bar, percents, '%', status))
+    sys.stdout.flush()
+    
+
+
+#print(coeff_monomial_3_all(2, 3))
