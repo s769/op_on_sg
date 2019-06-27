@@ -1,4 +1,7 @@
-from Polynomial import *
+import numpy as np
+from Polynomial import Polynomial
+from innerprods import lis2str
+
 
 '''
 This is the main file used for computing the orthogonal polynomials.

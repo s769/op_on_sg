@@ -1,6 +1,7 @@
-from recursions import *
-from util import *
-import progressbar as pb
+import numpy as np
+import progressbar
+from recursions import mem, alpha, beta, gamma
+from util import address_from_index
 
 '''
 This file contains the functions that will compute the values of the monomial basis on a given level of SG.

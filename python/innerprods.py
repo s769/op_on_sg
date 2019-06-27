@@ -1,5 +1,5 @@
-from recursions import *
-
+import numpy as np
+from recursions import alpha, beta, gamma, eta, ap 
 import functools
 
 '''

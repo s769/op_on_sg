@@ -1,4 +1,5 @@
-from innerprods import *
+import numpy as np
+from innerprods import lis2str, inner_dict, symmetrize, vals_dict, norm_dict
 
 '''
 This file contains the class Polynomial which is used to create orthogonal polynomials with respect to
@@ -264,7 +265,7 @@ class Polynomial:
         '''
         # array, vals_dict are found in innerprods.py
         ccoefs = self.get_condensed_coefs()
-        valarr = array([vals_dict[self.k](m) for m in range(j+1)])
+        valarr = np.array([vals_dict[self.k](m) for m in range(j+1)])
         res = ccoefs.dot(valarr)
         if i == 0:
             return ccoefs[0] if self.k == 0 else 0
@@ -288,7 +289,7 @@ class Polynomial:
 
         # array, norm_dict are found in innerprods.py
         ccoefs = self.get_condensed_coefs()
-        dnarr = array([norm_dict[self.k](m) for m in range(j+1)])
+        dnarr = np.array([norm_dict[self.k](m) for m in range(j+1)])
         res = ccoefs.dot(dnarr)
         if i == 0:
             return ccoefs[0] if self.k == 1 else 0
