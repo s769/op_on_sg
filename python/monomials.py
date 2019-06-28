@@ -109,14 +109,16 @@ def f_jk(addr, j, k):
         return f_lkFiqn(j, k, i, n)
     last = int(addr[-1])
     addr = addr[:-1]
-    res = 0
-
+    resouter = 0
+     
     for l in range(j+1):
+        resinner = 0
         for n in range(3):
-            res += f_lkFiqn(j-l, k, last, n)*f_jk(addr, l, n)
-        res *= (1/5)**l
-
-    return res
+            resinner += f_lkFiqn(j-l, k, last, n)*f_jk(addr, l, n)
+        resinner *= (1/5)**l
+        resouter += resinner
+    
+    return resouter 
 
 
 def p_jk(addr, j, k):
@@ -185,5 +187,5 @@ def generate_T(level, deg):
     return T
 
 
-#print(generate_T(6, 20)[])
+print(p_jk('10000000',1,1))
 #print(p_jk('2', 0, 3))
