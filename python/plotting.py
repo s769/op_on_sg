@@ -4,6 +4,7 @@ from mpl_toolkits import mplot3d
 from monomials import generate_T
 from ops_main import generate_op
 import math
+import itertools
 
 def fi(x, qi):
     '''
@@ -67,17 +68,17 @@ def SG(m):
 
     y = np.array([q0, q1, q2])
 
-    for i in range(m):
+    for _ in itertools.repeat(None, m):
         y = np.vstack((qcontract(y, q0), qcontract(y, q1), qcontract(y,q2)))
     
     
-    ax = plt.axes(projection='3d')
+    
     #ax.plot(y[:,0], y[:, 1], '.')
 
 
-    return y, ax
+    return y
 
-def gaskplot(f, m):
+def gaskplot(f, m, ax):
     '''
     This function plots a function defined on the level m vertices of
     SG.
@@ -95,9 +96,9 @@ def gaskplot(f, m):
 
     '''
 
-    y, ax = SG(m)
+    y = SG(m)
 
-    plt.figure()
+    #plt.figure()
     
     for k in range(3**m):
         xx = np.append(y[3*k:3*k+3, 0], y[3*k, 0])
@@ -106,7 +107,7 @@ def gaskplot(f, m):
 
         ax.plot(xx, yy, zz, 'b')
 
-    plt.show()
+    #plt.show()
     return
 
 # m = 7
@@ -139,9 +140,10 @@ def plot_antisymm(num, level=7):
     T = generate_T(level, num)
     for j in range(num):
         plt.figure()
+        ax = plt.axes(projection='3d')
         p = eval_antisymm(j, T, level)
-        gaskplot(p, level)
-        
+        gaskplot(p, level, ax)
+    plt.show()    
     return
 
 plot_antisymm(4)
