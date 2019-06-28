@@ -185,5 +185,5 @@ def generate_T(level, deg):
     return T
 
 
-#print(generate_T(5, 10))
+#print(generate_T(6, 20)[])
 #print(p_jk('2', 0, 3))

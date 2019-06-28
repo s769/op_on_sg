@@ -3,7 +3,7 @@ function W = getOmegas3(level)
 %normalized antisymmetric OP (level indicates the number of OP)
 % flag indicates whether to take sobolev or legendre
 
-load coefs2 ops
+load coefs ops
 W= ops;
 % sz = size(W);
 % % 

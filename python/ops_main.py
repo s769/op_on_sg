@@ -41,13 +41,12 @@ def generate_op(n, k, normalized=True, lam=np.array([1])):
     o_basis_mat = np.zeros((n+1, n+1))
 
     o_basis_mat[0] = basis_mat[0]
+    GM = Polynomial.GM[lis2str(lam)][:n+1, :n+1]
     for r in range(1, n+1):
         res = np.zeros(n+1)
         u_r = basis_mat[r]
         for i in range(r):
             v_i = o_basis_mat[i]
-            le = len(u_r)
-            GM = Polynomial.GM[lis2str(lam)][:le, :le]
             proj = Polynomial.fast_inner(u_r, v_i, GM)
             norm = Polynomial.fast_inner(v_i, v_i, GM)
             res += proj/norm*v_i

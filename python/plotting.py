@@ -2,6 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from mpl_toolkits import mplot3d
 from monomials import generate_T
+from ops_main import generate_op
 import math
 
 def fi(x, qi):
@@ -96,7 +97,8 @@ def gaskplot(f, m):
 
     y, ax = SG(m)
 
-
+    plt.figure()
+    
     for k in range(3**m):
         xx = np.append(y[3*k:3*k+3, 0], y[3*k, 0])
         yy = np.append(y[3*k:3*k+3, 1], y[3*k, 1])
@@ -116,29 +118,30 @@ def gaskplot(f, m):
 
 # gaskplot(f, m)
 
-def getOmegas3(deg, level=7):
-    T = generate_T(level, deg+1)
-    W = T[2, :deg+2, :level+2]
-    return W, T
+def getOmegas3(deg):
+    W = generate_op(deg,3,1)
+    return W[:deg+2, :deg+2]
 
-def eval_antisymm(deg, level=7):
-    W, T = getOmegas3(deg, level)
+def eval_antisymm(deg, T, level=7):
+    W = getOmegas3(deg)
     coeff = W[deg]
-
+   
     q = np.zeros(3**(level+1))
 
     for k in range(deg+1):
-        if math.isclose(coeff[k], 0, abs_tol=1e-8):
-            q += coeff[k]*T[2, :, k]
+        #if math.isclose(coeff[k], 0, abs_tol=1e-1):
+            #print("Prepare for doom")
+        q += coeff[k]*T[:, k, 2]
 
     return q
 
 def plot_antisymm(num, level=7):
-
+    T = generate_T(level, num)
     for j in range(num):
-        p = eval_antisymm(j, level)
+        plt.figure()
+        p = eval_antisymm(j, T, level)
         gaskplot(p, level)
         
     return
 
-plot_antisymm(2)
+plot_antisymm(4)

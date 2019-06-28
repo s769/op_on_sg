@@ -10,8 +10,8 @@ Num=10;
 
 %To plot the antisymmetric OP, do the following:
 %Num is the number of OP plotted
-%orthoplotspk(T,Num);
-%figure
+orthoplotspk(T,Num);
+figure
 
 % %To plot the symmetric OP, do the following:
 % %Num is the number of OP plotted
@@ -27,8 +27,8 @@ Num=10;
 % %To plot the edges of the OP, do the following:
 % %Num is the number of OP plotted
 % %for the bottom edge of the antisymm OP
-edgeplots(T,Num,1);
-figure
+%edgeplots(T,Num,1);
+%figure
 % %for the bottom edge of the symm OP
 %edgeplots(T,Num,2);
 % figure
