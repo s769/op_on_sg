@@ -73,13 +73,13 @@ def f_lkFiqn(l, k, i, n):
     if i == n and i == k:
         return int(l == 0)
     if i == k and i != n:
-        return p/5**l
+        return p/(5**l)
     if i == n and i != k:
         return 0
     if k == n and k != i:
-        return p/5**l
+        return p/(5**l)
 
-    return q/5**l
+    return q/(5**l)
 
 
 @mem
@@ -186,4 +186,4 @@ def generate_T(level, deg):
 
 
 #print(generate_T(6, 20)[])
-#print(p_jk('2', 0, 3))
+#print(p_jk('10000000', 1, 1))
