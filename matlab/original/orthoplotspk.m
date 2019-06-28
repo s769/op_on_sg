@@ -28,6 +28,6 @@ for j=1:Num
     % save each plot as an eps file 
     %saveas(gca,strcat('images/p',num2str(j-1),'.eps'),'eps');
     %save as jpg
-    saveas(gca,strcat('images/p',num2str(j-1),'.png'),'png');
+    %saveas(gca,strcat('images/p',num2str(j-1),'.png'),'png');
 end
 

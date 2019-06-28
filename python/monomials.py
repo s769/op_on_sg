@@ -188,4 +188,4 @@ def generate_T(level, deg):
 
 
 #print(generate_T(6, 20)[])
-#print(p_jk('10000000', 1, 1))
+print(p_jk('10000000', 1, 1))
