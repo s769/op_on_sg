@@ -83,13 +83,13 @@ class Polynomial:
 
         # inner_dict is found in innerprods.py
         try:
-            inner_func = inner_dict[(i, ip)]
+            inner_func = inner_dict[(i, ip)] #Example: if i=1 and ip = 2 then inner_func is <P_{j1}, P_{k2}>_{L2} 
         except KeyError:
             inner_func = inner_dict[(ip, i)]
 
-        res = inner_func(j, k)
-        for i in range(1, len(lam)+1):
-            res += inner_func(j-i, k-i)*lam[i-1]
+        res = inner_func(j, k) #Initialize to standard L2 inner product
+        for i in range(1, len(lam)+1): 
+            res += inner_func(j-i, k-i)*lam[i-1] #This is the step where you add the sobolev terms
 
         return res
 
@@ -117,7 +117,8 @@ class Polynomial:
             for ind2 in range(len(arr2)):
                 if arr1[ind1] == 0 or arr2[ind2] == 0:
                     continue
-                j = int(np.floor(ind1/3))
+                #Here j,k,i, and ip are recovered based on the way the array of co-efficients indexes the polynomials
+                j = int(np.floor(ind1/3)) 
                 k = int(np.floor(ind2/3))
                 i = int(ind1 % 3 + 1)
                 ip = int(ind2 % 3 + 1)
@@ -148,8 +149,11 @@ class Polynomial:
         GM = {}
 
         arr = np.zeros((3*n+3, 3*n+3))
+        #The following if else statements make an array lam_arr that represents the weights of all the integrals 
+        # in the inner product formula. This is required because lam only describes the weights on the integrals with positive order laplacians because
+        # integrals with positive order laplacians as we consider the weight on the L2 inner product to be 1. 
 
-        if not (np.array_equal(lam, np.array([1]))
+        if not (np.array_equal(lam, np.array([1])) \
                 or np.array_equal(lam, np.array([0]))):
             lam_arr = [np.array([1]), np.array([0]), lam]
         else:
@@ -189,7 +193,7 @@ class Polynomial:
         '''
         GM = {}
         arr = np.zeros((n, n))
-        if not (np.array_equal(lam, np.array([1]))
+        if not (np.array_equal(lam, np.array([1])) \
                 or np.array_equal(lam, np.array([0]))):
             lam_arr = [np.array([1]), np.array([0]), lam]
         else:

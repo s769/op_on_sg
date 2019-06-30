@@ -11,7 +11,7 @@ Num=10;
 %To plot the antisymmetric OP, do the following:
 %Num is the number of OP plotted
 orthoplotspk(T,Num);
-figure
+%figure
 
 % %To plot the symmetric OP, do the following:
 % %Num is the number of OP plotted

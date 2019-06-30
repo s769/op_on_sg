@@ -1,7 +1,7 @@
 import numpy as np
 from Polynomial import Polynomial
 from innerprods import lis2str
-
+import scipy.io
 
 '''
 This is the main file used for computing the orthogonal polynomials.
@@ -49,7 +49,7 @@ def generate_op(n, k, normalized=True, lam=np.array([1])):
             v_i = o_basis_mat[i]
             proj = Polynomial.fast_inner(u_r, v_i, GM)
             norm = Polynomial.fast_inner(v_i, v_i, GM)
-            res += proj/norm*v_i
+            res += (proj/norm)*v_i
         o_basis_mat[r] = basis_mat[r] - res
 
     if normalized:
@@ -60,11 +60,12 @@ def generate_op(n, k, normalized=True, lam=np.array([1])):
     return o_basis_mat  # , o_basis_mat[:, k-1::3]
 
 
-j = 50
+j = 20
 k = 3
-normalized = 0
+normalized = 1
 ops_sob = generate_op(j, k, normalized, lam=np.array([1]))
 ops_leg = generate_op(j, k, normalized, lam=np.array([0]))
+print(ops_leg)
 # #arr1 = ops[2]
 # # arr2 = ops[3]
 # # Polynomial.fast_inner(arr1, arr2, Polynomial.GM)]
@@ -89,7 +90,7 @@ ops_leg = generate_op(j, k, normalized, lam=np.array([0]))
 #     ops[i] = ops_sob[int(i/2)]
 
 
-#scipy.io.savemat('..\\data\\coefs.mat', dict(ops=ops_sob))
+#scipy.io.savemat('../data/coefs.mat', dict(ops=ops_leg))
 # scipy.io.savemat('coefs2.mat', dict(ops=ops_leg))
 # scipy.io.savemat('coefscomb.mat', dict(ops=ops))
 

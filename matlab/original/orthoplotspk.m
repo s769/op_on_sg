@@ -8,9 +8,10 @@ function orthoplotspk(T,Num)
 for j=1:Num
     %if mod(j, 2) == 1
         %figure
-        clf('reset')
+        
     %end
-    
+    %clf('reset')
+    figure 
     p = SGorthoPolyspk(T,j);
     gaskplot(p,7);
     
