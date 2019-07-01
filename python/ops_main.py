@@ -60,17 +60,20 @@ def generate_op(n, k, normalized=True, lam=np.array([1]), frac=True):
         o_basis_mat[r,:] = u_r#basis_mat[r] - res
 
     if normalized:
-        for i in range(n+1):
+        print('Normalizing')
+        for i in tqdm.tqdm(range(n+1)):
             norm = Polynomial.fast_inner(o_basis_mat[i,:].T, o_basis_mat[i,:].T,
                                          GM)
             o_basis_mat[i,:] = o_basis_mat[i,:]/sp.sqrt(norm[0])
+
     return o_basis_mat  if frac else np.array(o_basis_mat).astype(np.float64)# , o_basis_mat[:, k-1::3]
 
 
-# j = 5
+# j = 20
 # k = 3
 # normalized = 1
 # ops_sob = generate_op(j, k, normalized, lam=np.array([1]), frac=0)
+# scipy.io.savemat('../data/coefs.mat', dict(ops=ops_sob))
 # # ops_leg = generate_op(j, k, normalized, lam=np.array([0]))
 # print(ops_sob)
 # # #arr1 = ops[2]
@@ -97,7 +100,7 @@ def generate_op(n, k, normalized=True, lam=np.array([1]), frac=True):
 #     ops[i] = ops_sob[int(i/2)]
 
 
-#scipy.io.savemat('../data/coefs.mat', dict(ops=ops_leg))
+
 # scipy.io.savemat('coefs2.mat', dict(ops=ops_leg))
 # scipy.io.savemat('coefscomb.mat', dict(ops=ops))
 
