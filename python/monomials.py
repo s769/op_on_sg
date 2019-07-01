@@ -3,7 +3,7 @@ from recursions import mem, alpha, beta, gamma
 from util import address_from_index, progress
 import sympy as sp
 from sympy import Rational as Rat
-
+import tqdm
 
 '''
 This file contains the functions that will compute the values of the 
@@ -180,7 +180,7 @@ def generate_T(level, deg, frac=True):
         T = np.empty((3**(level + 1), deg+1, 3), dtype='object')
     else:
         T = np.zeros((3**(level + 1), deg+1, 3))
-    for i in range(3**(level + 1)):
+    for i in tqdm.tqdm(range(3**(level + 1))):
         # This preparation is due to the different address structure 
         #   used in this file an in util.py
         addr = address_from_index(level, i+1)
@@ -189,7 +189,7 @@ def generate_T(level, deg, frac=True):
         for j in range(deg + 1):
             for k in range(1, 4):
                 T[i, j, k-1] = p_jk(addr, j, k)
-        progress(i, 3**(level+1), status='computing monomial values')
+        #progress(i, 3**(level+1), status='computing monomial values')
     return T
 
 

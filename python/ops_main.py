@@ -4,6 +4,8 @@ from innerprods import lis2str
 import scipy.io
 import sympy as sp
 from sympy import Rational as Rat
+import tqdm
+
 '''
 This is the main file used for computing the orthogonal polynomials.
 '''
@@ -44,7 +46,7 @@ def generate_op(n, k, normalized=True, lam=np.array([1]), frac=True):
 
     o_basis_mat[0,:] = basis_mat[0,:]
     GM = Polynomial.GM[lis2str(lam)][:n+1, :n+1]
-    for r in range(1, n+1):
+    for r in tqdm.tqdm(range(1, n+1)):
         #res = np.zeros(n+1)
 
         u_r = basis_mat[r,:]
