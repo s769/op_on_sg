@@ -161,7 +161,7 @@ def p_jk(addr, j, k):
 #print(f_jk('0', 0, 3))
 
 
-def generate_T(level, deg):
+def generate_T(level, deg, frac=True):
     '''
     This function calculates the values of the monomials up to a certain 
         degree at a given level of SG.
@@ -176,7 +176,10 @@ def generate_T(level, deg):
             at each of the 3^(level+1) TLR indices of points on the given level 
             of SG.
     '''
-    T = np.empty((3**(level + 1), deg+1, 3), dtype='object')
+    if frac:
+        T = np.empty((3**(level + 1), deg+1, 3), dtype='object')
+    else:
+        T = np.zeros((3**(level + 1), deg+1, 3))
     for i in range(3**(level + 1)):
         # This preparation is due to the different address structure 
         #   used in this file an in util.py

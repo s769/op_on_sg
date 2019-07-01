@@ -4,9 +4,10 @@ from Polynomial import Polynomial
 from innerprods import lis2str
 import scipy.io 
 import numpy as np
-T = generate_T(2,2)
-print(T)
-#scipy.io.savemat('../data/Tarray.mat', dict(T=T))
+T = generate_T(2, 2, frac=False)
+
+#print(T)
+scipy.io.savemat('../data/Tarray.mat', dict(T=T))
 # n = 5
 # k = 3
 # normalized = 1
