@@ -4,8 +4,8 @@ from Polynomial import Polynomial
 from innerprods import lis2str
 import scipy.io 
 import numpy as np
-T = generate_T(7,31)
-print(T(1,1,0))
+T = generate_T(2,2)
+print(T)
 #scipy.io.savemat('../data/Tarray.mat', dict(T=T))
 # n = 5
 # k = 3
