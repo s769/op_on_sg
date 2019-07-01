@@ -1,6 +1,7 @@
 import numpy as np
 from innerprods import lis2str, inner_dict, symmetrize, vals_dict, norm_dict
-
+import sympy as sp
+from sympy import Rational as Rat
 '''
 This file contains the class Polynomial which is used to create orthogonal 
     polynomials with respect to various inner products.
@@ -49,8 +50,8 @@ class Polynomial:
                 regular Sobolev inner product).
         '''
         if not len(coefs) == 3*j+3:
-            ad = np.zeros(3*j+3 - len(coefs))
-            coefs = np.append(coefs, ad)
+            ad = sp.zeros(3*j+3 - len(coefs), 1)
+            coefs.col_join(ad)
         self.coefs = coefs
         self.j = j
         self.k = k
@@ -148,7 +149,7 @@ class Polynomial:
             return
         GM = {}
 
-        arr = np.zeros((3*n+3, 3*n+3))
+        arr = sp.zeros(3*n+3, 3*n+3)
         #The following if else statements make an array lam_arr that represents the weights of all the integrals 
         # in the inner product formula. This is required because lam only describes the weights on the integrals with positive order laplacians because
         # integrals with positive order laplacians as we consider the weight on the L2 inner product to be 1. 
@@ -192,7 +193,7 @@ class Polynomial:
                 If lam = np.array([0]), this is the L2 inner product.
         '''
         GM = {}
-        arr = np.zeros((n, n))
+        arr = sp.zeros(n, n)
         if not (np.array_equal(lam, np.array([1])) \
                 or np.array_equal(lam, np.array([0]))):
             lam_arr = [np.array([1]), np.array([0]), lam]
@@ -225,22 +226,17 @@ class Polynomial:
             Sobolev inner product between the polynomials represented 
                 by arr1, and arr2 for the inner product represented by GM.
         '''
-        return arr1.T @ GM @ arr2
+        return arr1.T @ (GM @ arr2)
 
     # This function pads the coefs arrays of 2 objects with zeros so that they have the same length
     @staticmethod
     def pad(obj1, obj2):
         if len(obj1.coefs) > len(obj2.coefs):
-            arr1 = obj1.coefs
-            arr2 = np.append(obj2.coefs,
-                             np.zeros(len(obj1.coefs)-len(obj2.coefs)))
+            obj2.coefs.col_join(sp.zeros(len(obj1.coefs)-len(obj2.coefs)))
         elif len(obj1.coefs) < len(obj2.coefs):
-            arr1 = np.append(obj1.coefs,
-                             np.zeros(len(obj2.coefs)-len(obj1.coefs)))
-            arr2 = obj2.coefs
-        else:
-            arr1 = obj1.coefs
-            arr2 = obj2.coefs
+            obj1.coefs.col_join(sp.zeros(len(obj2.coefs)-len(obj1.coefs)))
+        arr1 = obj1.coefs
+        arr2 = obj2.coefs
 
         return arr1, arr2
 
@@ -264,7 +260,7 @@ class Polynomial:
 
     # This function computes the norm of a Polynomial object.
     def norm(self):
-        return np.sqrt(self.inner(self))
+        return sp.sqrt(self.inner(self))
 
     def get_condensed_coefs(self):
         '''

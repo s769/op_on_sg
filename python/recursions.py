@@ -1,4 +1,6 @@
 import numpy as np
+import sympy as sp
+from sympy import Rational as Rat
 
 '''
 This file computes recursively the alpha, beta, gamma, and eta coefficients 
@@ -62,11 +64,11 @@ def alpha(j):
     if j == 0:
         return 1
     if j == 1:
-        return 1/6
+        return Rat(1,6)
     res = 0
     for l in range(1, j):
         res += alpha(j-l)*alpha(l)
-    return res*4/(5**j - 5)
+    return Rat(res*4,(5**j - 5))
 
 
 @mem
@@ -80,11 +82,11 @@ def beta(j):
     beta_j value
     '''
     if j == 0:
-        return -1/2
+        return Rat(-1,2)
     res = 0
     for l in range(j):
         res += (3*5**(j-l) - 5**(l+1) + 6)*alpha(j-l)*beta(l)
-    return res*2/(15*(5**j - 1))
+    return Rat(res*2,(15*(5**j - 1)))
 
 
 @mem
@@ -112,7 +114,7 @@ def eta(j):
     '''
     if j == 0:
         return 0
-    res = alpha(j)*(5**j + 1)/2
+    res = Rat(alpha(j)*(5**j + 1),2)
     for l in range(j):
         res += 2*eta(l)*beta(j-l)
     return res
@@ -129,7 +131,7 @@ def ap(j):
     alpha'_j value
     '''
     if j == 0:
-        return 1/2
+        return Rat(1,2)
     return alpha(j)
 
 

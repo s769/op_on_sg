@@ -1,7 +1,8 @@
 import numpy as np
 from recursions import alpha, beta, gamma, eta, ap 
 import functools
-
+import sympy as sp
+from sympy import Rational as Rat
 '''
 This file contains functions used to compute the L2 inner product 
 between the monomial baisis P_jk. The algorithms for computing the inner 
@@ -175,7 +176,7 @@ def inner0_j1k2(j, k):
 # This function is used to symmetrize an upper triangular matrix.
 # This function is used when creating Gram Matrices for the inner products.ArithmeticError
 def symmetrize(arr):
-    return arr + arr.T - np.diag(arr.diagonal())
+    return arr + arr.T - arr.multiply_elementwise(sp.eye(arr.rows))
 
 # This function takes a list/array of integers and outputs the concatenation of the integers
 
