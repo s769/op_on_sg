@@ -9,7 +9,7 @@ This is the main file used for computing the orthogonal polynomials.
 '''
 
 
-def generate_op(n, k, normalized=True, lam=np.array([1])):
+def generate_op(n, k, normalized=True, lam=np.array([1]), frac=True):
     '''
     Generates orthogonal polynomials with respect to a generalized Sobolev 
         inner product. The Gram-Schmidt algorithm is implemented here.
@@ -40,6 +40,7 @@ def generate_op(n, k, normalized=True, lam=np.array([1])):
     basis_mat = sp.eye(n+1)
     #o_basis_mat = np.zeros((n+1, 3*n+3))
     o_basis_mat = sp.zeros(n+1, n+1)
+    
 
     o_basis_mat[0,:] = basis_mat[0,:]
     GM = Polynomial.GM[lis2str(lam)][:n+1, :n+1]
@@ -59,15 +60,15 @@ def generate_op(n, k, normalized=True, lam=np.array([1])):
             norm = Polynomial.fast_inner(o_basis_mat[i,:].T, o_basis_mat[i,:].T,
                                          GM)
             o_basis_mat[i,:] = o_basis_mat[i,:]/sp.sqrt(norm[0])
-    return o_basis_mat  # , o_basis_mat[:, k-1::3]
+    return o_basis_mat  if frac else np.array(o_basis_mat).astype(np.float64)# , o_basis_mat[:, k-1::3]
 
 
 # j = 5
 # k = 3
 # normalized = 1
-# ops_sob = generate_op(j, k, normalized, lam=np.array([1]))
-# ops_leg = generate_op(j, k, normalized, lam=np.array([0]))
-# #print(ops_leg.evalf())
+# ops_sob = generate_op(j, k, normalized, lam=np.array([1]), frac=0)
+# # ops_leg = generate_op(j, k, normalized, lam=np.array([0]))
+# print(ops_sob)
 # # #arr1 = ops[2]
 # # # arr2 = ops[3]
 # # # Polynomial.fast_inner(arr1, arr2, Polynomial.GM)]
