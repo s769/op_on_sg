@@ -2,6 +2,7 @@ import numpy as np
 from innerprods import lis2str, inner_dict, symmetrize, vals_dict, norm_dict
 import sympy as sp
 from sympy import Rational as Rat
+import tqdm
 '''
 This file contains the class Polynomial which is used to create orthogonal 
     polynomials with respect to various inner products.
@@ -27,8 +28,11 @@ class Polynomial:
             Boolean value expressing whether such a Gram Matrix has been 
                 constructed.
         '''
-        return (not Polynomial.GM is None) and\
+        try:
+            return (not Polynomial.GM is None) and\
             Polynomial.GM[lis2str(lam)].shape[0] >= n
+        except KeyError:
+            return False
 
     def __init__(self, coefs, j, k, lam=np.array([1])):
         '''
@@ -145,9 +149,9 @@ class Polynomial:
                 the regular Sobolev inner product).
                 If lam = np.array([0]), this is the L2 inner product.
         '''
-        if Polynomial.has_GM(n, lam):
+        if Polynomial.has_GM(3*n+3, lam):
             return
-        GM = {}
+
 
         arr = sp.zeros(3*n+3, 3*n+3)
         #The following if else statements make an array lam_arr that represents the weights of all the integrals 
@@ -170,9 +174,9 @@ class Polynomial:
                         ip = int(ind2 % 3 + 1)
                         arr[ind1, ind2] = \
                             Polynomial.basis_inner(j, i, k, ip, lamb)
-            GM[lis2str(lamb)] = symmetrize(arr)
+            Polynomial.GM[lis2str(lamb)] = symmetrize(arr)
 
-        Polynomial.GM = GM
+      
         return
 
     @staticmethod
@@ -192,7 +196,9 @@ class Polynomial:
                 the regular Sobolev inner product).
                 If lam = np.array([0]), this is the L2 inner product.
         '''
-        GM = {}
+        if Polynomial.has_GM(3*n+3, lam):
+            return
+
         arr = sp.zeros(n, n)
         if not (np.array_equal(lam, np.array([1])) \
                 or np.array_equal(lam, np.array([0]))):
@@ -200,15 +206,14 @@ class Polynomial:
         else:
             lam_arr = [np.array([1]), np.array([0])]
         for lamb in lam_arr:
-            for ind1 in range(n):
+            for ind1 in tqdm.tqdm(range(n)):
                 for ind2 in range(n):
                     if ind1 <= ind2:
                         arr[ind1, ind2] = \
                             Polynomial.basis_inner(ind1, i, ind2, i, lamb)
 
-            GM[lis2str(lamb)] = symmetrize(arr)
+            Polynomial.GM[lis2str(lamb)] = symmetrize(arr)
 
-        Polynomial.GM = GM
 
     @staticmethod
     def fast_inner(arr1, arr2, GM):

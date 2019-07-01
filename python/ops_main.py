@@ -34,6 +34,7 @@ def generate_op(n, k, normalized=True, lam=np.array([1]), frac=True):
             If normalized is True, the polynomials will be normalized. 
             Otherwise, the polynomials will be monic.
     '''
+    print('Building Gram Matrix ... this may take some time')
     Polynomial.build_condensed_GM(n+1, k, lam)
 #   basis_mat = np.zeros((n+1, 3*n+3))
 
@@ -46,6 +47,7 @@ def generate_op(n, k, normalized=True, lam=np.array([1]), frac=True):
 
     o_basis_mat[0,:] = basis_mat[0,:]
     GM = Polynomial.GM[lis2str(lam)][:n+1, :n+1]
+    print('Orthogonalizing Using Gram-Schmidt')
     for r in tqdm.tqdm(range(1, n+1)):
         #res = np.zeros(n+1)
 

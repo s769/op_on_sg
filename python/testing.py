@@ -6,7 +6,9 @@ import scipy.io
 import numpy as np
 import tqdm
 from recursions import alpha, beta, gamma
-T = generate_T(2, 2, frac=False)
+import sympy as sp
+from sympy import Rational as Rat
+#T = generate_T(2, 2, frac=False)
 
 #print(T)
 #scipy.io.savemat('../data/Tarray.mat', dict(T=T))
@@ -21,43 +23,45 @@ T = generate_T(2, 2, frac=False)
 #         prod = Polynomial.fast_inner(ops_leg[i], ops_leg[k], GM)
 #         print("Inner product of "+str(i)+" "+str(k)+" "+str(prod))
 
-# def zeta(j, k, omega=None):
-#   if omega is None:
-#     omega = generate_op(j, 1, 0, lam=np.array([1]), frac=0)
-  
-#   if k == 1:
-#     func = alpha
-#   elif k == 2:
-#     func = beta
-#   elif k == 3:
-#     func = gamma
-#   res = 0
-#   for l in range(j+1):
-#     res += omega[j+1, l]*func(l+1)
-    
-#   return 2*res
+def zeta(j, k, omega=None):
+  if omega is None:
+    omega = generate_op(j, 1, 0, lam=np.array([0]), frac=1)
 
-# n = 200
-# omega = generate_op(n, 1, 0, lam=np.array([0]), frac=0)
-# norms = np.zeros(n+1)
-# for i in range(len(omega)):
-#   norms[i] = Polynomial.fast_inner(omega[i], omega[i],\
-#                                   Polynomial.GM[0])
-# norms = np.sqrt(norms)
-# #print(norms)
+  if k == 1:
+    func = alpha
+  elif k == 2:
+    func = beta
+  elif k == 3:
+    func = gamma
+  res = Rat(0,1)
+  for l in range(j+1):
+        res += omega[j+1, l]*func(l+1)
+  return 2*res
 
-# arr = np.zeros(n)
+n = 20
+omega = generate_op(n, 1, 0, lam=np.array([0]), frac=1)
+norms = sp.zeros(n+1,1)
+for i in range(omega.rows):
+        norms[i] = Polynomial.fast_inner(omega[i,:].T, omega[i,:].T,\
+                                  Polynomial.GM['0'])[0]
 
-# for i in range(n):
-#   arr[i] = zeta(i, 1, omega)/norms[i]
-#   #arr[i] = zeta(i, 1, omega)
-#   print(str(i)+':'+str(arr[i]))
-# #print(np.sum(arr))
-# for i in range(n-3):
-#   num = (arr[i+3] - arr[i+2])/(arr[i+2]-arr[i+1])
-#   den = (arr[i+2] - arr[i+1])/(arr[i+1]-arr[i])
-#   #print(str(i)+':', arr[i+1]/arr[i])
-#   #print(str(i)+':', np.log(np.abs(arr[i+1]/arr[i])))
-#   #print(str(i) + ':', np.log(np.abs(num))/np.log(np.abs(den)))
 
-# #print(arr)
+
+#print(norms)
+
+arr = sp.zeros(n, 1)
+
+for i in range(n):
+
+  arr[i] = zeta(i, 1, omega)/sp.sqrt(norms[i])
+
+  print(str(i)+':'+str(arr[i].evalf()))
+#print(np.sum(arr))
+for i in range(n-3):
+  num = (arr[i+3] - arr[i+2])/(arr[i+2]-arr[i+1])
+  den = (arr[i+2] - arr[i+1])/(arr[i+1]-arr[i])
+  #print(str(i)+':', arr[i+1]/arr[i])
+  #print(str(i)+':', np.log(np.abs(arr[i+1]/arr[i])))
+  #print(str(i) + ':', np.log(np.abs(num))/np.log(np.abs(den)))
+
+#print(arr)
