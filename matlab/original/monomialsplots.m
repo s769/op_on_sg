@@ -11,7 +11,7 @@ function monomialsplots(Num,k,level,T)
 
 for i = 1:Num 
     figure
-    gaskplot(T(:,i,k),level)
-    saveas(gca,strcat('monomial',num2str(i-1),'_',num2str(k)),'png');
+    gaskplot(5.7442*T(:,i,k),level)
+    %saveas(gca,strcat('monomial',num2str(i-1),'_',num2str(k)),'png');
 end
 

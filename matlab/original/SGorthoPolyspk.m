@@ -7,13 +7,13 @@ function q = SGorthoPolyspk(T,level)
 
 m=7;
 W=getOmegas3(level);
-coeff=W(level+1,:);
+coeff=W(level,:);
 
 q=zeros(3^(m+1),1);
 
 for k=0:level
-    if coeff(k+1) ~= 0
+    
         q = q + coeff(k+1)*T(:,k+1,3);
-    end
+    
 end
 

@@ -10,31 +10,31 @@ clf('reset')
 for j=1:Num
     %cla
     if flag==1
-        edge=SGorthoPolyEdge23pk(T,j-1);
+        edge=SGorthoPolyEdge23pk(T,j);
         titlestring = 'bottomedge';
         xlabelstr = 'bottom edge';
         legstring = 'S_{';
         filestring = 'images/bottom/s';
     elseif flag==2
-        edge=SGorthoPolyEdge23sk(T,j-1);
+        edge=SGorthoPolyEdge23sk(T,j);
         titlestring = 'bottomedge';
         xlabelstr = 'bottom edge';
         legstring = 'S_{';
         filestring = 'images/s';
     elseif flag==3
-        edge=SGorthoPolyEdge13pk(T,j-1);
+        edge=SGorthoPolyEdge13pk(T,j);
         titlestring = 'sideedge';
         xlabelstr = 'side edge';
         legstring = 'S_{';
         filestring = 'images/side/s';
     elseif flag==4
-        edge=SGorthoPolyEdge23phik(T,j-1);
+        edge=SGorthoPolyEdge23phik(T,j);
         titlestring = 'bottomedge';
         xlabelstr = 'bottom edge';
         legstring = '\phi_{';
         filestring = 'images/phi';
     else
-        edge=SGorthoPolyEdge13phik(T,j-1);
+        edge=SGorthoPolyEdge13phik(T,j);
         titlestring = 'sideedge';
         xlabelstr = 'side edge';
         legstring = '\phi_{';
