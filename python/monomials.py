@@ -183,9 +183,11 @@ def generate_T(level, deg, frac=True):
     print('Computing Big_Recursion... this may take some time')
     big_recursion(deg)
     if frac:
-        T = np.empty((3**(level + 1), deg+1, 3), dtype='object')
+        #T = np.empty((3**(level + 1), deg+1, 3), dtype='object')
+        T = np.empty((3, 3**(level + 1), deg+1), dtype='object')
     else:
-        T = np.zeros((3**(level + 1), deg+1, 3))
+        #T = np.zeros((3**(level + 1), deg+1, 3))
+        T = np.zeros((3, 3**(level + 1), deg+1))
     for i in tqdm.tqdm(range(3**(level + 1))):
         # This preparation is due to the different address structure 
         #   used in this file an in util.py
@@ -194,7 +196,8 @@ def generate_T(level, deg, frac=True):
         addr = ''.join(str(int(x)) for x in addr)
         for j in range(deg + 1):
             for k in range(1, 4):
-                T[i, j, k-1] = p_jk(addr, j, k)
+                #T[i, j, k-1] = p_jk(addr, j, k)
+                T[k-1,i, j] = p_jk(addr, j, k)
         #progress(i, 3**(level+1), status='computing monomial values')
     return T
 
