@@ -4,6 +4,8 @@ from util import address_from_index, progress
 import sympy as sp
 from sympy import Rational as Rat
 import tqdm
+from joblib import Parallel, delayed
+import time
 
 '''
 This file contains the functions that will compute the values of the 
@@ -55,8 +57,9 @@ def big_recursion(j):
     vec[1] = Rat(10,(3*(5**(j+1) - 1)))*res2
     coefs_inv = sp.Matrix([[Rat(7,15), Rat(-2,15)], [Rat(4,15), Rat(1,15)]])
     ab_arr = coefs_inv@vec
-    ab_arr.col_join(vec2)
+    ab_arr = ab_arr.col_join(vec2)
     return ab_arr
+
 
 
 def f_lkFiqn(l, k, i, n):
@@ -123,7 +126,7 @@ def f_jk(addr, j, k):
     
     return resouter 
 
-
+@mem
 def p_jk(addr, j, k):
     '''
     This function calculates the value of the monomial basis p_jk at a 
@@ -176,6 +179,9 @@ def generate_T(level, deg, frac=True):
             at each of the 3^(level+1) TLR indices of points on the given level 
             of SG.
     '''
+    #computes big_recursion at the highest degree so lower values are stored for later use
+    print('Computing Big_Recursion... this may take some time')
+    big_recursion(deg)
     if frac:
         T = np.empty((3**(level + 1), deg+1, 3), dtype='object')
     else:
@@ -193,5 +199,26 @@ def generate_T(level, deg, frac=True):
     return T
 
 
-#print(generate_T(6, 20)[])
-#print(p_jk('10000000', 1, 1))
+def generate_T_loop(i, j, k, level):
+    addr = address_from_index(level, i+1)
+    addr = np.flip(addr)
+    addr = ''.join(str(int(x)) for x in addr)
+    return p_jk(addr, j, k)
+
+def generate_T_parallel(level, deg, frac=True, cores=4):
+    dtype = 'object' if frac else np.float64 
+    T = Parallel(n_jobs=cores)(delayed(generate_T_loop)(i=i, j=j, k=k, level=level) for i in range(3**(level + 1)) for j in range(deg +1) for k in range(1, 4))
+    return np.array(T, dtype=dtype).reshape(((3**(level + 1), deg+1, 3)))
+
+# level = 5
+# deg = 10
+# frac = 0
+# cores = 4
+#start = time.time()
+
+#T1 = generate_T(level, deg, frac)
+# print('Non-parallel: ', time.time() - start)
+# T2 = generate_T_parallel(level, deg, frac, cores=cores)
+# print('Parallel (' + str(cores) + ' cores): ' , time.time() - start)
+# #print(T2)
+# #print(p_jk('10000000', 1, 1))

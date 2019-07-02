@@ -55,7 +55,7 @@ class Polynomial:
         '''
         if not len(coefs) == 3*j+3:
             ad = sp.zeros(3*j+3 - len(coefs), 1)
-            coefs.col_join(ad)
+            coefs = coefs.col_join(ad)
         self.coefs = coefs
         self.j = j
         self.k = k
@@ -237,9 +237,9 @@ class Polynomial:
     @staticmethod
     def pad(obj1, obj2):
         if len(obj1.coefs) > len(obj2.coefs):
-            obj2.coefs.col_join(sp.zeros(len(obj1.coefs)-len(obj2.coefs)))
+           obj2.coefs = obj2.coefs.col_join(sp.zeros(len(obj1.coefs)-len(obj2.coefs)))
         elif len(obj1.coefs) < len(obj2.coefs):
-            obj1.coefs.col_join(sp.zeros(len(obj2.coefs)-len(obj1.coefs)))
+            obj1.coefs = obj1.coefs.col_join(sp.zeros(len(obj2.coefs)-len(obj1.coefs)))
         arr1 = obj1.coefs
         arr2 = obj2.coefs
 
