@@ -17,6 +17,7 @@ it will be better to use the functions alpha_array, beta_array, etc..
 # This is a function that can be used to change the np.array float precision to 
 #   float32 (double)
 
+j_max_rec = 10
 
 def array(*args, **kwargs):
     """
@@ -44,6 +45,23 @@ def mem(func):
 
     return memoized_func
 
+def mem2(func):
+    cache = dict()
+
+    def memoized_func2(*args):
+        check = False
+        key_sp = None
+        for key in cache.keys():
+            if args <= key:
+                check = True
+                key_sp = key
+                break
+        if check:
+            return cache[key_sp]
+        result = func(*args)
+        cache[args] = result
+        return result
+    return memoized_func2
 
 '''
 The follwing five functions compute single values of alpha, beta, gamma, eta, 
@@ -61,6 +79,9 @@ def alpha(j):
     Returns:
     alpha_j value
     '''
+    if j >= j_max_rec:
+        return alpha_array(j)[j]
+    
     if j == 0:
         return 1
     if j == 1:
@@ -80,7 +101,11 @@ def beta(j):
 
     Returns:
     beta_j value
+
     '''
+
+    if j >= j_max_rec:
+        return beta_array(j)[j]
     if j == 0:
         return Rat(-1,2)
     res = 0
@@ -99,6 +124,9 @@ def gamma(j):
     Returns:
     gamma_j value
     '''
+
+    if j >= j_max_rec:
+        return gamma_array(j)[j]
     return 3*alpha(j+1)
 
 
@@ -112,6 +140,8 @@ def eta(j):
     Returns:
     eta_j value
     '''
+    if j >= j_max_rec:
+        return eta_array(j)[j]
     if j == 0:
         return 0
     res = Rat(alpha(j)*(5**j + 1),2)
@@ -130,6 +160,8 @@ def ap(j):
     Returns:
     alpha'_j value
     '''
+    if j >= j_max_rec:
+        return eta_array(j)[j]
     if j == 0:
         return Rat(1,2)
     return alpha(j)
@@ -139,6 +171,7 @@ def ap(j):
 # These are more efficient if we want to use all the values for
 #   multiple times.
 
+@mem2
 def alpha_array(max_order):
     """Calculates the array of alpha_j up to some order
 
@@ -149,18 +182,18 @@ def alpha_array(max_order):
     alpha_arr: np.array of length (max_order+1) containing the first 
         alpha values up to alpha_{max_order}.
     """
-    alpha_arr = np.zeros((max_order + 1))
+    alpha_arr = sp.zeros(max_order + 1, 1)
     alpha_arr[0] = 1
-    alpha_arr[1] = 1 / 6
+    alpha_arr[1] = Rat(1,6)
 
     for j in range(2, max_order+1):
         for l in range(1, j):
             alpha_arr[j] = alpha_arr[j] + alpha_arr[j-l] * alpha_arr[l]
-        alpha_arr[j] = alpha_arr[j] * 4 / (5 ** j - 5)
+        alpha_arr[j] = Rat(alpha_arr[j] * 4 ,(5 ** j - 5))
 
     return alpha_arr
 
-
+@mem2
 def beta_array(max_order):
     """Calculates the array of beta_j up to some order
 
@@ -177,18 +210,18 @@ def beta_array(max_order):
     alpha_arr = alpha_array(max_order+2)
 
     # initialize values of beta_arr
-    beta_arr = np.zeros((max_order + 1))
-    beta_arr[0] = -1/2
+    beta_arr = sp.zeros(max_order + 1, 1)
+    beta_arr[0] = Rat(-1,2)
 
     for j in range(1, max_order+1):
-        for l in range(0, j):
+        for l in range(j):
             beta_arr[j] = beta_arr[j] + (3 * (5 ** (j-l)) -
                             5 ** (l + 1) + 6) * alpha_arr[j-l] * beta_arr[l]
-        beta_arr[j] = beta_arr[j] * 2 / (15 * (5 ** j - 1))
+        beta_arr[j] = beta_arr[j] * Rat(2 , (15 * (5 ** j - 1)))
 
     return beta_arr
 
-
+@mem2
 def gamma_array(max_order):
     """Calculates the array of gamma_j up to some order
 
@@ -201,5 +234,25 @@ def gamma_array(max_order):
     """
 
     alpha_arr = alpha_array(max_order+2)
-    gamma_arr = 3 * alpha_arr[1:max_order+2]
-    return gamma_arr
+    gamma_arr = 3 * alpha_arr
+    return sp.Matrix(gamma_arr[1:])
+
+@mem2
+def eta_array(max_order):
+    eta_arr = sp.zeros(max_order + 1, 1)
+    eta_arr[0] = 0
+    alpha_arr = alpha_array(max_order)
+    beta_arr = beta_array(max_order)
+
+    for j in range(1, max_order + 1):
+        res = alpha_arr[j]*Rat((5**j + 1), 2)
+        for l in range(j):
+            res += 2*eta_arr[l]*beta_arr[j-l]
+        eta_arr[j] = res
+    return eta_arr
+
+@mem2
+def ap_array(max_order):
+    ap_arr = alpha_array(max_order)
+    ap_arr[0] = Rat(1, 2)
+    return ap_arr
