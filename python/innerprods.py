@@ -1,5 +1,6 @@
 import numpy as np
-from recursions import alpha, beta, gamma, eta, ap 
+from recursions import alpha, beta, gamma, eta, ap, alpha_array,\
+    beta_array, gamma_array, eta_array, ap_array
 import functools
 import sympy as sp
 from sympy import Rational as Rat
@@ -47,7 +48,9 @@ def inner0_j1k1(j, k):
 
     Returns:
         L2 inner product <P_j1, P_k1>
+
     '''
+
     ms = min(j, k)
     s1 = 0
     for l in range(j-ms, j+1):

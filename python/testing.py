@@ -8,18 +8,19 @@ import tqdm
 from recursions import alpha, beta, gamma
 import sympy as sp
 from sympy import Rational as Rat
-# T = generate_T(7, 19, frac=False)
+T = generate_T(1, 1024, frac=False)
 # # # print("Now I will save everything!")
 # # #print(T)
 # scipy.io.savemat('../data/Tarray.mat', dict(T=T))
 # n = 20
 # k = 3
 # normalized = 1
-# lam=np.array([0])
-# ops_leg = generate_op(n, k, normalized, lam, frac=False)
-# # # print("Now I will save everything!")
-# # print(ops_leg)
-# scipy.io.savemat('../data/leg20coefs.mat', dict(ops=ops_leg))
+# lam=np.array([1])
+# ops_sob = generate_op(n, k, normalized, lam, frac=False)
+# # # # print("Now I will save everything!")
+# # # print(ops_leg)
+# scipy.io.savemat('../data/sob20coefs.mat', dict(ops=ops_sob))
+# print(ops_sob)
 # GM = Polynomial.GM[lis2str(lam)][:n+1, :n+1]
 # for i in range(20):
 #     for k in range(i+1):

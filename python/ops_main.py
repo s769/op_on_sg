@@ -5,6 +5,7 @@ import scipy.io
 import sympy as sp
 from sympy import Rational as Rat
 import tqdm
+from recursions import alpha_array, beta_array, gamma_array, eta_array, ap_array
 
 '''
 This is the main file used for computing the orthogonal polynomials.
@@ -33,7 +34,13 @@ def generate_op(n, k, normalized=True, lam=np.array([1]), frac=True):
             columns.
             If normalized is True, the polynomials will be normalized. 
             Otherwise, the polynomials will be monic.
+    
     '''
+    print('Calculating alpha, beta, etc...')
+    alpha_array(n); beta_array(n); gamma_array(n); eta_array(n); ap_array(n)
+
+
+
     print('Building Gram Matrix ... this may take some time')
     Polynomial.build_condensed_GM(n+1, k, lam)
 #   basis_mat = np.zeros((n+1, 3*n+3))

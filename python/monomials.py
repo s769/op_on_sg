@@ -1,5 +1,5 @@
 import numpy as np
-from recursions import mem, alpha, beta, gamma
+from recursions import mem, mem2, alpha, beta, gamma
 from util import address_from_index, progress
 import sympy as sp
 from sympy import Rational as Rat
@@ -14,8 +14,9 @@ This file contains the functions that will compute the values of the
 '''
 
 
-@mem
+@mem2
 def big_recursion(j):
+
     '''
     This function computes the coefficients a_j, b_j, p_j, q_j found in 
         the Splines on Fractals paper.
@@ -26,39 +27,84 @@ def big_recursion(j):
     Returns:
         coefficients a_j, b_j, p_j, q_j
     '''
+    p_arr = sp.zeros(j+1,1)
+    q_arr = sp.zeros(j+1,1)
+    a_arr = sp.zeros(j+1,1)
+    b_arr = sp.zeros(j+1,1)
+
+    a_arr[0] = Rat(7, 45)
+    b_arr[0] = Rat(4, 45)
+    p_arr[0] = Rat(2, 5)
+    q_arr[0] = Rat(1, 5)
+
     if j == 0:
-        return sp.Matrix([Rat(7,45), Rat(4,45), Rat(2,5), Rat(1,5)])
+        return a_arr, b_arr, p_arr, q_arr
+        # return sp.Matrix([Rat(7,45), Rat(4,45), Rat(2,5), Rat(1,5)])
 
-    res3 = 0
-    res4 = 0
-    vec2 = sp.zeros(2, 1)
-    for l in range(j):
-        p, q = big_recursion(l)[-2:]
-        a, b = big_recursion(j-1-l)[:2]
-        res3 += (4*a + 3*b)*p + (a + 2*b)*q
-        res4 += (2*a + 4*b)*p + (3*a + b)*q
-    b = big_recursion(j-1)[1]
-    vec2[0] = -Rat(2,5)*b - Rat(1,5)*res3
-    vec2[1] = -Rat(1,5)*b - Rat(1,5)*res4
+    
 
-    vec = sp.zeros(2,1)
-    res1 = 0
-    res2 = 0
+    
+    # vec2 = sp.zeros(2, 1)
+    for l in range(1, j+1):
+        res3 = 0
+        res4 = 0
+        for k in range(l):
+            p = p_arr[k]
+            q = q_arr[k]
+            a = a_arr[l-k-1]
+            b = b_arr[l-k-1]
+            # p, q = big_recursion(l)[-2:]
+            # a, b = big_recursion(j-1-l)[:2]
+            res3 += (4*a + 3*b)*p + (a + 2*b)*q
+            res4 += (2*a + 4*b)*p + (3*a + b)*q
+        
+    # b = big_recursion(j-1)[1]
+        b = b_arr[l-1]
+        p_arr[l] = -Rat(2,5)*b - Rat(1,5)*res3
+        q_arr[l] = -Rat(1,5)*b - Rat(1,5)*res4
 
-    for l in range(j):
-        if l == 0:
-            p, q = vec2
-        else:
-            p, q = big_recursion(j-l)[-2:]
-        a, b = big_recursion(l)[:2]
-        res1 += (2*p + q)*(a+2*b)
-        res2 += (p + 2*q)*(a + 2*b)
-    vec[0] = Rat(2,(3*(5**j - 1)))*res1
-    vec[1] = Rat(10,(3*(5**(j+1) - 1)))*res2
-    coefs_inv = sp.Matrix([[Rat(7,15), Rat(-2,15)], [Rat(4,15), Rat(1,15)]])
-    ab_arr = coefs_inv@vec
-    ab_arr = ab_arr.col_join(vec2)
-    return ab_arr
+        res1 = 0
+        res2 = 0
+        vec = sp.zeros(2,1)
+        for k in range(l):
+            p = p_arr[l-k]
+            q = q_arr[l-k]
+            a = a_arr[k]
+            b = b_arr[k]
+            res1 += (2*p + q)*(a+2*b)
+            res2 += (p + 2*q)*(a + 2*b)
+        vec[0] = Rat(2,(3*(5**l - 1)))*res1
+        vec[1] = Rat(10,(3*(5**(l+1) - 1)))*res2
+        coefs_inv = sp.Matrix([[Rat(7,15), Rat(-2,15)], [Rat(4,15), Rat(1,15)]])
+        ab_arr = coefs_inv@vec
+        a_arr[l] = ab_arr[0]
+        b_arr[l] = ab_arr[1]
+    
+
+    # for l in range(j):
+    #     res1 = 0
+    #     res2 = 0
+    #     vec = sp.zeros(2,1)
+    #     if l == 0:
+    #         p, q = p_arr[-1], q_arr[-1]
+    #     else:
+    #         p = p_arr[j-l]
+    #         q = q_arr[j-l]
+            
+    #         # p, q = big_recursion(j-l)[-2:]
+    #     a = a_arr[l]
+    #     b = b_arr[l]
+    #     # a, b = big_recursion(l)[:2]
+    #     res1 += (2*p + q)*(a+2*b)
+    #     res2 += (p + 2*q)*(a + 2*b)
+    # vec[0] = Rat(2,(3*(5**j - 1)))*res1
+    # vec[1] = Rat(10,(3*(5**(j+1) - 1)))*res2
+    # coefs_inv = sp.Matrix([[Rat(7,15), Rat(-2,15)], [Rat(4,15), Rat(1,15)]])
+    # ab_arr = coefs_inv@vec
+    # # ab_arr = ab_arr.col_join(vec2)
+    # a_arr[-1] = ab_arr[0]
+    # b_arr[-1] = ab_arr[1]
+    return a_arr, b_arr, p_arr, q_arr
 
 
 
@@ -74,7 +120,11 @@ def f_lkFiqn(l, k, i, n):
     Returns:
         values of the easy basis f_lk(F_i (q_n))
     '''
-    p, q = big_recursion(l)[-2:]
+    arr = big_recursion(l)
+    p = arr[2][l]
+    q = arr[3][l]
+
+    # p, q = big_recursion(l)[-2:]
 
     if i == n and i == k:
         return int(l == 0)
