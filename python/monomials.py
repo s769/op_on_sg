@@ -4,7 +4,7 @@ from util import address_from_index, progress
 import sympy as sp
 from sympy import Rational as Rat
 import tqdm
-from joblib import Parallel, delayed
+#from joblib import Parallel, delayed
 import time
 
 '''
