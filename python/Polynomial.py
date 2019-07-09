@@ -1,7 +1,7 @@
 import numpy as np
 from innerprods import lis2str, inner_dict, symmetrize, vals_dict, norm_dict, zeros, eye
-import sympy as sp
-from sympy import Rational as Rat
+# import sympy as sp
+# from sympy import Rational as Rat
 import tqdm
 import gmpy2 as gm
 '''

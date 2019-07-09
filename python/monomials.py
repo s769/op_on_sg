@@ -1,8 +1,8 @@
 import numpy as np
 from recursions import mem, mem2, alpha, beta, gamma, zeros, eye
 from util import address_from_index, progress
-import sympy as sp
-from sympy import Rational as Rat
+# import sympy as sp
+# from sympy import Rational as Rat
 import tqdm
 #from joblib import Parallel, delayed
 import time
@@ -47,7 +47,7 @@ def big_recursion(j):
 
     
     # vec2 = zeros(2, 1)
-    for l in range(1, j+1):
+    for l in tqdm.tqdm(range(1, j+1)):
         res3 = 0
         res4 = 0
         for k in range(l):
@@ -292,7 +292,7 @@ def generate_T(level, deg, frac=True):
             of SG.
     '''
     #computes big_recursion at the highest degree so lower values are stored for later use
-    # print('Computing Big_Recursion... this may take some time')
+    print('Computing Big_Recursion... this may take some time')
     big_recursion(deg+1)
     if frac:
         #T = np.empty((3**(level + 1), deg+1, 3), dtype='object')
