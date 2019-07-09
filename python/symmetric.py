@@ -2,8 +2,8 @@ import numpy as np
 from recursions import alpha, beta, gamma, eta, zeros, eye
 from innerprods import inner0_j1k1, symmetrize
 from Polynomial import Polynomial
-import sympy as sp
-from sympy import Rational as Rat
+# import sympy as sp
+# from sympy import Rational as Rat
 import tqdm
 import gmpy2 as gm
 

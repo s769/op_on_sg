@@ -6,10 +6,10 @@ import scipy.io
 import numpy as np
 import tqdm
 from recursions import alpha, beta, gamma
-import sympy as sp
-from sympy import Rational as Rat
+# import sympy as sp
+# from sympy import Rational as Rat
 import gmpy2 as gm
-T = generate_T(7, 64, frac=False)
+T = generate_T(7, 256, frac=False)
 # # print("Now I will save everything!")
 
 #scipy.io.savemat('../data/Tarray.mat', dict(T=T))

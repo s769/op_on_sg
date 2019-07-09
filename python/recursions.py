@@ -1,6 +1,6 @@
 import numpy as np
-import sympy as sp
-from sympy import Rational as Rat
+# import sympy as sp
+# from sympy import Rational as Rat
 import gmpy2 as gm
 
 

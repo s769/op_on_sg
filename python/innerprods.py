@@ -2,8 +2,8 @@ import numpy as np
 from recursions import alpha, beta, gamma, eta, ap, alpha_array,\
     beta_array, gamma_array, eta_array, ap_array, zeros, eye
 import functools
-import sympy as sp
-from sympy import Rational as Rat
+# import sympy as sp
+# from sympy import Rational as Rat
 import gmpy2 as gm
 '''
 This file contains functions used to compute the L2 inner product 
