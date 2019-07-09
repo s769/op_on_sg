@@ -37,7 +37,7 @@ def generate_op(n, k, normalized=True, lam=np.array([1]), frac=True):
     
     '''
     print('Calculating alpha, beta, etc...')
-    alpha_array(n); beta_array(n); gamma_array(n); eta_array(n); ap_array(n)
+    #alpha_array(n); beta_array(n); gamma_array(n); eta_array(n); ap_array(n)
 
 
 
@@ -65,6 +65,12 @@ def generate_op(n, k, normalized=True, lam=np.array([1]), frac=True):
             norm = Polynomial.fast_inner(v_i.T, v_i.T, GM)
             u_r -= (proj/norm)*v_i
         o_basis_mat[r,:] = u_r#basis_mat[r] - res
+    
+    if not frac and not normalized:
+        o_basis_arr = np.zeros((n+1, n+1))
+        for i in range(n+1):
+            for j in range(n+1):
+                o_basis_arr[i,j] = o_basis_mat[i,j]
     
     if normalized and not frac:
         o_basis_arr = np.zeros((n+1, n+1))

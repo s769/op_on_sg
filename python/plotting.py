@@ -120,7 +120,7 @@ def gaskplot(f, m, ax):
 # gaskplot(f, m)
 
 def getOmegas3(deg):
-    W = generate_op(deg,3,1)
+    W = generate_op(deg,3,1,False)
     return W[:deg+2, :deg+2]
 
 def eval_antisymm(deg, T, level=7):
@@ -132,7 +132,7 @@ def eval_antisymm(deg, T, level=7):
     for k in range(deg+1):
         #if math.isclose(coeff[k], 0, abs_tol=1e-1):
             #print("Prepare for doom")
-        q += coeff[k]*T[:, k, 2]
+        q += coeff[k]*T[2, :, k]
 
     return q
 

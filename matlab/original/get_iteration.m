@@ -8,7 +8,7 @@ function q = get_iteration(T, ind, deg, plot)
     
     if plot
         figure
-        scatter(q(1:end-1), q(2:end))
+        scatter(q(2:end-1), q(3:end))
         title("Iteration Map for point " + num2str(ind))
         
     end
