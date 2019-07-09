@@ -66,21 +66,18 @@ def generate_op(n, k, normalized=True, lam=np.array([1]), frac=True):
             u_r -= (proj/norm)*v_i
         o_basis_mat[r,:] = u_r#basis_mat[r] - res
     
-    if not frac and not normalized:
-        o_basis_arr = np.zeros((n+1, n+1))
-        for i in range(n+1):
-            for j in range(n+1):
-                o_basis_arr[i,j] = o_basis_mat[i,j]
-    
-    if normalized and not frac:
-        o_basis_arr = np.zeros((n+1, n+1))
-        print('Normalizing')
-        for i in tqdm.tqdm(range(n+1)):
-            norm = Polynomial.fast_inner(o_basis_mat[i,:].T, o_basis_mat[i,:].T,
-                                         GM)
-            o_basis_arr[i,:] = o_basis_mat[i,:]/np.sqrt(float(norm[0]))
+    if not frac:
+        if normalized:
+            o_basis_arr = np.zeros((n+1, n+1))
+            print('Normalizing')
+            for i in tqdm.tqdm(range(n+1)):
+                norm = Polynomial.fast_inner(o_basis_mat[i,:].T, o_basis_mat[i,:].T,
+                                            GM)
+                o_basis_arr[i,:] = o_basis_mat[i,:]/np.sqrt(float(norm[0]))
+            return o_basis_arr
+        return np.array(o_basis_mat, dtype=np.float64)
 
-    return o_basis_mat  if frac else o_basis_arr# , o_basis_mat[:, k-1::3]
+    return o_basis_mat# , o_basis_mat[:, k-1::3]
 
 
 # j = 20
