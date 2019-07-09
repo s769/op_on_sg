@@ -1,4 +1,4 @@
-function gaskplot(f,m)
+function gaskplot(f,m, flag)
 % This function plots a function defined on the level m vertices of
 % SG.
 %
@@ -22,20 +22,45 @@ y = SG(m) ;
 % row or column vector. we check which case it is using size(f) and
 % do the appropriate plot
 s = size(f) ;
-if s(2)==1
-  for k=1:1:3^m
-      figure
-    plot3([y(3*k-2:3*k,1); y(3*k-2,1)],...
-	  [y(3*k-2:3*k,2) ;y(3*k-2,2)],...
-	  [f(3*k-2:3*k);  f(3*k-2)], 'b')
-    hold on
-  end
-else
-  for k=1:1:3^m
-      figure
-    plot3([y(3*k-2:3*k,1); y(3*k-2,1)],...
-	  [y(3*k-2:3*k,2); y(3*k-2,2)],...
-	  [f(3*k-2:3*k)  f(3*k-2)], 'b')
-    hold on
-  end
+
+if flag == 1
+    
+    if s(2)==1
+      for k=1:1:3^m
+
+        plot3([y(3*k-2:3*k,1); y(3*k-2,1)],...
+          [y(3*k-2:3*k,2) ;y(3*k-2,2)],...
+          [f(3*k-2:3*k);  f(3*k-2)], 'b'  )
+        hold on
+      end
+    else
+      for k=1:1:3^m
+
+        plot3([y(3*k-2:3*k,1); y(3*k-2,1)],...
+          [y(3*k-2:3*k,2); y(3*k-2,2)],...
+          [f(3*k-2:3*k)  f(3*k-2)], 'b'  )
+        hold on
+      end
+    end
+    
+else 
+    
+    if s(2)==1
+      for k=1:1:3^m
+
+        plot3([y(3*k-2:3*k,1); y(3*k-2,1)],...
+          [y(3*k-2:3*k,2) ;y(3*k-2,2)],...
+          [f(3*k-2:3*k);  f(3*k-2)], 'r'  )
+        hold on
+      end
+    else
+      for k=1:1:3^m
+
+        plot3([y(3*k-2:3*k,1); y(3*k-2,1)],...
+          [y(3*k-2:3*k,2); y(3*k-2,2)],...
+          [f(3*k-2:3*k)  f(3*k-2)], 'r'  )
+        hold on
+      end
+    end
 end
+    
