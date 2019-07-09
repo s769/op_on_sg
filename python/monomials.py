@@ -7,6 +7,8 @@ import tqdm
 #from joblib import Parallel, delayed
 import time
 import gmpy2 as gm
+import copy
+#import const
 '''
 This file contains the functions that will compute the values of the 
     monomial basis on a given level of SG. The recursive functions are 
@@ -14,7 +16,7 @@ This file contains the functions that will compute the values of the
 '''
 
 
-
+@mem2
 def big_recursion(j):
 
     '''
@@ -108,7 +110,12 @@ def big_recursion(j):
     
     return np.vstack((a_arr.T,b_arr.T, p_arr.T, q_arr.T))
 
+# rec_arr = big_recursion_master(j_max+1)
+# def big_recursion(j):
+#     return rec_arr#[:,:j+1] if j < j_max else big_recursion_master(j)
+    
 
+#arr = big_recursion(3)
 @mem
 def f_lkFiqn(l, k, i, n):
     '''
@@ -123,11 +130,11 @@ def f_lkFiqn(l, k, i, n):
         values of the easy basis f_lk(F_i (q_n))
     '''
 
-    arr = big_recursion(l)
     # print(arr)
     # print(type(arr))
-    p1 = arr[2, l]
-    q1 = arr[3, l]
+    arr = big_recursion(l)
+    p1 = copy.deepcopy(arr[2, l])
+    q1 = copy.deepcopy(arr[3, l])
     
     # p, q = big_recursion(l)[-2:]
     #print(p1)
@@ -190,7 +197,7 @@ def f_jk(addr, j, k):
         resouter += resinner
         #print('outer outer res', resouter)
     return resouter 
-#print(f_jk('01221', 2, 3)*1.0)
+#print(f_jk('01221', 2, 3))
 #print(big_recursion(100))
 @mem
 def p_jk(addr, j, k):
@@ -247,7 +254,7 @@ def generate_T(level, deg, frac=True):
     '''
     #computes big_recursion at the highest degree so lower values are stored for later use
     # print('Computing Big_Recursion... this may take some time')
-    # big_recursion(deg)
+    big_recursion(deg+1)
     if frac:
         #T = np.empty((3**(level + 1), deg+1, 3), dtype='object')
         T = np.empty((3, 3**(level + 1), deg+1), dtype='object')
@@ -260,8 +267,8 @@ def generate_T(level, deg, frac=True):
         addr = address_from_index(level, i+1)
         addr = np.flip(addr)
         addr = ''.join(str(int(x)) for x in addr)
-        for j in range(deg + 1):
-            for k in range(1, 4):
+        for j in tqdm.tqdm(range(deg + 1)):
+            for k in tqdm.tqdm(range(1, 4)):
                 #T[i, j, k-1] = p_jk(addr, j, k)
                 T[k-1,i, j] = p_jk(addr, j, k)
         #progress(i, 3**(level+1), status='computing monomial values')

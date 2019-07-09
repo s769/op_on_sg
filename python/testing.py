@@ -8,12 +8,11 @@ import tqdm
 from recursions import alpha, beta, gamma
 import sympy as sp
 from sympy import Rational as Rat
-<<<<<<< HEAD
 import gmpy2 as gm
-T = generate_T(7, 19, frac=False)
+T = generate_T(7, 64, frac=False)
 # # print("Now I will save everything!")
 
-scipy.io.savemat('../data/Tarray.mat', dict(T=T))
+#scipy.io.savemat('../data/Tarray.mat', dict(T=T))
 # n = 3
 # k = 3
 # normalized = 1
@@ -30,21 +29,19 @@ scipy.io.savemat('../data/Tarray.mat', dict(T=T))
 # lam=np.array([1])
 # ops_sob = generate_op(n, k, normalized, lam, frac=False)
 # # # # print("Now I will save everything!")
-=======
 #T = generate_T(1, 1024, frac=False)
 # # # print("Now I will save everything!")
 # # #print(T)
-#scipy.io.savemat('../data/Tarray.mat', dict(T=T))
-n = 20
-k = 3
-normalized = 0
-lam=np.array([1])
-ops_sob = generate_op(n, k, normalized, lam, frac=False)
-print("Now I will save everything!")
->>>>>>> 4767f974e61ab875223cf6a474896819e59d12b8
-# # # print(ops_leg)
-scipy.io.savemat('../data/sob20coefsNonNormalized.mat', dict(ops=ops_sob))
-# print(ops_sob)
+# #scipy.io.savemat('../data/Tarray.mat', dict(T=T))
+# n = 20
+# k = 3
+# normalized = 0
+# lam=np.array([1])
+# ops_sob = generate_op(n, k, normalized, lam, frac=False)
+# print("Now I will save everything!")
+# # # # print(ops_leg)
+# scipy.io.savemat('../data/sob20coefsNonNormalized.mat', dict(ops=ops_sob))
+# # print(ops_sob)
 # GM = Polynomial.GM[lis2str(lam)][:n+1, :n+1]
 # for i in range(20):
 # #     for k in range(i+1):
@@ -55,41 +52,20 @@ scipy.io.savemat('../data/sob20coefsNonNormalized.mat', dict(ops=ops_sob))
 #    if omega is None:
 #      omega = generate_op(j, 1, 0, lam=np.array([0]), frac=1)
 
-<<<<<<< HEAD
-# #   if k == 1:
-# #     func = alpha
-# #   elif k == 2:
-# #     func = beta
-# #   elif k == 3:
-# #     func = gamma
-# #   res = gm.mpq(0,1)
-# #   for l in range(j+1):
-# #         res += omega[j, l]*func(l+1)
-# #   return 2*res
-=======
->>>>>>> 4767f974e61ab875223cf6a474896819e59d12b8
 #    if k == 1:
 #      func = alpha
 #    elif k == 2:
 #      func = beta
 #    elif k == 3:
 #      func = gamma
-<<<<<<< HEAD
-#    res = gm.mpq(0,1)
-=======
 #    res = Rat(0,1)
->>>>>>> 4767f974e61ab875223cf6a474896819e59d12b8
 #    for l in range(j+1):
 #          res += omega[j, l]*func(l+1)
 #    return 2*res
 
 # n = 20
 # omega = generate_op(n, 1, 0, lam=np.array([0]), frac=1)
-<<<<<<< HEAD
-# norms = zeros(n+1,1)
-=======
 # norms = sp.zeros(n+1,1)
->>>>>>> 4767f974e61ab875223cf6a474896819e59d12b8
 # for i in range(omega.rows):
 #          norms[i] = Polynomial.fast_inner(omega[i,:].T, omega[i,:].T,\
 #                                    Polynomial.GM['0'])[0]
@@ -98,32 +74,12 @@ scipy.io.savemat('../data/sob20coefsNonNormalized.mat', dict(ops=ops_sob))
 
 # # #print(norms)
 
-<<<<<<< HEAD
-# # arr = np.zeros((n, 1))
-# arr = zeros(n, 1)
-
-# for i in range(n):
-
-# #   arr[i] = float(zeta(i, 1, omega))/np.sqrt(float(norms[i]))
-
-# #   print(str(i)+':'+str(arr[i]))
-# # #print(np.sum(arr))
-# # for i in range(n-3):
-# #   num = (arr[i+3] - arr[i+2])/(arr[i+2]-arr[i+1])
-# #   den = (arr[i+2] - arr[i+1])/(arr[i+1]-arr[i])
-# #   print(str(i)+':', arr[i+1]/arr[i])
-# #   print(str(i)+':', np.log(np.abs(arr[i+1]/arr[i])))
-# #   print(str(i) + ':', np.log(np.abs(num))/np.log(np.abs(den)))
-#   arr[i] = zeta(i, 1, omega)/gm.sqrt(norms[i])
-
-=======
 # arr = sp.zeros(n, 1)
 
 # for i in range(n):
 
 #   arr[i] = zeta(i, 1, omega)/sp.sqrt(norms[i])
 
->>>>>>> 4767f974e61ab875223cf6a474896819e59d12b8
 #   print(str(i)+':'+str(arr[i].evalf()))
 # #print(np.sum(arr))
 # for i in range(n-3):
