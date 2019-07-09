@@ -17,7 +17,7 @@ it will be better to use the functions alpha_array, beta_array, etc..
 # This is a function that can be used to change the np.array float precision to 
 #   float32 (double)
 
-j_max_rec = 10
+j_max_rec = 1000
 
 def array(*args, **kwargs):
     """

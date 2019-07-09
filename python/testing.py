@@ -8,18 +8,19 @@ import tqdm
 from recursions import alpha, beta, gamma
 import sympy as sp
 from sympy import Rational as Rat
-T = generate_T(1, 1024, frac=False)
+#T = generate_T(1, 1024, frac=False)
 # # # print("Now I will save everything!")
 # # #print(T)
 # scipy.io.savemat('../data/Tarray.mat', dict(T=T))
-# n = 20
-# k = 3
-# normalized = 1
-# lam=np.array([1])
-# ops_sob = generate_op(n, k, normalized, lam, frac=False)
-# # # # print("Now I will save everything!")
-# # # print(ops_leg)
-# scipy.io.savemat('../data/sob20coefs.mat', dict(ops=ops_sob))
+n = 3
+k = 3
+normalized = 0
+lam=np.array([1])
+ops_sob = generate_op(n, k, normalized, lam, frac=False)
+print(ops_sob)
+# # # print("Now I will save everything!")
+# # print(ops_leg)
+#scipy.io.savemat('../data/sob20coefs.mat', dict(ops=ops_sob))
 # print(ops_sob)
 # GM = Polynomial.GM[lis2str(lam)][:n+1, :n+1]
 # for i in range(20):
@@ -39,7 +40,7 @@ T = generate_T(1, 1024, frac=False)
 #     func = gamma
 #   res = Rat(0,1)
 #   for l in range(j+1):
-#         res += omega[j+1, l]*func(l+1)
+#         res += omega[j, l]*func(l+1)
 #   return 2*res
 
 # n = 20
@@ -53,19 +54,19 @@ T = generate_T(1, 1024, frac=False)
 
 # #print(norms)
 
-# arr = sp.zeros(n, 1)
+# arr = np.zeros((n, 1))
 
 # for i in range(n):
 
-#   arr[i] = zeta(i, 1, omega)/sp.sqrt(norms[i])
+#   arr[i] = float(zeta(i, 1, omega))/np.sqrt(float(norms[i]))
 
-#   print(str(i)+':'+str(arr[i].evalf()))
+#   print(str(i)+':'+str(arr[i]))
 # #print(np.sum(arr))
 # for i in range(n-3):
 #   num = (arr[i+3] - arr[i+2])/(arr[i+2]-arr[i+1])
 #   den = (arr[i+2] - arr[i+1])/(arr[i+1]-arr[i])
-#   #print(str(i)+':', arr[i+1]/arr[i])
-#   #print(str(i)+':', np.log(np.abs(arr[i+1]/arr[i])))
-#   #print(str(i) + ':', np.log(np.abs(num))/np.log(np.abs(den)))
+#   print(str(i)+':', arr[i+1]/arr[i])
+#   print(str(i)+':', np.log(np.abs(arr[i+1]/arr[i])))
+#   print(str(i) + ':', np.log(np.abs(num))/np.log(np.abs(den)))
 
-# #print(arr)
+#print(arr)
