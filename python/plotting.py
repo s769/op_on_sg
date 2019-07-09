@@ -7,6 +7,8 @@ import math
 import itertools
 import gmpy2 as gm
 
+### GENERAL PLOTTING METHODS
+
 def fi(x, qi):
     '''
     This function is a contractive similarity of the plane centered
@@ -98,6 +100,33 @@ def gaskplot(f, m, ax):
         # Add the points to the plot
         ax.plot(xx, yy, zz, 'b')
     return
+
+
+# METHODS FOR PLOTTING MONOMIALS
+
+def plot_monomial(num, k, level=7):
+    """
+    Plot the Monomials
+
+    Args: 
+        num - Number of monomials we would like to plot
+        k - Type of Monomial (k = 0, 1, 2)
+        level - The level we would like to plot each monomial
+    
+    Returns: 
+        figures of the SOP of type k, from P_{num-1, k} down to P_{0, k}.
+    """
+    T = generate_T(level, num, frac=False)
+    for j in range(num):
+        plt.figure()
+        ax = plt.axes(projection='3d')
+        p = T[k, :, j]
+        gaskplot(p, level, ax)
+    plt.show()    
+    return
+
+
+# METHODS FOR PLOTTING SOBOLOV ORTHOGONAL POLYNOMIALS
 
 def getOmegas(deg, k):
     """
@@ -230,4 +259,5 @@ def plot_antisymm(num, level=7):
     plt.show()    
     return
 
+#plot_monomial(4, 0)
 plot_SOP(2, 1)
