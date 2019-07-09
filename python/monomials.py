@@ -199,6 +199,8 @@ def f_jk(addr, j, k):
     return resouter 
 #print(f_jk('01221', 2, 3))
 #print(big_recursion(100))
+
+
 @mem
 def p_jk(addr, j, k):
     '''
@@ -235,6 +237,43 @@ def p_jk(addr, j, k):
 # print(ans)
 #print(f_lkFiqn(0,2,1,0))
 #print(f_jk('0', 0, 3))
+
+def generate_W(level, deg, frac=True):
+    '''
+    This function calculates the values of the easy basis f_jk up to a certain 
+        degree at a given level of SG.
+
+    Args:
+        level: level of SG required
+        deg: maximum degree monomial required
+
+    Returns:
+        W: np.array with dimensions 3 x 3^(level+1) x deg+1.
+        The kth page of T has values of the easy basis f_jk (j = 0...deg) 
+            at each of the 3^(level+1) TLR indices of points on the given level 
+            of SG.
+    '''
+    #computes big_recursion at the highest degree so lower values are stored for later use
+    # print('Computing Big_Recursion... this may take some time')
+    big_recursion(deg+1)
+    if frac:
+        #T = np.empty((3**(level + 1), deg+1, 3), dtype='object')
+        W = np.empty((3, 3**(level + 1), deg+1), dtype='object')
+    else:
+        #T = np.zeros((3**(level + 1), deg+1, 3))
+        W = np.zeros((3, 3**(level + 1), deg+1))
+    for i in tqdm.tqdm(range(3**(level + 1))):
+        # This preparation is due to the different address structure 
+        #   used in this file an in util.py
+        addr = address_from_index(level, i+1)
+        addr = np.flip(addr)
+        addr = ''.join(str(int(x)) for x in addr)
+        for j in tqdm.tqdm(range(deg + 1)):
+            for k in tqdm.tqdm(range(1, 4)):
+                #T[i, j, k-1] = p_jk(addr, j, k)
+                W[k-1,i, j] = f_jk(addr, j, k)
+        #progress(i, 3**(level+1), status='computing monomial values')
+    return W
 
 
 def generate_T(level, deg, frac=True):
