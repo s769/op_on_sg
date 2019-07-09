@@ -1,12 +1,12 @@
 import numpy as np
-from recursions import mem, mem2, alpha, beta, gamma
+from recursions import mem, mem2, alpha, beta, gamma, zeros, eye
 from util import address_from_index, progress
 import sympy as sp
 from sympy import Rational as Rat
 import tqdm
 #from joblib import Parallel, delayed
 import time
-
+import gmpy2 as gm
 '''
 This file contains the functions that will compute the values of the 
     monomial basis on a given level of SG. The recursive functions are 
@@ -14,7 +14,7 @@ This file contains the functions that will compute the values of the
 '''
 
 
-@mem2
+
 def big_recursion(j):
 
     '''
@@ -27,24 +27,24 @@ def big_recursion(j):
     Returns:
         coefficients a_j, b_j, p_j, q_j
     '''
-    p_arr = sp.zeros(j+1,1)
-    q_arr = sp.zeros(j+1,1)
-    a_arr = sp.zeros(j+1,1)
-    b_arr = sp.zeros(j+1,1)
+    p_arr = zeros(j+1,1)
+    q_arr = zeros(j+1,1)
+    a_arr = zeros(j+1,1)
+    b_arr = zeros(j+1,1)
 
-    a_arr[0] = Rat(7, 45)
-    b_arr[0] = Rat(4, 45)
-    p_arr[0] = Rat(2, 5)
-    q_arr[0] = Rat(1, 5)
+    a_arr[0] = gm.mpq(7, 45)
+    b_arr[0] = gm.mpq(4, 45)
+    p_arr[0] = gm.mpq(2, 5)
+    q_arr[0] = gm.mpq(1, 5)
 
     if j == 0:
-        return a_arr, b_arr, p_arr, q_arr
-        # return sp.Matrix([Rat(7,45), Rat(4,45), Rat(2,5), Rat(1,5)])
+        return np.vstack((a_arr, b_arr, p_arr, q_arr))
+        # return np.array([gm.mpq(7,45), gm.mpq(4,45), gm.mpq(2,5), gm.mpq(1,5)])
 
     
 
     
-    # vec2 = sp.zeros(2, 1)
+    # vec2 = zeros(2, 1)
     for l in range(1, j+1):
         res3 = 0
         res4 = 0
@@ -60,12 +60,12 @@ def big_recursion(j):
         
     # b = big_recursion(j-1)[1]
         b = b_arr[l-1]
-        p_arr[l] = -Rat(2,5)*b - Rat(1,5)*res3
-        q_arr[l] = -Rat(1,5)*b - Rat(1,5)*res4
+        p_arr[l] = -gm.mpq(2,5)*b - gm.mpq(1,5)*res3
+        q_arr[l] = -gm.mpq(1,5)*b - gm.mpq(1,5)*res4
 
         res1 = 0
         res2 = 0
-        vec = sp.zeros(2,1)
+        vec = zeros(2,1)
         for k in range(l):
             p = p_arr[l-k]
             q = q_arr[l-k]
@@ -73,10 +73,10 @@ def big_recursion(j):
             b = b_arr[k]
             res1 += (2*p + q)*(a+2*b)
             res2 += (p + 2*q)*(a + 2*b)
-        vec[0] = Rat(2,(3*(5**l - 1)))*res1
-        vec[1] = Rat(10,(3*(5**(l+1) - 1)))*res2
-        coefs_inv = sp.Matrix([[Rat(7,15), Rat(-2,15)], [Rat(4,15), Rat(1,15)]])
-        ab_arr = coefs_inv@vec
+        vec[0] = gm.mpq(2,(3*(5**l - 1)))*res1
+        vec[1] = gm.mpq(10,(3*(5**(l+1) - 1)))*res2
+        coefs_inv = np.array([[gm.mpq(7,15), gm.mpq(-2,15)], [gm.mpq(4,15), gm.mpq(1,15)]])
+        ab_arr = coefs_inv.dot(vec)
         a_arr[l] = ab_arr[0]
         b_arr[l] = ab_arr[1]
     
@@ -84,7 +84,7 @@ def big_recursion(j):
     # for l in range(j):
     #     res1 = 0
     #     res2 = 0
-    #     vec = sp.zeros(2,1)
+    #     vec = zeros(2,1)
     #     if l == 0:
     #         p, q = p_arr[-1], q_arr[-1]
     #     else:
@@ -97,17 +97,19 @@ def big_recursion(j):
     #     # a, b = big_recursion(l)[:2]
     #     res1 += (2*p + q)*(a+2*b)
     #     res2 += (p + 2*q)*(a + 2*b)
-    # vec[0] = Rat(2,(3*(5**j - 1)))*res1
-    # vec[1] = Rat(10,(3*(5**(j+1) - 1)))*res2
-    # coefs_inv = sp.Matrix([[Rat(7,15), Rat(-2,15)], [Rat(4,15), Rat(1,15)]])
+    # vec[0] = gm.mpq(2,(3*(5**j - 1)))*res1
+    # vec[1] = gm.mpq(10,(3*(5**(j+1) - 1)))*res2
+    # coefs_inv = np.array([[gm.mpq(7,15), gm.mpq(-2,15)], [gm.mpq(4,15), gm.mpq(1,15)]])
     # ab_arr = coefs_inv@vec
-    # # ab_arr = ab_arr.col_join(vec2)
+    # # ab_arr = np.append(ab_arr, vec2)
     # a_arr[-1] = ab_arr[0]
     # b_arr[-1] = ab_arr[1]
-    return a_arr, b_arr, p_arr, q_arr
+  
+    
+    return np.vstack((a_arr.T,b_arr.T, p_arr.T, q_arr.T))
 
 
-
+@mem
 def f_lkFiqn(l, k, i, n):
     '''
     This function computes the values of the easy basis f_lk(F_i (q_n)) 
@@ -120,23 +122,26 @@ def f_lkFiqn(l, k, i, n):
     Returns:
         values of the easy basis f_lk(F_i (q_n))
     '''
+
     arr = big_recursion(l)
-    p = arr[2][l]
-    q = arr[3][l]
-
+    # print(arr)
+    # print(type(arr))
+    p1 = arr[2, l]
+    q1 = arr[3, l]
+    
     # p, q = big_recursion(l)[-2:]
-
+    #print(p1)
+    #print(q1)
     if i == n and i == k:
         return int(l == 0)
     if i == k and i != n:
-        return Rat(p,(5**l))
+        return gm.mpq(p1,(5**l))
     if i == n and i != k:
         return 0
     if k == n and k != i:
-        return Rat(p,(5**l))
+        return gm.mpq(p1,(5**l))
 
-    return Rat(q,(5**l))
-
+    return gm.mpq(q1,(5**l))
 
 @mem
 def f_jk(addr, j, k):
@@ -154,7 +159,7 @@ def f_jk(addr, j, k):
     Returns:
         value of f_jk(F_w(q_i))
     '''
-
+    #print('before', addr)
     if len(addr) == 1:
         if j != 0:
             return 0
@@ -166,16 +171,27 @@ def f_jk(addr, j, k):
     last = int(addr[-1])
     addr = addr[:-1]
     resouter = 0
-     
+    #print('after', addr) 
     for l in range(j+1):
         resinner = 0
         for n in range(3):
-            resinner += f_lkFiqn(j-l, k, last, n)*f_jk(addr, l, n)
-        resinner *= (Rat(1,5))**l
-        resouter += resinner
-    
-    return resouter 
+            # print('first' , f_lkFiqn(j-l, k, last, n)*f_jk(addr, l, n))
+            # print('resinner after first', resinner)
+            # print(f_lkFiqn(j-l, k, last, n)*f_jk(addr, l, n))
+            # print(resinner + f_lkFiqn(j-l, k, last, n)*f_jk(addr, l, n))
+            #ad = addr
+            a = f_lkFiqn(j-l, k, last, n)*f_jk(addr, l, n)
+            #print('a', ad, l, n, j-l, k, last,  a)
+            resinner += a#f_lkFiqn(j-l, k, last, n)*f_jk(addr, l, n)
 
+            #print('inner res', resinner)
+        resinner *= (gm.mpq(1, 5))**l
+        #print('outer res' , resinner)
+        resouter += resinner
+        #print('outer outer res', resouter)
+    return resouter 
+#print(f_jk('01221', 2, 3)*1.0)
+#print(big_recursion(100))
 @mem
 def p_jk(addr, j, k):
     '''
@@ -230,8 +246,8 @@ def generate_T(level, deg, frac=True):
             of SG.
     '''
     #computes big_recursion at the highest degree so lower values are stored for later use
-    print('Computing Big_Recursion... this may take some time')
-    big_recursion(deg)
+    # print('Computing Big_Recursion... this may take some time')
+    # big_recursion(deg)
     if frac:
         #T = np.empty((3**(level + 1), deg+1, 3), dtype='object')
         T = np.empty((3, 3**(level + 1), deg+1), dtype='object')
@@ -252,16 +268,16 @@ def generate_T(level, deg, frac=True):
     return T
 
 
-def generate_T_loop(i, j, k, level):
-    addr = address_from_index(level, i+1)
-    addr = np.flip(addr)
-    addr = ''.join(str(int(x)) for x in addr)
-    return p_jk(addr, j, k)
+# def generate_T_loop(i, j, k, level):
+#     addr = address_from_index(level, i+1)
+#     addr = np.flip(addr)
+#     addr = ''.join(str(int(x)) for x in addr)
+#     return p_jk(addr, j, k)
 
-def generate_T_parallel(level, deg, frac=True, cores=4):
-    dtype = 'object' if frac else np.float64 
-    T = Parallel(n_jobs=cores)(delayed(generate_T_loop)(i=i, j=j, k=k, level=level) for i in range(3**(level + 1)) for j in range(deg +1) for k in range(1, 4))
-    return np.array(T, dtype=dtype).reshape(((3**(level + 1), deg+1, 3)))
+# def generate_T_parallel(level, deg, frac=True, cores=4):
+#     dtype = 'object' if frac else np.float64 
+#     T = Parallel(n_jobs=cores)(delayed(generate_T_loop)(i=i, j=j, k=k, level=level) for i in range(3**(level + 1)) for j in range(deg +1) for k in range(1, 4))
+#     return np.array(T, dtype=dtype).reshape(((3**(level + 1), deg+1, 3)))
 
 # level = 5
 # deg = 10

@@ -1,11 +1,11 @@
 import numpy as np
-from recursions import alpha, beta, gamma, eta
+from recursions import alpha, beta, gamma, eta, zeros, eye
 from innerprods import inner0_j1k1, symmetrize
 from Polynomial import Polynomial
 import sympy as sp
 from sympy import Rational as Rat
 import tqdm
-
+import gmpy2 as gm
 
 def pnj1(nn, j, i):
   return int(j == 0) if i == nn else alpha(j)
@@ -44,7 +44,7 @@ def inner_rjrk(j,k, lam = 1):
 def generate_symm_ops(n, normalized=False, frac=True):
   
   print('Building Gram Matrix ... this may take some time')
-  SGM = sp.zeros(n+1, n+1)
+  SGM = zeros(n+1, n+1)
 
   for ind1 in range(n+1):
     for ind2 in range(n+1):
@@ -56,9 +56,9 @@ def generate_symm_ops(n, normalized=False, frac=True):
 
 #   for i in range(n+1):
 #     basis_mat[i, 3*i + k - 1] = 1
-  basis_mat = sp.eye(n+1)
+  basis_mat = eye(n+1)
   #o_basis_mat = np.zeros((n+1, 3*n+3))
-  o_basis_mat = sp.zeros(n+1, n+1)
+  o_basis_mat = zeros(n+1, n+1)
   
 
   o_basis_mat[0,:] = basis_mat[0,:]
@@ -79,7 +79,7 @@ def generate_symm_ops(n, normalized=False, frac=True):
       for i in tqdm.tqdm(range(n+1)):
           norm = Polynomial.fast_inner(o_basis_mat[i,:].T, o_basis_mat[i,:].T,
                                         SGM)
-          o_basis_mat[i,:] = o_basis_mat[i,:]/sp.sqrt(norm[0])
+          o_basis_mat[i,:] = o_basis_mat[i,:]/gm.sqrt(norm[0])
 
   return (o_basis_mat , SGM) if frac else (np.array(o_basis_mat).astype(np.float64), SGM)# , o_basis_mat[:, k-1::3]
 

@@ -5,7 +5,8 @@ import scipy.io
 import sympy as sp
 from sympy import Rational as Rat
 import tqdm
-from recursions import alpha_array, beta_array, gamma_array, eta_array, ap_array
+from recursions import alpha_array, beta_array, gamma_array, eta_array, ap_array, zeros, eye
+import gmpy2 as gm
 
 '''
 This is the main file used for computing the orthogonal polynomials.
@@ -47,33 +48,34 @@ def generate_op(n, k, normalized=True, lam=np.array([1]), frac=True):
 
 #   for i in range(n+1):
 #     basis_mat[i, 3*i + k - 1] = 1
-    basis_mat = sp.eye(n+1)
+    basis_mat = eye(n+1)
     #o_basis_mat = np.zeros((n+1, 3*n+3))
-    o_basis_mat = sp.zeros(n+1, n+1)
+    o_basis_mat = zeros(n+1, n+1)
     
 
-    o_basis_mat[0,:] = basis_mat[0,:]
+    o_basis_mat[0] = basis_mat[0]
     GM = Polynomial.GM[lis2str(lam)][:n+1, :n+1]
     print('Orthogonalizing Using Gram-Schmidt')
     for r in tqdm.tqdm(range(1, n+1)):
         #res = np.zeros(n+1)
 
-        u_r = basis_mat[r,:]
+        u_r = basis_mat[r]
         for i in range(r):
-            v_i = o_basis_mat[i,:]
-            proj = Polynomial.fast_inner(u_r.T, v_i.T, GM)
-            norm = Polynomial.fast_inner(v_i.T, v_i.T, GM)
+            v_i = o_basis_mat[i]
+            
+            proj = Polynomial.fast_inner(u_r, v_i, GM)
+            norm = Polynomial.fast_inner(v_i, v_i, GM)
             u_r -= (proj/norm)*v_i
-        o_basis_mat[r,:] = u_r#basis_mat[r] - res
+        o_basis_mat[r] = u_r#basis_mat[r] - res
     
     if not frac:
         if normalized:
             o_basis_arr = np.zeros((n+1, n+1))
             print('Normalizing')
             for i in tqdm.tqdm(range(n+1)):
-                norm = Polynomial.fast_inner(o_basis_mat[i,:].T, o_basis_mat[i,:].T,
+                norm = Polynomial.fast_inner(o_basis_mat[i], o_basis_mat[i],
                                             GM)
-                o_basis_arr[i,:] = o_basis_mat[i,:]/np.sqrt(float(norm[0]))
+                o_basis_arr[i] = o_basis_mat[i]/gm.sqrt(norm)
             return o_basis_arr
         return np.array(o_basis_mat, dtype=np.float64)
 

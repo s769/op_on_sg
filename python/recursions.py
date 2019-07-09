@@ -1,6 +1,8 @@
 import numpy as np
 import sympy as sp
 from sympy import Rational as Rat
+import gmpy2 as gm
+
 
 '''
 This file computes recursively the alpha, beta, gamma, and eta coefficients 
@@ -27,6 +29,15 @@ def array(*args, **kwargs):
     kwargs.setdefault("dtype", np.float32)
     return np.array(*args, **kwargs)
 
+def zeros(m, n):
+    arr = np.array([[gm.mpz(0) for i in range(n)] for j in range(m)])
+    return arr
+
+def eye(n):
+    arr = zeros(n, n)
+    for i in range(n):
+        arr[i, i] = gm.mpz(1)
+    return arr
 
 def mem(func):
     '''
@@ -85,11 +96,11 @@ def alpha(j):
     if j == 0:
         return 1
     if j == 1:
-        return Rat(1,6)
+        return gm.mpq(1,6)
     res = 0
     for l in range(1, j):
         res += alpha(j-l)*alpha(l)
-    return Rat(res*4,(5**j - 5))
+    return gm.mpq(res*4,(5**j - 5))
 
 
 @mem
@@ -107,11 +118,11 @@ def beta(j):
     if j >= j_max_rec:
         return beta_array(j)[j]
     if j == 0:
-        return Rat(-1,2)
+        return gm.mpq(-1,2)
     res = 0
     for l in range(j):
         res += (3*5**(j-l) - 5**(l+1) + 6)*alpha(j-l)*beta(l)
-    return Rat(res*2,(15*(5**j - 1)))
+    return gm.mpq(res*2,(15*(5**j - 1)))
 
 
 @mem
@@ -144,7 +155,7 @@ def eta(j):
         return eta_array(j)[j]
     if j == 0:
         return 0
-    res = Rat(alpha(j)*(5**j + 1),2)
+    res = gm.mpq(alpha(j)*(5**j + 1),2)
     for l in range(j):
         res += 2*eta(l)*beta(j-l)
     return res
@@ -163,7 +174,7 @@ def ap(j):
     if j >= j_max_rec:
         return eta_array(j)[j]
     if j == 0:
-        return Rat(1,2)
+        return gm.mpq(1,2)
     return alpha(j)
 
 
@@ -182,14 +193,14 @@ def alpha_array(max_order):
     alpha_arr: np.array of length (max_order+1) containing the first 
         alpha values up to alpha_{max_order}.
     """
-    alpha_arr = sp.zeros(max_order + 1, 1)
+    alpha_arr = zeros(max_order + 1, 1)
     alpha_arr[0] = 1
-    alpha_arr[1] = Rat(1,6)
+    alpha_arr[1] = gm.mpq(1,6)
 
     for j in range(2, max_order+1):
         for l in range(1, j):
             alpha_arr[j] = alpha_arr[j] + alpha_arr[j-l] * alpha_arr[l]
-        alpha_arr[j] = Rat(alpha_arr[j] * 4 ,(5 ** j - 5))
+        alpha_arr[j] = gm.mpq(alpha_arr[j] * 4 ,(5 ** j - 5))
 
     return alpha_arr
 
@@ -210,14 +221,14 @@ def beta_array(max_order):
     alpha_arr = alpha_array(max_order+2)
 
     # initialize values of beta_arr
-    beta_arr = sp.zeros(max_order + 1, 1)
-    beta_arr[0] = Rat(-1,2)
+    beta_arr = zeros(max_order + 1, 1)
+    beta_arr[0] = gm.mpq(-1,2)
 
     for j in range(1, max_order+1):
         for l in range(j):
             beta_arr[j] = beta_arr[j] + (3 * (5 ** (j-l)) -
                             5 ** (l + 1) + 6) * alpha_arr[j-l] * beta_arr[l]
-        beta_arr[j] = beta_arr[j] * Rat(2 , (15 * (5 ** j - 1)))
+        beta_arr[j] = beta_arr[j] * gm.mpq(2 , (15 * (5 ** j - 1)))
 
     return beta_arr
 
@@ -235,17 +246,17 @@ def gamma_array(max_order):
 
     alpha_arr = alpha_array(max_order+2)
     gamma_arr = 3 * alpha_arr
-    return sp.Matrix(gamma_arr[1:])
+    return np.array(gamma_arr[1:])
 
 @mem2
 def eta_array(max_order):
-    eta_arr = sp.zeros(max_order + 1, 1)
+    eta_arr = zeros(max_order + 1, 1)
     eta_arr[0] = 0
     alpha_arr = alpha_array(max_order)
     beta_arr = beta_array(max_order)
 
     for j in range(1, max_order + 1):
-        res = alpha_arr[j]*Rat((5**j + 1), 2)
+        res = alpha_arr[j]*gm.mpq((5**j + 1), 2)
         for l in range(j):
             res += 2*eta_arr[l]*beta_arr[j-l]
         eta_arr[j] = res
@@ -254,5 +265,6 @@ def eta_array(max_order):
 @mem2
 def ap_array(max_order):
     ap_arr = alpha_array(max_order)
-    ap_arr[0] = Rat(1, 2)
+    ap_arr[0] = gm.mpq(1, 2)
     return ap_arr
+

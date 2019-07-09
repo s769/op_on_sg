@@ -3,6 +3,7 @@ import numpy as np
 from recursions import alpha_array, gamma_array
 
 import sys
+import gmpy2 as gm
 
 # This file will implement helper functions written in the matlab files.
 
@@ -534,7 +535,6 @@ def progress(count, total, status=''):
 
     sys.stdout.write('[%s] %s%s ...%s\r' % (bar, percents, '%', status))
     sys.stdout.flush()
-    
 
 
 #print(coeff_monomial_3_all(2, 3))

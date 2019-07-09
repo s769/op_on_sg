@@ -5,6 +5,7 @@ from monomials import generate_T
 from ops_main import generate_op
 import math
 import itertools
+import gmpy2 as gm
 
 def fi(x, qi):
     '''
