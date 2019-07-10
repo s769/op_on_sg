@@ -11,14 +11,13 @@ import copy
 #import const
 '''
 This file contains the functions that will compute the values of the 
-    monomial basis on a given level of SG. The recursive functions are 
-    memoized (see recursions.py).
+    easy/monomial basis on a given level of SG. The recursive functions 
+    are memoized (see recursions.py).
 '''
 
 
 @mem2
 def big_recursion(j):
-
     '''
     This function computes the coefficients a_j, b_j, p_j, q_j found in 
         the Splines on Fractals paper.
@@ -29,11 +28,13 @@ def big_recursion(j):
     Returns:
         4 x j+1 np.array of coefficients a_j, b_j, p_j, q_j from 0 to j
     '''
+    # Initialize space for the coefficients
     p_arr = zeros(j+1,1)
     q_arr = zeros(j+1,1)
     a_arr = zeros(j+1,1)
     b_arr = zeros(j+1,1)
 
+    # Initialize arrays for the 0-th term
     a_arr[0] = gm.mpq(7, 45)
     b_arr[0] = gm.mpq(4, 45)
     p_arr[0] = gm.mpq(2, 5)
@@ -41,13 +42,10 @@ def big_recursion(j):
 
     if j == 0:
         return np.vstack((a_arr, b_arr, p_arr, q_arr))
-        # return np.array([gm.mpq(7,45), gm.mpq(4,45), gm.mpq(2,5), gm.mpq(1,5)])
-
     
-
-    
-    # vec2 = zeros(2, 1)
+    # Main recursion
     for l in tqdm.tqdm(range(1, j+1)):
+        # Implements equation (5.6) in Splines paper
         res3 = 0
         res4 = 0
         for k in range(l):
@@ -55,16 +53,14 @@ def big_recursion(j):
             q = q_arr[k]
             a = a_arr[l-k-1]
             b = b_arr[l-k-1]
-            # p, q = big_recursion(l)[-2:]
-            # a, b = big_recursion(j-1-l)[:2]
             res3 += (4*a + 3*b)*p + (a + 2*b)*q
             res4 += (2*a + 4*b)*p + (3*a + b)*q
         
-    # b = big_recursion(j-1)[1]
         b = b_arr[l-1]
         p_arr[l] = -gm.mpq(2,5)*b - gm.mpq(1,5)*res3
         q_arr[l] = -gm.mpq(1,5)*b - gm.mpq(1,5)*res4
 
+        # Implements equation (5.5) in Splines paper
         res1 = 0
         res2 = 0
         vec = zeros(2,1)
@@ -75,6 +71,7 @@ def big_recursion(j):
             b = b_arr[k]
             res1 += (2*p + q)*(a+2*b)
             res2 += (p + 2*q)*(a + 2*b)
+        
         vec[0] = gm.mpq(2,(3*(5**l - 1)))*res1
         vec[1] = gm.mpq(10,(3*(5**(l+1) - 1)))*res2
         coefs_inv = np.array([[gm.mpq(7,15), gm.mpq(-2,15)], [gm.mpq(4,15), gm.mpq(1,15)]])
@@ -82,40 +79,9 @@ def big_recursion(j):
         a_arr[l] = ab_arr[0]
         b_arr[l] = ab_arr[1]
     
-
-    # for l in range(j):
-    #     res1 = 0
-    #     res2 = 0
-    #     vec = zeros(2,1)
-    #     if l == 0:
-    #         p, q = p_arr[-1], q_arr[-1]
-    #     else:
-    #         p = p_arr[j-l]
-    #         q = q_arr[j-l]
-            
-    #         # p, q = big_recursion(j-l)[-2:]
-    #     a = a_arr[l]
-    #     b = b_arr[l]
-    #     # a, b = big_recursion(l)[:2]
-    #     res1 += (2*p + q)*(a+2*b)
-    #     res2 += (p + 2*q)*(a + 2*b)
-    # vec[0] = gm.mpq(2,(3*(5**j - 1)))*res1
-    # vec[1] = gm.mpq(10,(3*(5**(j+1) - 1)))*res2
-    # coefs_inv = np.array([[gm.mpq(7,15), gm.mpq(-2,15)], [gm.mpq(4,15), gm.mpq(1,15)]])
-    # ab_arr = coefs_inv@vec
-    # # ab_arr = np.append(ab_arr, vec2)
-    # a_arr[-1] = ab_arr[0]
-    # b_arr[-1] = ab_arr[1]
-  
-    
     return np.vstack((a_arr.T,b_arr.T, p_arr.T, q_arr.T))
 
-# rec_arr = big_recursion_master(j_max+1)
-# def big_recursion(j):
-#     return rec_arr#[:,:j+1] if j < j_max else big_recursion_master(j)
-    
 
-#arr = big_recursion(3)
 @mem
 def f_lkFiqn(l, k, i, n):
     '''
@@ -129,16 +95,12 @@ def f_lkFiqn(l, k, i, n):
     Returns:
         values of the easy basis f_lk(F_i (q_n))
     '''
-
-    # print(arr)
-    # print(type(arr))
+    # Finds the values of pi and qi from the recursion
     arr = big_recursion(l)
     p1 = copy.deepcopy(arr[2, l])
     q1 = copy.deepcopy(arr[3, l])
     
-    # p, q = big_recursion(l)[-2:]
-    #print(p1)
-    #print(q1)
+    # Find the values of easy basis from (5.2) of splines paper
     if i == n and i == k:
         return int(l == 0)
     if i == k and i != n:
@@ -166,39 +128,29 @@ def f_jk(addr, j, k):
     Returns:
         value of f_jk(F_w(q_i))
     '''
-    #print('before', addr)
+    # Base case 1: f_jk(q_i)
     if len(addr) == 1:
         if j != 0:
             return 0
         return int(int(addr[0]) == k)
+    
+    # Base case 2: f_jk(F_iq_n)
     if len(addr) == 2:
         n = int(addr[0])
         i = int(addr[1])
         return f_lkFiqn(j, k, i, n)
+    
+    # Inductive case, from (2.8) of splines paper
     last = int(addr[-1])
     addr = addr[:-1]
-    resouter = 0
-    #print('after', addr) 
+    outer_sum = 0
     for l in range(j+1):
-        resinner = 0
+        inner_sum = 0
         for n in range(3):
-            # print('first' , f_lkFiqn(j-l, k, last, n)*f_jk(addr, l, n))
-            # print('resinner after first', resinner)
-            # print(f_lkFiqn(j-l, k, last, n)*f_jk(addr, l, n))
-            # print(resinner + f_lkFiqn(j-l, k, last, n)*f_jk(addr, l, n))
-            #ad = addr
-            a = f_lkFiqn(j-l, k, last, n)*f_jk(addr, l, n)
-            #print('a', ad, l, n, j-l, k, last,  a)
-            resinner += a#f_lkFiqn(j-l, k, last, n)*f_jk(addr, l, n)
-
-            #print('inner res', resinner)
-        resinner *= (gm.mpq(1, 5))**l
-        #print('outer res' , resinner)
-        resouter += resinner
-        #print('outer outer res', resouter)
-    return resouter 
-#print(f_jk('01221', 2, 3))
-#print(big_recursion(100))
+            inner_sum += f_lkFiqn(j-l, k, last, n)*f_jk(addr, l, n)
+        inner_sum *= (gm.mpq(1, 5))**l
+        outer_sum += inner_sum
+    return outer_sum 
 
 
 @mem
