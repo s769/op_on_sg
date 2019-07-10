@@ -1,6 +1,6 @@
 import numpy as np
 from recursions import mem, mem2, alpha, beta, gamma, zeros, eye
-from util import address_from_index, progress
+from util import address_from_index
 # import sympy as sp
 # from sympy import Rational as Rat
 import tqdm
@@ -27,7 +27,7 @@ def big_recursion(j):
         j: index of coefficients
 
     Returns:
-        coefficients a_j, b_j, p_j, q_j
+        4 x j+1 np.array of coefficients a_j, b_j, p_j, q_j from 0 to j
     '''
     p_arr = zeros(j+1,1)
     q_arr = zeros(j+1,1)
@@ -245,6 +245,8 @@ def generate_T(level, deg, frac=True):
     Args:
         level: level of SG required
         deg: maximum degree monomial required
+        frac: Boolean representing whether the coefficients should remain as fractions or should be
+        converted to floating point numbers at the end of all calculations.
 
     Returns:
         T: np.array with dimensions 3 x 3^(level+1) x deg+1.

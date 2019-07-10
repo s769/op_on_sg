@@ -16,24 +16,29 @@ For large computations that use all the coefficients for multiple times,
 it will be better to use the functions alpha_array, beta_array, etc..
 '''
 
-# This is a function that can be used to change the np.array float precision to 
-#   float32 (double)
 
+# This global variable can be used to change the recursion limit for better speed at high indices
 j_max_rec = 1000
 
-def array(*args, **kwargs):
-    """
-    This is a function that can be used to change the np.array float 
-        precision to float32 (double)
-    """
-    kwargs.setdefault("dtype", np.float32)
-    return np.array(*args, **kwargs)
+
+
+
+
+
 
 def zeros(m, n):
+    '''
+    This function creates an m x n array of gmpy2 zeros. 
+    It is used instead of np.zeros in places where rational arithmetic is required
+    '''
     arr = np.array([[gm.mpz(0) for i in range(n)] for j in range(m)])
     return arr
 
 def eye(n):
+    '''
+    This function creates an n x n identity matrix using gmpy2 ones and zeros. 
+    It is used instead of np.eye in places where rational arithmetic is required
+    '''
     arr = zeros(n, n)
     for i in range(n):
         arr[i, i] = gm.mpz(1)
@@ -57,6 +62,16 @@ def mem(func):
     return memoized_func
 
 def mem2(func):
+    '''
+    This is a decorator function that memoizes recursive functions that return arrays of 
+    values from index 0 to j. If the recursion has already been called on a higher index, this decorator
+    will cause the function to automatically return those precomputed values.
+
+    Example: Suppose mem2 decorates the function alpha_array(j), which returns [alpha_0, ... , alpha_j].
+    Calling alpha_array(10) will return [alpha_0, ... , alpha_10].
+    Calling alpha_array(5) immediately after will return [alpha_0, ... , alpha_10] without having to compute
+    those values again.
+    '''
     cache = dict()
 
     def memoized_func2(*args):
@@ -250,6 +265,15 @@ def gamma_array(max_order):
 
 @mem2
 def eta_array(max_order):
+    """Calculates the array of eta_j up to some order
+
+    Args:
+    max_order: Maximum order of j to be calculated (should be >= 1)
+
+    Returns: 
+    eta_arr: np.array of length (max_order+1) containing the first 
+        alpha values up to eta_{max_order}.
+    """
     eta_arr = zeros(max_order + 1, 1)
     eta_arr[0] = 0
     alpha_arr = alpha_array(max_order)
@@ -264,6 +288,15 @@ def eta_array(max_order):
 
 @mem2
 def ap_array(max_order):
+    """Calculates the array of alpha'_j up to some order
+
+    Args:
+    max_order: Maximum order of j to be calculated (should be >= 1)
+
+    Returns: 
+    ap_arr: np.array of length (max_order+1) containing the first 
+        alpha values up to alpha'_{max_order}.
+    """
     ap_arr = alpha_array(max_order)
     ap_arr[0] = gm.mpq(1, 2)
     return ap_arr

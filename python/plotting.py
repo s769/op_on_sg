@@ -126,29 +126,29 @@ def plot_monomial(num, k, level=7):
     return
 
 
-# METHODS FOR PLOTTING SOBOLOV ORTHOGONAL POLYNOMIALS
+# METHODS FOR PLOTTING Sobolev ORTHOGONAL POLYNOMIALS
 
 def getOmegas(deg, k):
     """
-    Function that generates the Sobolov Orthogonal Polynomials
+    Function that generates the Sobolev Orthogonal Polynomials
 
     Args:
-        deg - highest degree of the Sobolov Orthogonal Polynomial
+        deg - highest degree of the Sobolev Orthogonal Polynomial
             we would like to find
-        k - Type of Sobolov Orthogonal Polynomial (k = 1,2,3)
+        k - Type of Sobolev Orthogonal Polynomial (k = 1,2,3)
     
     Returns:
         W - (deg+2)*(deg+2) matrix, representing the coefficients of 
-            the Sobolov Orthogonal Polynomial of order 0 - deg+1
+            the Sobolev Orthogonal Polynomial of order 0 - deg+1
     """
 
-    # Generate the Sobolov orthogonal polynomials
+    # Generate the Sobolev orthogonal polynomials
     W = generate_op(deg,k,1,frac=False)
     return W[:deg+2, :deg+2]
 
 def eval_SOP(deg, T, k, level=7):
     """
-    Function that evaluates the Sobolov Orthogonal Polynomials
+    Function that evaluates the Sobolev Orthogonal Polynomials
 
     Args:
         deg - Degree of SOP s_{j} we would like to evaluate
@@ -175,7 +175,7 @@ def eval_SOP(deg, T, k, level=7):
 
 def plot_SOP(num, k, level=7):
     """
-    Plot the Sobolov Orthogonal Polynomials
+    Plot the Sobolev Orthogonal Polynomials
 
     Args: 
         num - Number of Antisymmetric SOPs we would like to plot
@@ -198,29 +198,29 @@ def plot_SOP(num, k, level=7):
 plot_SOP(2, 1)
 
 
-# OLD FUNCTIONS FOR CALCULATING SOBOLOV FOR ANTISYMMETRIC
+# OLD FUNCTIONS FOR CALCULATING Sobolev FOR ANTISYMMETRIC
 # CAN BE DELETED IN THE FUTURE
 
 
-"""
+
 def getOmegas3(deg):
     # Function that generates the coefficients of the 
-    #     Antisymmetric Sobolov Orthogonal Polynomials
+    #     Antisymmetric Sobolev Orthogonal Polynomials
 
     # Args:
-    #     deg - highest degree of the Sobolov Orthogonal Polynomial
+    #     deg - highest degree of the Sobolev Orthogonal Polynomial
     #         we would like to find
     
     # Returns:
     #     W - (deg+2)*(deg+2) matrix, representing the coefficients of 
-    #         the Sobolov Orthogonal Polynomial of order 0 - deg+1
+    #         the Sobolev Orthogonal Polynomial of order 0 - deg+1
 
-    # Generate the Sobolov orthogonal polynomials
+    # Generate the Sobolev orthogonal polynomials
     W = generate_op(deg,3,1,frac=False)
     return W[:deg+2, :deg+2]
 
 def eval_antisymm(deg, T, level=7):
-    # Function that evaluates the Antisymmetric Sobolov Orthogonal Polynomials
+    # Function that evaluates the Antisymmetric Sobolev Orthogonal Polynomials
 
     # Args:
     #     deg - Degree of SOP s_{j} we would like to evaluate
@@ -246,7 +246,7 @@ def eval_antisymm(deg, T, level=7):
 
 def plot_antisymm(num, level=7):
 
-    # Plot the Antisymmetric Sobolov Orthogonal Polynomials
+    # Plot the Antisymmetric Sobolev Orthogonal Polynomials
 
     # Args: 
     #     num - Number of Antisymmetric SOPs we would like to plot
@@ -263,4 +263,3 @@ def plot_antisymm(num, level=7):
         gaskplot(p, level, ax)
     plt.show()    
     return
-"""

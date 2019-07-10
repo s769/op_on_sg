@@ -8,7 +8,7 @@ k = 0
 
 plot_monomial(num, k)
 
-# 2. This plots the Sobolov Orthogonal Polynomials
+# 2. This plots the Sobolev Orthogonal Polynomials
 # num represent the highest power to be plotted
 # k represent the type of monomial {0,1,2} -> {1, 2, 3}
 plot_SOP(num, k)
