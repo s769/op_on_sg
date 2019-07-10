@@ -9,16 +9,16 @@ from recursions import alpha, beta, gamma
 # import sympy as sp
 # from sympy import Rational as Rat
 import gmpy2 as gm
-T = generate_T(7, 256, frac=False)
+#T = generate_T(7, 19, frac=False)
 # # print("Now I will save everything!")
 
 #scipy.io.savemat('../data/Tarray.mat', dict(T=T))
-# n = 3
-# k = 3
-# normalized = 1
-# lam=np.array([1])
-# ops_sob = generate_op(n, k, normalized, lam, frac=False)
-# print(ops_sob)
+n = 3
+k = 3
+normalized = 1
+lam=np.array([1])
+ops_sob = generate_op(n, k, normalized, lam, frac=True)
+print(ops_sob)
 # # # print("Now I will save everything!")
 # # print(ops_leg)
 #scipy.io.savemat('../data/sob20coefs.mat', dict(ops=ops_sob))

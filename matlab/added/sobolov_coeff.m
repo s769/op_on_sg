@@ -1,13 +1,13 @@
 function [sob_coeff_mat] = sobolov_coeff(r, lambda, j, norm_flag)
 %SOBOLOV_COEFF 
-%   Goal: Gives a representation of Sobolov polynomials in terms
+%   Goal: Gives a representation of Sobolev polynomials in terms
 %           of the monomial basis
 %   Inputs: r is the number of orders we want to calculate the coefficients
-%           lambda is the coefficient used in the Sobolov inner product
+%           lambda is the coefficient used in the Sobolev inner product
 %           j\in {1,2,3} is the type of SOP that we're working with
 %           norm_flag = 1 if we want to normalize, 0 if not
 %   Outputs: sob_coeff_mat is a (r+1)*(r+1) matrix representing the
-%               coefficients of the Sobolov orthogonal polynomials               
+%               coefficients of the Sobolev orthogonal polynomials               
 
 
 % First build up the inner product matrix
@@ -87,7 +87,7 @@ if (norm_flag == 1)
             end
         end
         
-        % Part II: Sobolov addition
+        % Part II: Sobolev addition
         for l2=2:1:l1
             for l3=2:1:l1
                 temp_inner = temp_inner + lambda * sob_coeff_mat(l1, l2) * ...

@@ -1,11 +1,11 @@
 function [sob_inner_val] = inner_prod_sob(r, m, n, s, t, lambda, mat_flag)
 %INNER_PROD_VAL 
-%   Goal: Generate the inner product matrix of Sobolov norm
+%   Goal: Generate the inner product matrix of Sobolev norm
 %       A_{mn}(s+1,t+1) = <P_sm, P_tn>+lambda<P_(s-1)m, P_(t-1)n>
 %   Inputs: r represent the number of layers we want to calculate
 %           1<=m,n<=3 represent the second index we're working on
 %           0<=s,t<=r represent the first index we're working on
-%           lambda represent the coefficient in the Sobolov norm
+%           lambda represent the coefficient in the Sobolev norm
 %           mat_flag is 1 when we want to find the entire matrix, 0 if only
 %               1 value is needed
 %   Outputs: inner_val is an (r+1)*(r+1) matrix representing all the inner

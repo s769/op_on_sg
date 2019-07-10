@@ -3,9 +3,9 @@ function [outputArg1,outputArg2] = gram_schmidt(r, lambda, ...
 %GRAM_SCHMIDT Implements the Gram-Schmidt algorithm
 %   Detailed explanation goes here
 %   Inputs: r is the dimension of the matrix we're working with
-%           lambda is the coefficient used in the Sobolov inner product
+%           lambda is the coefficient used in the Sobolev inner product
 %           j\in {1,2,3} is the type of SOP that we're working with
-%           norm_type is 1 for ordinary norm, and 0 for Sobolov
+%           norm_type is 1 for ordinary norm, and 0 for Sobolev
 %           norm_flag is 1 for normalization of rows, 0 for not
 
 % Start with the identity matrix

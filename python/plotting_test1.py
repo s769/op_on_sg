@@ -21,10 +21,14 @@ k = 0
 
 #plot_monomial(num, k)
 
+<<<<<<< HEAD
+# 2. This plots the Sobolev Orthogonal Polynomials
+=======
 # 2. To plot the easy basis, use plot_easy_basis
 #plot_easy_basis(num, k)
 
 # 3. This plots the Sobolov Orthogonal Polynomials
+>>>>>>> bc33c3792b55e0cf1f89eebf79d2cbab591ce602
 # num represent the highest power to be plotted
 # k represent the type of monomial {0,1,2} -> {1, 2, 3}
 #plot_SOP(num, k)

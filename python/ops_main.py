@@ -2,8 +2,8 @@ import numpy as np
 from Polynomial import Polynomial
 from innerprods import lis2str
 import scipy.io
-import sympy as sp
-from sympy import Rational as Rat
+# import sympy as sp
+# from sympy import Rational as Rat
 import tqdm
 from recursions import alpha_array, beta_array, gamma_array, eta_array, ap_array, zeros, eye
 import gmpy2 as gm
@@ -27,6 +27,8 @@ def generate_op(n, k, normalized=True, lam=np.array([1]), frac=True):
             product. The default value is 1 (corresponding to the regular 
             Sobolev inner product). If lam = np.array([0]), 
             this is the L2 inner product.
+        frac: Boolean representing whether the coefficients should remain as fractions or should be
+        converted to floating point numbers at the end of all calculations.
 
     Returns:
         np.array of coefficients of the orthogonal polynomials with 
@@ -34,7 +36,8 @@ def generate_op(n, k, normalized=True, lam=np.array([1]), frac=True):
             this array is a polynomial, and there are n+1 rows and n+1 
             columns.
             If normalized is True, the polynomials will be normalized. 
-            Otherwise, the polynomials will be monic.
+            Otherwise, the polynomials will be monic. If normalized is True, frac must be False
+            to obtain normalized coefficients.
     
     '''
     print('Calculating alpha, beta, etc...')
@@ -67,7 +70,9 @@ def generate_op(n, k, normalized=True, lam=np.array([1]), frac=True):
             norm = Polynomial.fast_inner(v_i, v_i, GM)
             u_r -= (proj/norm)*v_i
         o_basis_mat[r] = u_r#basis_mat[r] - res
-    
+    if frac and normalized:
+        print('Normalization requires conversion to float. Please set frac = False.')
+        print('Generating non-normalized coefficients now...')
     if not frac:
         if normalized:
             o_basis_arr = np.zeros((n+1, n+1))
