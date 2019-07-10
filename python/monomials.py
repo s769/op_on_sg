@@ -1,14 +1,11 @@
 import numpy as np
 from recursions import mem, mem2, alpha, beta, gamma, zeros, eye
 from util import address_from_index
-# import sympy as sp
-# from sympy import Rational as Rat
 import tqdm
-#from joblib import Parallel, delayed
 import time
 import gmpy2 as gm
 import copy
-#import const
+
 '''
 This file contains the functions that will compute the values of the 
     easy/monomial basis on a given level of SG. The recursive functions 
@@ -169,7 +166,7 @@ def p_jk(addr, j, k):
     Returns:
         value of p_jk(F_w(q_i))
     '''
-
+    # Based on (2.14), (2.20) of the Calculus paper
     if k == 1:
         res = f_jk(addr, j, 0)
         for l in range(j+1):
@@ -185,10 +182,6 @@ def p_jk(addr, j, k):
 
     return res
 
-# ans = f_lkFiqn(0, 1, 1, 0)*f_lkFiqn(0,0,1,0)+f_lkFiqn(0,1,1,1)*f_lkFiqn(0,1,1,0)+f_lkFiqn(0,1,1,2)*f_lkFiqn(0,2,1,0)
-# print(ans)
-#print(f_lkFiqn(0,2,1,0))
-#print(f_jk('0', 0, 3))
 
 def generate_W(level, deg, frac=True):
     '''
@@ -201,19 +194,22 @@ def generate_W(level, deg, frac=True):
 
     Returns:
         W: np.array with dimensions 3 x 3^(level+1) x deg+1.
-        The kth page of T has values of the easy basis f_jk (j = 0...deg) 
+        The kth page of W has values of the easy basis f_jk (j = 0...deg) 
             at each of the 3^(level+1) TLR indices of points on the given level 
             of SG.
     '''
-    #computes big_recursion at the highest degree so lower values are stored for later use
-    # print('Computing Big_Recursion... this may take some time')
+    # Computes big_recursion at the highest degree, and lower values are 
+    #   stored for later use
+    print('Computing Big_Recursion... this may take some time')
     big_recursion(deg+1)
+
+    # Initialize the W array based on how things should be stored.
     if frac:
-        #T = np.empty((3**(level + 1), deg+1, 3), dtype='object')
         W = np.empty((3, 3**(level + 1), deg+1), dtype='object')
     else:
-        #T = np.zeros((3**(level + 1), deg+1, 3))
         W = np.zeros((3, 3**(level + 1), deg+1))
+    
+    # Main loop to fill in the values of the W array
     for i in tqdm.tqdm(range(3**(level + 1))):
         # This preparation is due to the different address structure 
         #   used in this file an in util.py
@@ -222,9 +218,7 @@ def generate_W(level, deg, frac=True):
         addr = ''.join(str(int(x)) for x in addr)
         for j in tqdm.tqdm(range(deg + 1)):
             for k in tqdm.tqdm(range(1, 4)):
-                #T[i, j, k-1] = p_jk(addr, j, k)
-                W[k-1,i, j] = f_jk(addr, j, k-1)
-        #progress(i, 3**(level+1), status='computing monomial values')
+                W[k-1, i, j] = f_jk(addr, j, k-1)
     return W
 
 
@@ -236,24 +230,29 @@ def generate_T(level, deg, frac=True):
     Args:
         level: level of SG required
         deg: maximum degree monomial required
-        frac: Boolean representing whether the coefficients should remain as fractions or should be
-        converted to floating point numbers at the end of all calculations.
+        frac: Boolean representing whether the coefficients should 
+            remain as fractions or should be converted to floating point 
+            numbers at the end of all calculations.
 
     Returns:
         T: np.array with dimensions 3 x 3^(level+1) x deg+1.
-        The kth page of T has values of the monomials P_jk (j = 0...deg) 
-            at each of the 3^(level+1) TLR indices of points on the given level 
-            of SG.
+            The kth page of T has values of the monomials P_jk 
+            (j = 0...deg) at each of the 3^(level+1) TLR indices of 
+            points on the given level of SG.
     '''
-    #computes big_recursion at the highest degree so lower values are stored for later use
+
+    # Computes big_recursion at the highest degree, and lower values 
+    #   are stored for later use.
     print('Computing Big_Recursion... this may take some time')
     big_recursion(deg+1)
+    
+    # Initialize the T array based on how things should be stored.
     if frac:
-        #T = np.empty((3**(level + 1), deg+1, 3), dtype='object')
         T = np.empty((3, 3**(level + 1), deg+1), dtype='object')
     else:
-        #T = np.zeros((3**(level + 1), deg+1, 3))
         T = np.zeros((3, 3**(level + 1), deg+1))
+
+    # Main loop to fill in the values of the T array
     for i in tqdm.tqdm(range(3**(level + 1))):
         # This preparation is due to the different address structure 
         #   used in this file an in util.py
@@ -262,9 +261,7 @@ def generate_T(level, deg, frac=True):
         addr = ''.join(str(int(x)) for x in addr)
         for j in tqdm.tqdm(range(deg + 1)):
             for k in tqdm.tqdm(range(1, 4)):
-                #T[i, j, k-1] = p_jk(addr, j, k)
-                T[k-1,i, j] = p_jk(addr, j, k)
-        #progress(i, 3**(level+1), status='computing monomial values')
+                T[k-1, i, j] = p_jk(addr, j, k)
     return T
 
 
