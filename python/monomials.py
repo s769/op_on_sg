@@ -271,7 +271,7 @@ def generate_W(level, deg, frac=True):
         for j in tqdm.tqdm(range(deg + 1)):
             for k in tqdm.tqdm(range(1, 4)):
                 #T[i, j, k-1] = p_jk(addr, j, k)
-                W[k-1,i, j] = f_jk(addr, j, k)
+                W[k-1,i, j] = f_jk(addr, j, k-1)
         #progress(i, 3**(level+1), status='computing monomial values')
     return W
 
