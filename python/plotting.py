@@ -126,9 +126,6 @@ def plot_monomial(num, k, level=7):
     return
 
 
-<<<<<<< HEAD
-# METHODS FOR PLOTTING Sobolev ORTHOGONAL POLYNOMIALS
-=======
 # METHODS FOR PLOTTING EASY BASIS
 
 def plot_easy_basis(num, k, level=7):
@@ -154,7 +151,6 @@ def plot_easy_basis(num, k, level=7):
 
 
 # METHODS FOR PLOTTING SOBOLOV ORTHOGONAL POLYNOMIALS
->>>>>>> bc33c3792b55e0cf1f89eebf79d2cbab591ce602
 
 def getOmegas(deg, k):
     """
@@ -291,3 +287,5 @@ def plot_antisymm(num, level=7):
         gaskplot(p, level, ax)
     plt.show()    
     return
+
+
