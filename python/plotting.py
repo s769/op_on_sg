@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 from mpl_toolkits import mplot3d
-from monomials import generate_T
+from monomials import generate_T, generate_W
 from ops_main import generate_op
 import math
 import itertools
@@ -126,7 +126,35 @@ def plot_monomial(num, k, level=7):
     return
 
 
+<<<<<<< HEAD
 # METHODS FOR PLOTTING Sobolev ORTHOGONAL POLYNOMIALS
+=======
+# METHODS FOR PLOTTING EASY BASIS
+
+def plot_easy_basis(num, k, level=7):
+    """
+    Plot the Easy Basis
+
+    Args: 
+        num - Number of monomials we would like to plot
+        k - Type of Monomial (k = 0, 1, 2)
+        level - The level we would like to plot each monomial
+    
+    Returns: 
+        figures of the SOP of type k, from P_{num-1, k} down to P_{0, k}.
+    """
+    W = generate_W(level, num, frac=False)
+    for j in range(num):
+        plt.figure()
+        ax = plt.axes(projection='3d')
+        p = W[k, :, j]
+        gaskplot(p, level, ax)
+    plt.show()    
+    return
+
+
+# METHODS FOR PLOTTING SOBOLOV ORTHOGONAL POLYNOMIALS
+>>>>>>> bc33c3792b55e0cf1f89eebf79d2cbab591ce602
 
 def getOmegas(deg, k):
     """
@@ -160,7 +188,7 @@ def eval_SOP(deg, T, k, level=7):
         q - Values of the SOP of type k at some level
     """
     # Fetch the particular coefficients of SOP 
-    W = getOmegas3(deg)
+    W = getOmegas(deg, 3)
     coeff = W[deg]
    
     q = np.zeros(3**(level+1))
@@ -195,7 +223,7 @@ def plot_SOP(num, k, level=7):
     return
 
 #plot_monomial(4, 0)
-plot_SOP(2, 1)
+#plot_SOP(2, 1)
 
 
 # OLD FUNCTIONS FOR CALCULATING Sobolev FOR ANTISYMMETRIC
