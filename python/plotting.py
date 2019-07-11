@@ -1,11 +1,14 @@
-import numpy as np
-from matplotlib import pyplot as plt
-from mpl_toolkits import mplot3d
-from monomials import generate_T, generate_W
-from ops_main import generate_op
 import math
 import itertools
+
+import numpy as np
 import gmpy2 as gm
+from matplotlib import pyplot as plt
+from mpl_toolkits import mplot3d
+
+from monomials import generate_T, generate_W
+from ops_main import generate_op
+
 
 ### GENERAL PLOTTING METHODS
 

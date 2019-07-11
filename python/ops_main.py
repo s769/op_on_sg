@@ -1,13 +1,12 @@
 import numpy as np
-from Polynomial import Polynomial
-from innerprods import lis2str
-import scipy.io
-# import sympy as sp
-# from sympy import Rational as Rat
+import gmpy2 as gm
 import tqdm
+
 from recursions import alpha_array, beta_array, gamma_array, eta_array,\
     ap_array, zeros_gm, eye_gm
-import gmpy2 as gm
+from innerprods import lis2str
+from Polynomial import Polynomial
+
 
 '''
 This is the main file used for computing the orthogonal polynomials.

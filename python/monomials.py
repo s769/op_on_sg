@@ -1,10 +1,12 @@
-import numpy as np
-from recursions import mem, mem2, alpha, beta, gamma, zeros_gm
-from util import address_from_index
-import tqdm
 import time
-import gmpy2 as gm
 import copy
+
+import numpy as np
+import gmpy2 as gm
+import tqdm
+
+from recursions import mem, mem2, alpha, beta, gamma, eta, tau, zeros_gm
+from util import address_from_index
 
 '''
 This file contains the functions that will compute the values of the 
@@ -108,6 +110,7 @@ def f_lkFiqn(l, k, i, n):
         return gm.mpq(p1,(5**l))
 
     return gm.mpq(q1,(5**l))
+
 
 @mem
 def f_jk(addr, j, k):

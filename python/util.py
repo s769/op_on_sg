@@ -1,11 +1,13 @@
+import sys
+
 import numpy as np
+import gmpy2 as gm
 
 from recursions import alpha_array, gamma_array
 
-import sys
-import gmpy2 as gm
-
-# This file will implement helper functions written in the matlab files.
+"""
+This file will implement general helper functions. 
+"""
 
 def address_from_index(level, index):
     """Computes address vector from the index.

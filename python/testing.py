@@ -1,14 +1,17 @@
-from monomials import generate_T
-from ops_main import generate_op
-from Polynomial import Polynomial
-from innerprods import lis2str
-import scipy.io 
 import numpy as np
+import gmpy2 as gm
 import tqdm
+
 from recursions import alpha, beta, gamma
+from monomials import generate_T
+from innerprods import lis2str
+from Polynomial import Polynomial
+from ops_main import generate_op
+
+
 # import sympy as sp
 # from sympy import Rational as Rat
-import gmpy2 as gm
+
 #T = generate_T(7, 19, frac=False)
 # # print("Now I will save everything!")
 

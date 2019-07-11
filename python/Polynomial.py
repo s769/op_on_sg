@@ -1,10 +1,11 @@
 import numpy as np
-from innerprods import lis2str, inner_dict, symmetrize, vals_dict, norm_dict
-from recursions import zeros_gm
-# import sympy as sp
-# from sympy import Rational as Rat
-import tqdm
 import gmpy2 as gm
+import tqdm
+
+from recursions import zeros_gm
+from innerprods import lis2str, inner_dict, symmetrize, vals_dict, norm_dict
+
+
 '''
 This file contains the class Polynomial which is used to create orthogonal 
     polynomials with respect to various inner products.

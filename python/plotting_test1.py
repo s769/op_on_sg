@@ -1,12 +1,12 @@
 import sys
+
 import numpy as np
 import gmpy2 as gm
 
+from util import address_from_index
+from recursions import alpha
 from monomials import generate_W
 from plotting import plot_monomial, plot_easy_basis, plot_SOP
-from util import address_from_index
-
-from recursions import alpha
 
 
 np.set_printoptions(threshold=sys.maxsize)

@@ -1,10 +1,12 @@
+import functools
+
 import numpy as np
+import gmpy2 as gm
+
 from recursions import alpha, beta, gamma, eta, ap, alpha_array,\
     beta_array, gamma_array, eta_array, ap_array
-import functools
-# import sympy as sp
-# from sympy import Rational as Rat
-import gmpy2 as gm
+
+
 '''
 This file contains functions used to compute the L2 inner product 
 between the monomial baisis P_jk. The algorithms for computing the inner 
