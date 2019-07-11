@@ -3,3 +3,5 @@
 .vscode/
 */__pycache__/*
 python/__pycache__/*
+/data/ops20.npz
+/data/ops20evals.npz
