@@ -8,6 +8,11 @@ from mpl_toolkits import mplot3d
 
 from monomials import generate_T, generate_W
 from ops_main import generate_op
+from recursions import zeros_gm, eye_gm
+import math
+import itertools
+import gmpy2 as gm
+import tqdm
 
 
 ### GENERAL PLOTTING METHODS
@@ -153,9 +158,9 @@ def plot_easy_basis(num, k, level=7):
     return
 
 
-# METHODS FOR PLOTTING SOBOLOV ORTHOGONAL POLYNOMIALS
+# METHODS FOR PLOTTING SOBOLEV ORTHOGONAL POLYNOMIALS
 
-def getOmegas(deg, k):
+def getOmegas(deg, k, frac=True, coefs=None):
     """
     Function that generates the Sobolev Orthogonal Polynomials
 
@@ -168,12 +173,21 @@ def getOmegas(deg, k):
         W - (deg+2)*(deg+2) matrix, representing the coefficients of 
             the Sobolev Orthogonal Polynomial of order 0 - deg+1
     """
+    if coefs is None:
+        W = generate_op(deg,k,1,frac=frac)
+    elif isinstance(coefs, tuple):
+        filename, arr = coefs
+        W = np.load(filename, allow_pickle=frac)[arr]
 
+    else:
+        W = coefs 
+
+        
     # Generate the Sobolev orthogonal polynomials
-    W = generate_op(deg,k,1,frac=False)
+
     return W[:deg+2, :deg+2]
 
-def eval_SOP(deg, T, k, level=7):
+def eval_op(deg, k, level=7, T=None, frac=True, coefs=None):
     """
     Function that evaluates the Sobolev Orthogonal Polynomials
 
@@ -186,21 +200,38 @@ def eval_SOP(deg, T, k, level=7):
     Returns:
         q - Values of the SOP of type k at some level
     """
+
+    if T is None:
+        T = generate_T(level, deg, frac=frac)
+    elif isinstance(T, (tuple)):
+        filename, arr = T
+        T = np.load(filename, allow_pickle=frac)[arr]
+
+
+
     # Fetch the particular coefficients of SOP 
-    W = getOmegas(deg, 3)
-    coeff = W[deg]
+
+    W = getOmegas(deg, 3, frac=frac, coefs=coefs)
+
+    coefs = W[:deg+1,:deg+1]
    
-    q = np.zeros(3**(level+1))
+    #q = zeros(deg+1, 3**(level+1))
 
     # Evaluate SOP at each point
-    for i in range(deg+1):
-        #if math.isclose(coeff[i], 0, abs_tol=1e-1):
-            #print("Prepare for doom")
-        q += coeff[i]*T[k, :, i]
+    # for i in range(deg+1):
+    #     #if math.isclose(coeff[i], 0, abs_tol=1e-1):
+    #         #print("Prepare for doom")
+    #     print()
+    #     q[i] += coeffs[i]*T[k-1, :, i])
+    Tarr = T[k-1, :, :deg+1]
 
-    return q
+    q = np.empty((deg+1, Tarr.shape[0]), dtype=object)
+    print('Evaluating Orthogonal Polynomials')
+    for i in tqdm.tqdm(range(deg+1)):
+        q[i] = np.sum(coefs[i]*Tarr, axis=1)
+    return q#(T[k-1, :, :].dot(coefs.T)).T
 
-def plot_SOP(num, k, level=7):
+def plot_op(num, k, level=7, T=None, coefs=None):
     """
     Plot the Sobolev Orthogonal Polynomials
 
@@ -212,12 +243,11 @@ def plot_SOP(num, k, level=7):
     Returns: 
         figures of the SOP of type k, from s_{num-1} down to s_{0}.
     """
-    T = generate_T(level, num, frac=False)
+    p = eval_op(num, k, level=level, T=T, frac=False, coefs=coefs)
     for j in range(num):
         plt.figure()
         ax = plt.axes(projection='3d')
-        p = eval_SOP(j, T, k, level)
-        gaskplot(p, level, ax)
+        gaskplot(p[j], level, ax)
     plt.show()    
     return
 
