@@ -1,5 +1,5 @@
 import numpy as np
-from recursions import mem, mem2, alpha, beta, gamma, zeros, eye
+from recursions import mem, mem2, alpha, beta, gamma, zeros_gm
 from util import address_from_index
 import tqdm
 import time
@@ -26,10 +26,10 @@ def big_recursion(j):
         4 x j+1 np.array of coefficients a_j, b_j, p_j, q_j from 0 to j
     '''
     # Initialize space for the coefficients
-    p_arr = zeros(j+1,1)
-    q_arr = zeros(j+1,1)
-    a_arr = zeros(j+1,1)
-    b_arr = zeros(j+1,1)
+    p_arr = zeros_gm(j+1,1)
+    q_arr = zeros_gm(j+1,1)
+    a_arr = zeros_gm(j+1,1)
+    b_arr = zeros_gm(j+1,1)
 
     # Initialize arrays for the 0-th term
     a_arr[0] = gm.mpq(7, 45)
@@ -60,7 +60,7 @@ def big_recursion(j):
         # Implements equation (5.5) in Splines paper
         res1 = 0
         res2 = 0
-        vec = zeros(2,1)
+        vec = zeros_gm(2,1)
         for k in range(l):
             p = p_arr[l-k]
             q = q_arr[l-k]

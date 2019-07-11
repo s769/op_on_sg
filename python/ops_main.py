@@ -5,7 +5,8 @@ import scipy.io
 # import sympy as sp
 # from sympy import Rational as Rat
 import tqdm
-from recursions import alpha_array, beta_array, gamma_array, eta_array, ap_array, zeros, eye
+from recursions import alpha_array, beta_array, gamma_array, eta_array,\
+    ap_array, zeros_gm, eye_gm
 import gmpy2 as gm
 
 '''
@@ -51,9 +52,9 @@ def generate_op(n, k, normalized=True, lam=np.array([1]), frac=True):
 
 #   for i in range(n+1):
 #     basis_mat[i, 3*i + k - 1] = 1
-    basis_mat = eye(n+1)
+    basis_mat = eye_gm(n+1)
     #o_basis_mat = np.zeros((n+1, 3*n+3))
-    o_basis_mat = zeros(n+1, n+1)
+    o_basis_mat = zeros_gm(n+1, n+1)
     
 
     o_basis_mat[0] = basis_mat[0]

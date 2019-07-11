@@ -1,5 +1,6 @@
 import numpy as np
-from innerprods import lis2str, inner_dict, symmetrize, vals_dict, norm_dict, zeros, eye
+from innerprods import lis2str, inner_dict, symmetrize, vals_dict, norm_dict
+from recursions import zeros_gm
 # import sympy as sp
 # from sympy import Rational as Rat
 import tqdm
@@ -55,7 +56,7 @@ class Polynomial:
                 regular Sobolev inner product).
         '''
         if not len(coefs) == 3*j+3:
-            ad = zeros(3*j+3 - len(coefs), 1)
+            ad = zeros_gm(3*j+3 - len(coefs), 1)
             coefs = np.append(coefs, ad)
         self.coefs = coefs
         self.j = j
@@ -154,7 +155,7 @@ class Polynomial:
             return
 
 
-        arr = zeros(3*n+3, 3*n+3)
+        arr = zeros_gm(3*n+3, 3*n+3)
         #The following if else statements make an array lam_arr that represents the weights of all the integrals 
         # in the inner product formula. This is required because lam only describes the weights on the integrals with positive order laplacians because
         # integrals with positive order laplacians as we consider the weight on the L2 inner product to be 1. 
@@ -200,7 +201,7 @@ class Polynomial:
         if Polynomial.has_GM(3*n+3, lam):
             return
 
-        arr = zeros(n, n)
+        arr = zeros_gm(n, n)
         if not (np.array_equal(lam, np.array([1])) \
                 or np.array_equal(lam, np.array([0]))):
             lam_arr = [np.array([1]), np.array([0]), lam]
@@ -238,9 +239,9 @@ class Polynomial:
     @staticmethod
     def pad(obj1, obj2):
         if len(obj1.coefs) > len(obj2.coefs):
-           obj2.coefs = np.append(obj2.coefs, (zeros(len(obj1.coefs)-len(obj2.coefs), 1)))
+           obj2.coefs = np.append(obj2.coefs, (zeros_gm(len(obj1.coefs)-len(obj2.coefs), 1)))
         elif len(obj1.coefs) < len(obj2.coefs):
-            obj1.coefs = np.append(obj1.coefs, (zeros(len(obj2.coefs)-len(obj1.coefs), 1)))
+            obj1.coefs = np.append(obj1.coefs, (zeros_gm(len(obj2.coefs)-len(obj1.coefs), 1)))
         arr1 = obj1.coefs
         arr2 = obj2.coefs
 

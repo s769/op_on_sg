@@ -30,16 +30,16 @@ def zeros_gm(m, n):
     return arr
 
 
-# def eye_gm(n):
-#     '''
-#     This function creates an n x n identity matrix using gmpy2 ones 
-#         and zeros. It is used instead of np.eye in places where rational 
-#         arithmetic is required.
-#     '''
-#     arr = zeros_gm(n, n)
-#     for i in range(n):
-#         arr[i, i] = gm.mpz(1)
-#     return arr
+def eye_gm(n):
+    '''
+    This function creates an n x n identity matrix using gmpy2 ones 
+        and zeros. It is used instead of np.eye in places where rational 
+        arithmetic is required.
+    '''
+    arr = zeros_gm(n, n)
+    for i in range(n):
+        arr[i, i] = gm.mpz(1)
+    return arr
 
 def mem(func):
     '''

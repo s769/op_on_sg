@@ -1,6 +1,6 @@
 import numpy as np
 from recursions import alpha, beta, gamma, eta, ap, alpha_array,\
-    beta_array, gamma_array, eta_array, ap_array, zeros, eye
+    beta_array, gamma_array, eta_array, ap_array
 import functools
 # import sympy as sp
 # from sympy import Rational as Rat
