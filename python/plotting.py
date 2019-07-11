@@ -224,8 +224,8 @@ def eval_op(deg, k, level=7, T=None, frac=True, coefs=None):
     #     print()
     #     q[i] += coeffs[i]*T[k-1, :, i])
     Tarr = T[k-1, :, :deg+1]
-
-    q = np.empty((deg+1, Tarr.shape[0]), dtype=object)
+    dtype = object if frac else np.float64
+    q = np.empty((deg+1, Tarr.shape[0]), dtype=dtype)
     print('Evaluating Orthogonal Polynomials')
     for i in tqdm.tqdm(range(deg+1)):
         q[i] = np.sum(coefs[i]*Tarr, axis=1)
