@@ -43,7 +43,7 @@ def big_recursion(j):
         return np.vstack((a_arr, b_arr, p_arr, q_arr))
     
     # Main recursion
-    for l in tqdm.tqdm(range(1, j+1)):
+    for l in range(1, j+1):
         # Implements equation (5.6) in Splines paper
         res3 = 0
         res4 = 0

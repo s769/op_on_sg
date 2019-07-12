@@ -2,8 +2,9 @@ import numpy as np
 from recursions import alpha, beta, gamma, eta, ap
 import gmpy2 as gm
 import itertools
-from monomials import p_jk, generate_T
+from monomials import p_jk, generate_T, f_jk
 from Polynomial import Polynomial
+import sympy as sp
 
 
 def make_vortex(max_level):
@@ -66,5 +67,47 @@ def quad_int(func, j):
 # print(float(actual))
 # print(abs(quad-actual))
 
+def make_block(ind1, ind2):
 
+
+    # ad0, ad1, ad2 = '0', '1', '2'
+    ad0 = '0'
+    for _ in itertools.repeat(None, ind1):
+        ad0 += '1'
+        # ad1 += '2'
+        # ad2 += '0'
+
+    
+    a = f_jk(ad0, ind2, 1)
+    b = f_jk(ad0, ind2, 2)
+    c = f_jk(ad0, ind2, 3)
+    return sp.Matrix([[a, b, c], [c, a, b], [b, c, a]])
+
+def make_big_mat(j):
+    big_list = []
+    for ind1 in range(1,j+1):
+        small_list = []
+        for ind2 in range(1,j+1):
+            small_list.append(make_block(ind1, ind2))
+        big_list.append(small_list)
+    
+    return sp.BlockMatrix(big_list)
+def block_to_regular(mat):
+    res = sp.zeros(mat.rows, mat.cols)
+    for i in range(mat.rows):
+        for j in range(mat.cols):
+            res[i, j] = mat[i, j]
+    return res
+res = block_to_regular(make_big_mat(2))
+
+# for i in range(10):
+#     print(sp.block_collapse(res**i))
+
+# #print(res.eigenvects())
+# print(res.eigenvals())
+
+# C1 = make_block(3, 2)
+# C2 = make_block(2, 3)
+# print(C1*C2-C2*C1)
+#print(sp.block_collapse(res.inverse()))
 
