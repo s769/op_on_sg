@@ -5,7 +5,7 @@ import gmpy2 as gm
 
 from util import address_from_index
 from recursions import alpha
-from monomials import generate_W
+from monomials import generate_W, generate_norm_W, generate_norm_T
 from plotting import plot_monomial, plot_easy_basis, plot_op
 
 
@@ -16,10 +16,10 @@ np.set_printoptions(threshold=sys.maxsize)
 # 1. To plot the monomials, use plot_monomial
 # num represent the highest power to be plotted
 # k represent the type of monomial {0,1,2} -> {1, 2, 3}
-num = 3
-k = 0
+# num = 3
+# k = 0
 
-plot_monomial(num, k)
+#plot_monomial(num, k)
 
 # 2. To plot the easy basis, use plot_easy_basis
 #plot_easy_basis(num, k)
@@ -103,3 +103,23 @@ plot_monomial(num, k)
 #     print(ind_arrange_2[i])
 #     print("Value ", (i+10))
 #     print(prop[ind_arrange_2[i]])
+
+
+### 4. Verifying the value of \partial_{n}p_{jk} ###
+
+# Again we can assume k = 0.
+
+# Order of the easy basis j (>=0)
+j = 7
+
+# Fetch the values for \partial_{n}p_{jk}
+# norm_W = generate_norm_W(1, j+2, False)
+# norm_f00 = norm_W[0, :, j]
+# print(norm_f00)
+
+# Fetch the values for \partial_{n}p_{jk}
+norm_T = generate_norm_T(0, j+2, False)
+norm_P01 = norm_T[1, :, j]
+print()
+print()
+print(norm_P01)
