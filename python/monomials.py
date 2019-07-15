@@ -186,6 +186,85 @@ def p_jk(addr, j, k):
     return res
 
 
+@mem
+def norm_f_jk(addr, j, k):
+    '''
+    This function calculates the value of the normal derivative of the 
+        easy basis \partial_{n}f_jk at a point on SG addressed by addr. 
+
+    Args:
+        j, k: indices mentioned in preceding paragraph.
+        addr: address of evaluation point F_w(q_n) given as a string of 
+            digits whose first digit is i and whose following digits are 
+            those in w.
+
+    Returns:
+        value of \partial_{n}f_jk(F_w(q_n))
+    '''
+
+    # Finds the values of pi and qi from the recursion
+    arr = big_recursion(j-1)
+    a1 = copy.deepcopy(arr[0, j-1])
+    b1 = copy.deepcopy(arr[1, j-1])
+
+    # Base case: partial_{n}f_jk(q_i)
+    if len(addr) == 1:
+        if (j == 0) and (int(addr[0]) == k):
+            return 2
+        elif (j == 0) and (int(addr[0]) != k):
+            return -1
+        elif (j != 0) and (int(addr[0]) == k):
+            return a1
+        else:
+            return b1
+    
+    # Inductive case
+    last = int(addr[-1])
+    addr = addr[:-1]
+    outer_sum = 0
+    for l in range(j+1):
+        inner_sum = 0
+        for n in range(3):
+            inner_sum += f_lkFiqn(j-l, k, last, n)*norm_f_jk(addr, l, n)
+        inner_sum *= (gm.mpq(1, 5))**l
+        outer_sum += inner_sum
+    outer_sum *= gm.mpq(5, 3)
+    return outer_sum 
+
+
+@mem
+def norm_p_jk(addr, j, k):
+    '''
+    This function calculates the value of the normal derivative of the 
+        monomial basis \partial_{n}p_jk at a point on SG addressed by 
+        addr.
+
+    Args:
+        j, k: indices mentioned in preceding paragraph.
+        addr: address of evaluation point F_w(q_n) given as a string of 
+            digits whose first digit is i and whose following digits are 
+            those in w.
+
+    Returns:
+        value of \partial_{n}p_jk(F_w(q_n))
+    '''
+    # Based on (2.14), (2.20) of the Calculus paper
+    if k == 1:
+        res = norm_f_jk(addr, j, 0)
+        for l in range(j+1):
+            res += alpha(j-l)*(norm_f_jk(addr, l, 1) + norm_f_jk(addr, l, 2))
+    if k == 2:
+        res = 0
+        for l in range(j+1):
+            res += beta(j-l)*(norm_f_jk(addr, l, 1) + norm_f_jk(addr, l, 2))
+    if k == 3:
+        res = 0
+        for l in range(j+1):
+            res += gamma(j-l)*(norm_f_jk(addr, l, 1) - norm_f_jk(addr, l, 2))
+
+    return res
+
+
 def generate_W(level, deg, frac=True):
     '''
     This function calculates the values of the easy basis f_jk up to a certain 
@@ -223,6 +302,45 @@ def generate_W(level, deg, frac=True):
             for k in tqdm.tqdm(range(1, 4)):
                 W[k-1, i, j] = f_jk(addr, j, k-1)
     return W
+
+
+def generate_norm_W(level, deg, frac=True):
+    '''
+    This function calculates the values of the normal derivative of easy 
+        basis \partial_{n}f_jk up to a certain degree at a given level of SG.
+
+    Args:
+        level: level of SG required
+        deg: maximum degree monomial required
+
+    Returns:
+        norm_W: np.array with dimensions 3 x 3^(level+1) x deg+1.
+            The kth page of W has values of the normal derivative of the 
+            easy basis f_jk (j = 0...deg) at each of the 3^(level+1) TLR 
+            indices of points on the given level of SG.
+    '''
+    # Computes big_recursion at the highest degree, and lower values are 
+    #   stored for later use
+    print('Computing Big_Recursion... this may take some time')
+    big_recursion(deg+1)
+
+    # Initialize the W array based on how things should be stored.
+    if frac:
+        norm_W = np.empty((3, 3**(level + 1), deg+1), dtype='object')
+    else:
+        norm_W = np.zeros((3, 3**(level + 1), deg+1))
+    
+    # Main loop to fill in the values of the norm_W array
+    for i in tqdm.tqdm(range(3**(level + 1))):
+        # This preparation is due to the different address structure 
+        #   used in this file an in util.py
+        addr = address_from_index(level, i+1)
+        addr = np.flip(addr)
+        addr = ''.join(str(int(x)) for x in addr)
+        for j in tqdm.tqdm(range(deg + 1)):
+            for k in tqdm.tqdm(range(1, 4)):
+                norm_W[k-1, i, j] = norm_f_jk(addr, j, k-1)
+    return norm_W
 
 
 def generate_T(level, deg, frac=True):
@@ -268,3 +386,72 @@ def generate_T(level, deg, frac=True):
     return T
 
 
+<<<<<<< HEAD
+=======
+def generate_norm_T(level, deg, frac=True):
+    '''
+    This function calculates the values of the normal derivative of the 
+        monomials up to a certain degree at a given level of SG.
+
+    Args:
+        level: level of SG required
+        deg: maximum degree monomial required
+        frac: Boolean representing whether the coefficients should 
+            remain as fractions or should be converted to floating point 
+            numbers at the end of all calculations.
+
+    Returns:
+        T: np.array with dimensions 3 x 3^(level+1) x deg+1.
+            The kth page of T has values of the normal derivative of the 
+            monomials \partial_{n}P_jk (j = 0...deg) at each of the 
+            3^(level+1) TLR indices of points on the given level of SG.
+    '''
+
+    # Computes big_recursion at the highest degree, and lower values 
+    #   are stored for later use.
+    print('Computing Big_Recursion... this may take some time')
+    big_recursion(deg+1)
+    
+    # Initialize the T array based on how things should be stored.
+    if frac:
+        T = np.empty((3, 3**(level + 1), deg+1), dtype='object')
+    else:
+        T = np.zeros((3, 3**(level + 1), deg+1))
+
+    # Main loop to fill in the values of the T array
+    for i in tqdm.tqdm(range(3**(level + 1))):
+        # This preparation is due to the different address structure 
+        #   used in this file an in util.py
+        addr = address_from_index(level, i+1)
+        addr = np.flip(addr)
+        addr = ''.join(str(int(x)) for x in addr)
+        for j in tqdm.tqdm(range(deg + 1)):
+            for k in tqdm.tqdm(range(1, 4)):
+                T[k-1, i, j] = norm_p_jk(addr, j, k)
+    return T
+
+
+# def generate_T_loop(i, j, k, level):
+#     addr = address_from_index(level, i+1)
+#     addr = np.flip(addr)
+#     addr = ''.join(str(int(x)) for x in addr)
+#     return p_jk(addr, j, k)
+
+# def generate_T_parallel(level, deg, frac=True, cores=4):
+#     dtype = 'object' if frac else np.float64 
+#     T = Parallel(n_jobs=cores)(delayed(generate_T_loop)(i=i, j=j, k=k, level=level) for i in range(3**(level + 1)) for j in range(deg +1) for k in range(1, 4))
+#     return np.array(T, dtype=dtype).reshape(((3**(level + 1), deg+1, 3)))
+
+# level = 5
+# deg = 10
+# frac = 0
+# cores = 4
+#start = time.time()
+
+#T1 = generate_T(level, deg, frac)
+# print('Non-parallel: ', time.time() - start)
+# T2 = generate_T_parallel(level, deg, frac, cores=cores)
+# print('Parallel (' + str(cores) + ' cores): ' , time.time() - start)
+# #print(T2)
+# #print(p_jk('10000000', 1, 1))
+>>>>>>> a7324573197598eae106ec599334b5f3ac34dfc3
