@@ -98,11 +98,11 @@ def block_to_regular(mat):
         for j in range(mat.cols):
             res[i, j] = mat[i, j]
     return res
-res = block_to_regular(make_big_mat(2))
+res = block_to_regular(make_big_mat(3))
 
 # for i in range(10):
 #     print(sp.block_collapse(res**i))
-
+#print(res)
 # #print(res.eigenvects())
 # print(res.eigenvals())
 
