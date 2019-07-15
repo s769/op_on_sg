@@ -386,8 +386,6 @@ def generate_T(level, deg, frac=True):
     return T
 
 
-<<<<<<< HEAD
-=======
 def generate_norm_T(level, deg, frac=True):
     '''
     This function calculates the values of the normal derivative of the 
@@ -454,4 +452,3 @@ def generate_norm_T(level, deg, frac=True):
 # print('Parallel (' + str(cores) + ' cores): ' , time.time() - start)
 # #print(T2)
 # #print(p_jk('10000000', 1, 1))
->>>>>>> a7324573197598eae106ec599334b5f3ac34dfc3
