@@ -80,7 +80,7 @@ def SG(m):
         y = np.vstack((qcontract(y, q0), qcontract(y, q1), qcontract(y,q2)))
     
     # This plots the coordinates of points of V_m, if needed
-    #ax.plot(y[:,0], y[:, 1], '.')
+    # ax.plot(y[:,0], y[:, 1], '.')
     return y
 
 def gaskplot(f, m, ax):
@@ -215,21 +215,14 @@ def eval_op(deg, k, level=7, T=None, frac=True, coefs=None):
 
     coefs = W[:deg+1,:deg+1]
    
-    #q = zeros(deg+1, 3**(level+1))
 
-    # Evaluate SOP at each point
-    # for i in range(deg+1):
-    #     #if math.isclose(coeff[i], 0, abs_tol=1e-1):
-    #         #print("Prepare for doom")
-    #     print()
-    #     q[i] += coeffs[i]*T[k-1, :, i])
     Tarr = T[k-1, :, :deg+1]
     dtype = object if frac else np.float64
     q = np.empty((deg+1, Tarr.shape[0]), dtype=dtype)
     print('Evaluating Orthogonal Polynomials')
     for i in tqdm.tqdm(range(deg+1)):
         q[i] = np.sum(coefs[i]*Tarr, axis=1)
-    return q#(T[k-1, :, :].dot(coefs.T)).T
+    return q
 
 def plot_op(num, k, level=7, T=None, coefs=None):
     """
@@ -251,74 +244,5 @@ def plot_op(num, k, level=7, T=None, coefs=None):
     plt.show()    
     return
 
-#plot_monomial(4, 0)
-#plot_SOP(2, 1)
-
-
-# OLD FUNCTIONS FOR CALCULATING Sobolev FOR ANTISYMMETRIC
-# CAN BE DELETED IN THE FUTURE
-
-
-
-def getOmegas3(deg):
-    # Function that generates the coefficients of the 
-    #     Antisymmetric Sobolev Orthogonal Polynomials
-
-    # Args:
-    #     deg - highest degree of the Sobolev Orthogonal Polynomial
-    #         we would like to find
-    
-    # Returns:
-    #     W - (deg+2)*(deg+2) matrix, representing the coefficients of 
-    #         the Sobolev Orthogonal Polynomial of order 0 - deg+1
-
-    # Generate the Sobolev orthogonal polynomials
-    W = generate_op(deg,3,1,frac=False)
-    return W[:deg+2, :deg+2]
-
-def eval_antisymm(deg, T, level=7):
-    # Function that evaluates the Antisymmetric Sobolev Orthogonal Polynomials
-
-    # Args:
-    #     deg - Degree of SOP s_{j} we would like to evaluate
-    #     T - Coefficient Matrix of the Orthogonal Polynomials
-    #     level - Number of levels we want to evaluate the SOP
-
-    # Returns:
-    #     q - Values of the Antisymmetric SOP at some level
-
-    # Fetch the particular coefficients of SOP 
-    W = getOmegas3(deg)
-    coeff = W[deg]
-   
-    q = np.zeros(3**(level+1))
-
-    # Evaluate SOP at each point
-    for k in range(deg+1):
-        #if math.isclose(coeff[k], 0, abs_tol=1e-1):
-            #print("Prepare for doom")
-        q += coeff[k]*T[2, :, k]
-
-    return q
-
-def plot_antisymm(num, level=7):
-
-    # Plot the Antisymmetric Sobolev Orthogonal Polynomials
-
-    # Args: 
-    #     num - Number of Antisymmetric SOPs we would like to plot
-    #     level - The level we would like to plot each SOP
-    
-    # Returns: 
-    #     figures of the Antisymmetric SOP, from s_{num-1} down to s_{0}.
-
-    T = generate_T(level, num, frac=False)
-    for j in range(num):
-        plt.figure()
-        ax = plt.axes(projection='3d')
-        p = eval_antisymm(j, T, level)
-        gaskplot(p, level, ax)
-    plt.show()    
-    return
 
 

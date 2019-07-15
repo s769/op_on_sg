@@ -231,8 +231,7 @@ def ap(j):
 
 
 # Here we calculate an array of values listed above.
-# These are more efficient if we want to use all the values for
-#   multiple times.
+
 
 
 @mem2

@@ -215,7 +215,7 @@ def generate_W(level, deg, frac=True):
     # Main loop to fill in the values of the W array
     for i in tqdm.tqdm(range(3**(level + 1))):
         # This preparation is due to the different address structure 
-        #   used in this file an in util.py
+        #   used in this file and in util.py
         addr = address_from_index(level, i+1)
         addr = np.flip(addr)
         addr = ''.join(str(int(x)) for x in addr)
@@ -258,7 +258,7 @@ def generate_T(level, deg, frac=True):
     # Main loop to fill in the values of the T array
     for i in tqdm.tqdm(range(3**(level + 1))):
         # This preparation is due to the different address structure 
-        #   used in this file an in util.py
+        #   used in this file and in util.py
         addr = address_from_index(level, i+1)
         addr = np.flip(addr)
         addr = ''.join(str(int(x)) for x in addr)
@@ -268,26 +268,3 @@ def generate_T(level, deg, frac=True):
     return T
 
 
-# def generate_T_loop(i, j, k, level):
-#     addr = address_from_index(level, i+1)
-#     addr = np.flip(addr)
-#     addr = ''.join(str(int(x)) for x in addr)
-#     return p_jk(addr, j, k)
-
-# def generate_T_parallel(level, deg, frac=True, cores=4):
-#     dtype = 'object' if frac else np.float64 
-#     T = Parallel(n_jobs=cores)(delayed(generate_T_loop)(i=i, j=j, k=k, level=level) for i in range(3**(level + 1)) for j in range(deg +1) for k in range(1, 4))
-#     return np.array(T, dtype=dtype).reshape(((3**(level + 1), deg+1, 3)))
-
-# level = 5
-# deg = 10
-# frac = 0
-# cores = 4
-#start = time.time()
-
-#T1 = generate_T(level, deg, frac)
-# print('Non-parallel: ', time.time() - start)
-# T2 = generate_T_parallel(level, deg, frac, cores=cores)
-# print('Parallel (' + str(cores) + ' cores): ' , time.time() - start)
-# #print(T2)
-# #print(p_jk('10000000', 1, 1))
