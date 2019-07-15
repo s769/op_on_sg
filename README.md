@@ -10,11 +10,11 @@ These instructions will get you a copy of the project up and running on your loc
 
 The following python libraries (in addition to the standard library) are required to use this package:
 
-*numpy
-*scipy
-*sympy
-*gmpy2
-*tqdm
+* numpy
+* scipy
+* sympy
+* gmpy2
+* tqdm
 
 
 
