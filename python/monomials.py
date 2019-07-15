@@ -190,7 +190,7 @@ def p_jk(addr, j, k):
 def norm_f_jk(addr, j, k):
     '''
     This function calculates the value of the normal derivative of the 
-        easy basis \partial_{n}f_jk at a point on SG addressed by addr. 
+        easy basis partial_{n}f_jk at a point on SG addressed by addr. 
 
     Args:
         j, k: indices mentioned in preceding paragraph.
@@ -199,7 +199,7 @@ def norm_f_jk(addr, j, k):
             those in w.
 
     Returns:
-        value of \partial_{n}f_jk(F_w(q_n))
+        value of partial_{n}f_jk(F_w(q_n))
     '''
 
     # Finds the values of pi and qi from the recursion
@@ -236,7 +236,7 @@ def norm_f_jk(addr, j, k):
 def norm_p_jk(addr, j, k):
     '''
     This function calculates the value of the normal derivative of the 
-        monomial basis \partial_{n}p_jk at a point on SG addressed by 
+        monomial basis partial_{n}p_jk at a point on SG addressed by 
         addr.
 
     Args:
@@ -246,7 +246,7 @@ def norm_p_jk(addr, j, k):
             those in w.
 
     Returns:
-        value of \partial_{n}p_jk(F_w(q_n))
+        value of partial_{n}p_jk(F_w(q_n))
     '''
     # Based on (2.14), (2.20) of the Calculus paper
     if k == 1:
@@ -307,7 +307,7 @@ def generate_W(level, deg, frac=True):
 def generate_norm_W(level, deg, frac=True):
     '''
     This function calculates the values of the normal derivative of easy 
-        basis \partial_{n}f_jk up to a certain degree at a given level of SG.
+        basis partial_{n}f_jk up to a certain degree at a given level of SG.
 
     Args:
         level: level of SG required
@@ -401,7 +401,7 @@ def generate_norm_T(level, deg, frac=True):
     Returns:
         T: np.array with dimensions 3 x 3^(level+1) x deg+1.
             The kth page of T has values of the normal derivative of the 
-            monomials \partial_{n}P_jk (j = 0...deg) at each of the 
+            monomials partial_{n}P_jk (j = 0...deg) at each of the 
             3^(level+1) TLR indices of points on the given level of SG.
     '''
 
