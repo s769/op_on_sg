@@ -28,6 +28,7 @@ file can be used to plot the polynomials on SG.
 
 * **Sreeram Venkat** - [s769](https://github.com/s769)
 * **Max Jiang** - [mathreader](https://github.com/mathreader)
+* **Shashank Sule** - [ShashankSule](https://github.com/ShashankSule)
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
