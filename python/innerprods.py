@@ -17,30 +17,6 @@ paper that are implemented here.
 
 '''
 
-# def inner_j1k1(j, k, energy=False):
-#   if energy:
-#     res = 2*alpha(k)*eta(j)
-#     ms = min(j, k)
-#     s1 = 0
-#     for l in range(j-ms, j+1):
-#       s1 += alpha(j-l)*eta(k+l+1) - alpha(k+l+1)*eta(j-l)
-#     s2 = 0
-#     for l in range(j-ms-1, j):
-#       s2 += alpha(j-l-1)*eta(k+l+1) - alpha(k+l+1)*eta(j-l-1)
-
-#     return res + 2*(s1-s2)
-
-
-#   ms = min(j, k)
-#   s1 = 0
-#   for l in range(j-ms, j+1):
-#     s1 += alpha(j-l)*eta(k+l+1) - alpha(k+l+1)*eta(j-l)
-#   s2 = 0
-#   for l in range(j-ms-1, j):
-#     s2 += alpha(j-l-1)*n(k+l) - alpha(k+l)*n(j-l-1)
-
-#   return 2*(s1+s2)
-
 
 def inner0_j1k1(j, k):
     '''
@@ -60,28 +36,6 @@ def inner0_j1k1(j, k):
         s1 += alpha(j-l)*eta(k+l+1) - alpha(k+l+1)*eta(j-l)
     return 2*s1
 
-# def inner_j2k2(j, k, energy=False):
-#   if energy:
-#     res = -2*beta(k)*alpha(j)
-#     s1 = 0
-#     ms = min(j, k)
-#     for l in range(j-ms, j+1):
-#       s1 += beta(j-l)*alpha(k+l+1) - beta(k+l+1)*alpha(j-l)
-#     s2 = 0
-#     for l in range(j-ms-1, j):
-#       s2 += beta(j-l-1)*alpha(k+l+1) - beta(k+l+1)*alpha(j-l-1)
-
-#     return res - 2*(s1-s2)
-
-#   ms = min(j, k)
-#   s1 = 0
-#   for l in range(j-ms, j+1):
-#     s1 += beta(j-l)*alpha(k+l+1) - beta(k+l+1)*alpha(j-l)
-#   s2 = 0
-#   for l in range(j-ms-1, j):
-#     s2 += beta(j-l-1)*alpha(k+l) - beta(k+l)*alpha(j-l-1)
-
-#   return -2*(s1+s2)
 
 
 def inner0_j2k2(j, k):
@@ -100,28 +54,6 @@ def inner0_j2k2(j, k):
         s1 += beta(j-l)*alpha(k+l+1) - beta(k+l+1)*ap(j-l)
     return -2*s1
 
-# def inner_j3k3(j, k, energy=False):
-#   if energy:
-#     res = 6*gamma(k)*eta(k)
-#     ms = min(j, k)
-#     s1 = 0
-#     for l in range(j-ms, j+1):
-#       s1 += alpha(j-l+1)*eta(k+l+2) - alpha(k+l+2)*eta(j-l+1)
-#     s2 = 0
-#     for l in range(j-ms-1, j):
-#       s2 += alpha(j-l)*eta(k+l+2) - alpha(k+l+2)*eta(j-l)
-
-#     return res + 18*(s1-s2)
-
-#   ms = min(j, k)
-#   s1 = 0
-#   for l in range(j-ms, j+1):
-#     s1 += alpha(j-l+1)*eta(k+l+2) - alpha(k+l+2)*eta(j-l+1)
-#   s2 = 0
-#   for l in range(j-ms-1, j):
-#     s2 += alpha(j-l)*eta(k+l+1) - alpha(k+l+1)*eta(j-l)
-
-#   return 18*(s1+s2)
 
 
 def inner0_j3k3(j, k):
@@ -140,26 +72,6 @@ def inner0_j3k3(j, k):
         s1 += alpha(j-l+1)*eta(k+l+2) - alpha(k+l+2)*eta(j-l+1)
     return 18*s1
 
-# def inner_j1k2(j, k, energy=False):
-#   if energy:
-#     res = 2*beta(k)*eta(k)
-#     s1 = 0
-#     for l in range(j+1):
-#       s1 += alpha(j-l)*alpha(k+1+l) + beta(k+1+l)*eta(j-l)
-#     s2 = 0
-#     for l in range(j):
-#       s2 += alpha(j-l-1)*alpha(k+1+l) + beta(k+1+l)*eta(j-l-1)
-
-#     return res - 2*(s1-s2)
-
-#   s1 = 0
-#   for l in range(j+1):
-#     s1 += alpha(j-l)*alpha(k+l+1) + beta(k+l+1)*eta(j-l)
-#   s2 = 0
-#   for l in range(j):
-#     s2 += alpha(j-l-1)*alpha(k+l) + beta(k+l)*eta(j-l-1)
-
-#   return -2*(s1+s2)
 
 
 def inner0_j1k2(j, k):
@@ -185,8 +97,9 @@ def symmetrize(arr):
     #return arr + arr.T - arr.multiply_elementwise(eye(arr.rows))
     return arr + arr.T - np.diag(np.diag(arr))
 
-# This function takes a list/array of integers and outputs the concatenation of the integers
 
+
+# This function takes a list/array of integers and outputs the concatenation of the integers
 
 def lis2str(lis):
     '''

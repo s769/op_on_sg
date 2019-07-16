@@ -8,7 +8,7 @@ from Polynomial import Polynomial
 
 
 # This file contains functions that generate coefficients for the 
-# 	symmetric orthogonal polynomials with respect to  various 
+# 	symmetric orthogonal polynomials with respect to various 
 # 	inner products.
 
 def pnj1(nn, j, i):
@@ -122,6 +122,7 @@ def generate_symm_ops(n, normalized=False, lam = np.array([1]), frac=True):
             is True, frac must be False to obtain normalized coefficients.
     
     '''
+
     print('Building Gram Matrix ... this may take some time')
     SGM = zeros_gm(n+1, n+1)
 
@@ -164,11 +165,3 @@ def generate_symm_ops(n, normalized=False, lam = np.array([1]), frac=True):
 
     return o_basis_mat
 
-
-num = 10
-frac = 1
-sops = generate_symm_ops(num, normalized = 1, frac = frac)
-print(sops)
-# arr1 = sops[1]
-# arr2 = sops[2]
-# Polynomial.fast_inner(arr1, arr2, SGM)

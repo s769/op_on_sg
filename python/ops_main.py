@@ -40,19 +40,12 @@ def generate_op(n, k, normalized=True, lam=np.array([1]), frac=True):
             to obtain normalized coefficients.
     
     '''
-    print('Calculating alpha, beta, etc...')
-    #alpha_array(n); beta_array(n); gamma_array(n); eta_array(n); ap_array(n)
-
 
 
     print('Building Gram Matrix ... this may take some time')
     Polynomial.build_condensed_GM(n+1, k, lam)
-#   basis_mat = np.zeros((n+1, 3*n+3))
 
-#   for i in range(n+1):
-#     basis_mat[i, 3*i + k - 1] = 1
     basis_mat = eye_gm(n+1)
-    #o_basis_mat = np.zeros((n+1, 3*n+3))
     o_basis_mat = zeros_gm(n+1, n+1)
     
 
@@ -60,7 +53,6 @@ def generate_op(n, k, normalized=True, lam=np.array([1]), frac=True):
     GM = Polynomial.GM[lis2str(lam)][:n+1, :n+1]
     print('Orthogonalizing Using Gram-Schmidt')
     for r in tqdm.tqdm(range(1, n+1)):
-        #res = np.zeros(n+1)
 
         u_r = basis_mat[r]
         for i in range(r):
@@ -69,7 +61,7 @@ def generate_op(n, k, normalized=True, lam=np.array([1]), frac=True):
             proj = Polynomial.fast_inner(u_r, v_i, GM)
             norm = Polynomial.fast_inner(v_i, v_i, GM)
             u_r -= (proj/norm)*v_i
-        o_basis_mat[r] = u_r#basis_mat[r] - res
+        o_basis_mat[r] = u_r
     if frac and normalized:
         print('Normalization requires conversion to float. Please set frac = False.')
         print('Generating non-normalized coefficients now...')
@@ -84,47 +76,6 @@ def generate_op(n, k, normalized=True, lam=np.array([1]), frac=True):
             return o_basis_arr
         return np.array(o_basis_mat, dtype=np.float64)
 
-    return o_basis_mat# , o_basis_mat[:, k-1::3]
+    return o_basis_mat
 
 
-# j = 20
-# k = 3
-# normalized = 1
-# ops_sob = generate_op(j, k, normalized, lam=np.array([1]), frac=0)
-# scipy.io.savemat('../data/coefs.mat', dict(ops=ops_sob))
-# # ops_leg = generate_op(j, k, normalized, lam=np.array([0]))
-# print(ops_sob)
-# # #arr1 = ops[2]
-# # # arr2 = ops[3]
-# # # Polynomial.fast_inner(arr1, arr2, Polynomial.GM)]
-# # #print(ops)
-
-
-# # poly_arr = np.array([Polynomial(r, j, k) for r in ops[0]])
-
-# # for k in range(j):
-# #   sn1 = poly_arr[k+1].value()
-# #   sn = poly_arr[k].value()
-# #   dsn1 = poly_arr[k+1].dnvalue()
-# #   dsn = poly_arr[k].dnvalue()
-# #   print(sn1*dsn - sn*dsn1)
-# #print(repr(ops))
-
-# ops = np.zeros((2*j+2, j+1))
-# for i in range(2*j+2):
-#   if not i%2:
-#     ops[i] = ops_leg[int(i/2)]
-#   elif i%2:
-#     ops[i] = ops_sob[int(i/2)]
-
-
-
-# scipy.io.savemat('coefs2.mat', dict(ops=ops_leg))
-# scipy.io.savemat('coefscomb.mat', dict(ops=ops))
-
-
-# ops_sob
-
-# ops = generate_op(j, k, 1, lam=np.ones(C))
-# ops
-# ops_sob

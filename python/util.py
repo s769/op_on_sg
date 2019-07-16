@@ -516,9 +516,3 @@ def coeff_monomial_1_all(level, max_order):
         current_monomial_mat_1 = temp_monomial_mat_1
 
     return current_monomial_mat_1
-
-
-
-
-
-#print(coeff_monomial_3_all(2, 3))
