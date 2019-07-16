@@ -112,6 +112,25 @@ def gaskplot(f, m, ax):
 
 # METHODS FOR PLOTTING MONOMIALS
 
+def plot_general(T, level=7):
+    """
+    Plot a general function given input
+
+    Args: 
+        num - Number of monomials we would like to plot
+        k - Type of Monomial (k = 0, 1, 2)
+        level - The level we would like to plot each monomial
+    
+    Returns: 
+        figures of the SOP of type k, from P_{num-1, k} down to P_{0, k}.
+    """
+    plt.figure()
+    ax = plt.axes(projection='3d')
+    gaskplot(T, level, ax)
+    plt.show()    
+    return
+
+
 def plot_monomial(num, k, level=7):
     """
     Plot the Monomials
