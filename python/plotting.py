@@ -6,8 +6,9 @@ import gmpy2 as gm
 from matplotlib import pyplot as plt
 from mpl_toolkits import mplot3d
 
-from monomials import generate_T, generate_W
+from monomials import generate_T, generate_W, generate_T_symmetric
 from ops_main import generate_op
+from symmetric import generate_symm_ops
 from recursions import zeros_gm, eye_gm
 import math
 import itertools
@@ -179,7 +180,7 @@ def plot_easy_basis(num, k, level=7):
 
 # METHODS FOR PLOTTING SOBOLEV ORTHOGONAL POLYNOMIALS
 
-def getOmegas(deg, k, frac=True, coefs=None):
+def getOmegas(deg, k, frac=True, coefs=None, symm=False):
     """
     Function that generates the Sobolev Orthogonal Polynomials
 
@@ -193,7 +194,10 @@ def getOmegas(deg, k, frac=True, coefs=None):
             the Sobolev Orthogonal Polynomial of order 0 - deg+1
     """
     if coefs is None:
-        W = generate_op(deg,k,1,frac=frac)
+        if symm:
+            W = generate_symm_ops(deg, normalized=1, frac=frac)
+        else:
+            W = generate_op(deg, k, 1, frac=frac)
     elif isinstance(coefs, tuple):
         filename, arr = coefs
         W = np.load(filename, allow_pickle=frac)[arr]
@@ -206,7 +210,7 @@ def getOmegas(deg, k, frac=True, coefs=None):
 
     return W[:deg+2, :deg+2]
 
-def eval_op(deg, k, level=7, T=None, frac=True, coefs=None):
+def eval_op(deg, k, level=7, T=None, frac=True, coefs=None, symm=False):
     """
     Function that evaluates the Sobolev Orthogonal Polynomials
 
@@ -221,7 +225,10 @@ def eval_op(deg, k, level=7, T=None, frac=True, coefs=None):
     """
 
     if T is None:
-        T = generate_T(level, deg, frac=frac)
+        if symm:
+            T = generate_T_symmetric(level, deg, frac=frac)
+        else:
+            T = generate_T(level, deg, frac=frac)
     elif isinstance(T, (tuple)):
         filename, arr = T
         T = np.load(filename, allow_pickle=frac)[arr]
@@ -230,7 +237,7 @@ def eval_op(deg, k, level=7, T=None, frac=True, coefs=None):
 
     # Fetch the particular coefficients of SOP 
 
-    W = getOmegas(deg, 3, frac=frac, coefs=coefs)
+    W = getOmegas(deg, 3, frac=frac, coefs=coefs, symm=symm)
 
     coefs = W[:deg+1,:deg+1]
    
@@ -243,7 +250,7 @@ def eval_op(deg, k, level=7, T=None, frac=True, coefs=None):
         q[i] = np.sum(coefs[i]*Tarr, axis=1)
     return q
 
-def plot_op(num, k, level=7, T=None, coefs=None):
+def plot_op(num, k, level=7, T=None, coefs=None, symm=False):
     """
     Plot the Sobolev Orthogonal Polynomials
 
@@ -255,7 +262,7 @@ def plot_op(num, k, level=7, T=None, coefs=None):
     Returns: 
         figures of the SOP of type k, from s_{num-1} down to s_{0}.
     """
-    p = eval_op(num, k, level=level, T=T, frac=False, coefs=coefs)
+    p = eval_op(num, k, level=level, T=T, frac=False, coefs=coefs, symm=symm)
     for j in range(num):
         plt.figure()
         ax = plt.axes(projection='3d')
