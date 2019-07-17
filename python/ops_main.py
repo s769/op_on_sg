@@ -83,6 +83,24 @@ def generate_op(n, k, normalized=True, lam=np.array([1]), frac=True):
 
 
 def leg_ops_recursion(j, k, frac=True):
+    '''
+        This function uses the three term recursion from the Kasso Tuley paper to generate the first j
+        Legendre orthogonal polynomials.
+
+        Args:
+            j: maximum degree of polynomials
+            k: family of monomials to use in the construction of the orthogonal polynomials 
+            (only k = 2,3 supported currently)
+            frac: Boolean representing whether the coefficients should remain as fractions or should be
+            converted to floating point numbers at the end of all calculations
+
+        Returns:
+            np.array of coefficients of the Legendre orthogonal polynomials with 
+                respect to the basis {P_0k, P_1k,..., P_jk}. Each row in 
+                this array is a polynomial, and there are j+1 rows and j+1 
+                columns.
+    '''
+
     if k == 1:
         print('This method is currently only available for k = 2 or 3.')
         return
@@ -120,6 +138,23 @@ def leg_ops_recursion(j, k, frac=True):
 
 
 def sob_ops_recursion(j, k, frac=True, leg_omegas=None):
+    '''
+        This function uses the three term recursion we developed to generate the first j
+        Sobolev orthogonal polynomials.
+
+        Args:
+            j: maximum degree of polynomials
+            k: family of monomials to use in the construction of the orthogonal polynomials 
+            (only k = 2,3 supported currently)
+            frac: Boolean representing whether the coefficients should remain as fractions or should be
+            converted to floating point numbers at the end of all calculations
+
+        Returns:
+            np.array of coefficients of the Sobolev orthogonal polynomials with 
+                respect to the basis {P_0k, P_1k,..., P_jk}. Each row in 
+                this array is a polynomial, and there are j+1 rows and j+1 
+                columns.
+    '''
     if k == 1:
         print('This method is currently only available for k = 2 or 3.')
         return
@@ -144,7 +179,7 @@ def sob_ops_recursion(j, k, frac=True, leg_omegas=None):
         leg_omegas = leg_ops_recursion(j+1, k, frac=frac)
     elif isinstance(leg_omegas, tuple):
         filename, arr = leg_omegas
-        W = np.load(filename, allow_pickle=frac)[arr]
+        leg_omegas = np.load(filename, allow_pickle=frac)[arr]
     
     for ind in range(1,j+1):
         func_vec = func_arr[1:ind+2]

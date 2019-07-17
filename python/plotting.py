@@ -141,6 +141,10 @@ def plot_monomial(num, k, level=7, T=None, symm=False):
         num - Number of monomials we would like to plot
         k - Type of Monomial (k = 0, 1, 2)
         level - The level we would like to plot each monomial
+        T - array of monomial values at the required level and degree or 
+            tuple of (filename of .npz/.npy file containing this array , array name key string)
+        symm - Boolean representing whether or not the fully symmetric orthogonal polynomials are needed
+
     
     Returns: 
         figures of the SOP of type k, from P_{num-1, k} down to P_{0, k}.
@@ -173,6 +177,8 @@ def plot_easy_basis(num, k, level=7, W=None):
         num - Number of monomials we would like to plot
         k - Type of Monomial (k = 0, 1, 2)
         level - The level we would like to plot each monomial
+        W - array of easy basis values at the required level and degree or 
+            tuple of (filename of .npz/.npy file containing this array , array name key string)
     
     Returns: 
         figures of the SOP of type k, from P_{num-1, k} down to P_{0, k}.
@@ -203,6 +209,9 @@ def getOmegas(deg, k, frac=True, coefs=None, symm=False):
         deg - highest degree of the Sobolev Orthogonal Polynomial
             we would like to find
         k - Type of Sobolev Orthogonal Polynomial (k = 1,2,3)
+        coefs - array of coefficient values at the required degree and symmetry or 
+            tuple of (filename of .npz/.npy file containing this array , array name key string)
+        symm - Boolean representing whether or not the fully symmetric orthogonal polynomials are needed
     
     Returns:
         W - (deg+2)*(deg+2) matrix, representing the coefficients of 
@@ -234,6 +243,12 @@ def eval_op(deg, k, level=7, T=None, frac=True, coefs=None, symm=False):
         T - Coefficient Matrix of the Orthogonal Polynomials
         k - Type of SOP (k = 1, 2, 3)
         level - Number of levels we want to evaluate the SOP
+        T - array of monomial values at the required level and degree or 
+            tuple of (filename of .npz/.npy file containing this array , array name key string)
+        coefs - array of coefficient values at the required degree and symmetry or 
+            tuple of (filename of .npz/.npy file containing this array , array name key string)
+        symm - Boolean representing whether or not the fully symmetric orthogonal polynomials are needed
+
 
     Returns:
         q - Values of the SOP of type k at some level
@@ -273,6 +288,12 @@ def plot_op(num, k, level=7, T=None, coefs=None, symm=False):
         num - Number of Antisymmetric SOPs we would like to plot
         k - Type of SOP (k = 0, 1, 2)
         level - The level we would like to plot each SOP
+        T - array of monomial values at the required level and degree or 
+            tuple of (filename of .npz/.npy file containing this array , array name key string)
+        coefs - array of coefficient values at the required degree and symmetry or 
+            tuple of (filename of .npz/.npy file containing this array , array name key string)
+        symm - Boolean representing whether or not the fully symmetric orthogonal polynomials are needed
+
     
     Returns: 
         figures of the SOP of type k, from s_{num-1} down to s_{0}.
