@@ -5,33 +5,66 @@ import gmpy2 as gm
 
 from util import address_from_index
 from recursions import alpha
-from monomials import generate_W, generate_norm_W, generate_norm_T
-from plotting import plot_monomial, plot_easy_basis, plot_op
-
+from monomials import generate_W, generate_T, generate_norm_W, generate_norm_T
+from plotting import plot_monomial, plot_easy_basis, plot_op, plot_general
+from chebyshev import plot_h1_family, plot_h1
 
 np.set_printoptions(threshold=sys.maxsize)
 
-### I. Code for Plotting the Easy Basis/Monomial/SOP ###
+# An outline of the functionalities are listed here.
+# Section I. Plotting
+# 1. Plotting the easy basis/monomial/SOP
+# 2. Plotting a general polynomial
 
-# 1. To plot the monomials, use plot_monomial
+
+#### Section I. Plotting
+
+######## 1. Code for Plotting the Easy Basis/Monomial/SOP ########
+
+### Parameters
 # num represent the highest power to be plotted
 # k represent the type of monomial {0,1,2} -> {1, 2, 3}
 # num = 3
 # k = 0
 
+
+# a. To plot the monomials, use plot_monomial
 #plot_monomial(num, k)
 
-# 2. To plot the easy basis, use plot_easy_basis
+
+# b. To plot the easy basis, use plot_easy_basis
 #plot_easy_basis(num, k)
 
-# 3. This plots the Sobolov Orthogonal Polynomials
+
+# c. This plots the Sobolov Orthogonal Polynomials
 # num represent the highest power to be plotted
 # k represent the type of monomial {0,1,2} -> {1, 2, 3}
 #plot_SOP(num, k)
 
 
 
-### II. Verifying the Sup norm of the easy basis f_{jk} ###
+######## 2. Code for Plotting a general polynomial ########
+
+# Example: Compute P_{13} + a*P_{03}
+
+# Hyperparameters
+#a = 1 / 2
+
+# Maximum order of the basis we're working with
+#j = 1
+
+# # Fetch the values for P
+# T = generate_T(7, j+2, False)
+# P13_seq = T[2, :, 1]
+# P03_seq = T[2, :, 0]
+
+# # print()
+# # print()
+# # print()
+
+#plot_general(prop, level)
+
+######## II. Verifying the Sup norm of the easy basis f_{jk} ########
 
 # Since the f_{jk}'s are just rotations of each other,
 # we can just assume k = 0.
@@ -63,7 +96,9 @@ np.set_printoptions(threshold=sys.maxsize)
 # is always achieved at F_0F_1q_2=F_0F_2q_1
 
 
-### 3. Verifying the sup norm of f_{j+1,k} / f_{j, k} ###
+
+
+######## 3. Verifying the sup norm of f_{j+1,k} / f_{j, k} ########
 
 # Again we can assume k = 0.
 
@@ -105,12 +140,12 @@ np.set_printoptions(threshold=sys.maxsize)
 #     print(prop[ind_arrange_2[i]])
 
 
-### 4. Verifying the value of \partial_{n}p_{jk} ###
+######## 4. Verifying the value of \partial_{n}p_{jk} ########
 
 # Again we can assume k = 0.
 
 # Order of the easy basis j (>=0)
-j = 7
+# j = 4
 
 # Fetch the values for \partial_{n}p_{jk}
 # norm_W = generate_norm_W(1, j+2, False)
@@ -118,8 +153,78 @@ j = 7
 # print(norm_f00)
 
 # Fetch the values for \partial_{n}p_{jk}
-norm_T = generate_norm_T(0, j+2, False)
-norm_P01 = norm_T[1, :, j]
-print()
-print()
-print(norm_P01)
+# norm_T = generate_norm_T(1, j+2, False)
+# norm_P01 = norm_T[2, :, j]
+# print()
+# print()
+# print(norm_P01)
+
+
+### 5. Verifying the sup norm of P_{03} / P_{11} ###
+
+#Again we can assume k = 0.
+
+#level = 7
+
+# Fetch the values for P_{03} and P_{11}
+#T = generate_T(level, 2, False)
+#P03_seq = T[2, :, 0]
+#P11_seq = T[0, :, 1]
+
+# print()
+# print()
+# print()
+# print(fj0_seq.size)
+# print(fj1_0_seq.size)
+
+#prop = np.divide(P03_seq, P11_seq)
+
+#plot_general(prop, level)
+
+
+
+# ind_arrange_1 = np.flip(np.argsort(prop))
+# ind_arrange_2 = np.argsort(prop)
+
+# for i in range(10):
+#     temp_add = address_from_index(level, ind_arrange_1[i]+1)
+#     print("Address ", i)
+#     print(temp_add)
+#     print("Index", i)
+#     print(ind_arrange_1[i])
+#     print("Value ", i)
+#     print(prop[ind_arrange_1[i]])
+
+# for i in range(10):
+#     temp_add = address_from_index(level, ind_arrange_2[i]+1)
+#     print("Address ", (i+10))
+#     print(temp_add)
+#     print("Index", (i+10))
+#     print(ind_arrange_2[i])
+#     print("Value ", (i+10))
+#     print(prop[ind_arrange_2[i]])
+
+
+### 3. Verifying the sup norm of f_{j+1,k} / f_{j, k} ###
+
+# Again we can assume k = 0.
+
+# # Order of the easy basis j (>=0)
+# j = 7
+
+# # Fetch the values for f_{jk}
+# T = generate_T(1, j+2, False)
+# P11_seq = T[0, :, 6]
+
+# print()
+# print()
+# print(P11_seq)
+
+
+#plot_h1(0, 0, float(-alpha(2) / (2*alpha(1))), 0, 0, 1, 7)
+start = float(-alpha(2)/alpha(1) - alpha(2)/(4*alpha(1)))
+end = float(-alpha(2)/alpha(1) + alpha(2)/(4*alpha(1)))
+
+
+plot_h1_family(start, end, 3, 3, 7)
+
