@@ -234,7 +234,8 @@ class Polynomial:
             Sobolev inner product between the polynomials represented 
                 by arr1, and arr2 for the inner product represented by GM.
         '''
-        return arr1.dot(GM.dot(arr2))#arr1.T @ (GM @ arr2)
+
+        return arr1.dot(GM.dot(arr2))
 
     # This function pads the coefs arrays of 2 objects with zeros so that they have the same length
     @staticmethod

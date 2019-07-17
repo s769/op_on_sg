@@ -79,3 +79,85 @@ def generate_op(n, k, normalized=True, lam=np.array([1]), frac=True):
     return o_basis_mat
 
 
+
+
+
+def leg_ops_recursion(j, k, frac=True):
+    if k == 1:
+        print('This method is currently only available for k = 2 or 3.')
+        return
+    # this is so the indices match    
+    j -= 1
+    dtype = object if frac else np.float64
+    o_basis_mat = np.empty((j+2, j+2), dtype=dtype)
+
+    first_mat = generate_op(1, k, normalized=False, lam=np.array([0]), frac=frac)
+    const = gm.mpz(0) if frac else 0
+    first_mat = np.pad(first_mat, ((0,0), (0, j)),'constant', constant_values=(const,))
+    o_basis_mat[:2] = first_mat
+
+    func_array = gamma_array if k == 3 else beta_array
+
+    func_arr = func_array(j+3)
+    Polynomial.build_condensed_GM(j+2, k, np.array([0]))
+    GM = Polynomial.GM[lis2str(np.array([0]))][:j+2, :j+2]
+
+    for ind in range(1,j+1):
+        func_vec = func_arr[1:ind+2]
+        omega_vec = o_basis_mat[ind, :ind+1]
+        zeta_ind = -1/func_arr[0]*func_vec.dot(omega_vec)
+        f_ind = np.insert(omega_vec, 0, zeta_ind)
+        d_ind2 = gm.mpq(1, Polynomial.fast_inner(o_basis_mat[ind,:ind+1], o_basis_mat[ind,:ind+1], GM[:ind+1, :ind+1]))
+        d_indm2 = gm.mpq(1, Polynomial.fast_inner(o_basis_mat[ind-1,:ind], o_basis_mat[ind-1,:ind], GM[:ind, :ind]))
+        b_ind = d_ind2*Polynomial.fast_inner(f_ind, o_basis_mat[ind,:ind+2], GM[:ind+2, :ind+2])
+        c_ind = gm.mpq(d_indm2, d_ind2)
+
+        new_vec = f_ind - b_ind*o_basis_mat[ind, :ind+2] - c_ind*o_basis_mat[ind-1, :ind+2]
+
+        o_basis_mat[ind+1] = np.pad(new_vec, (0, j-ind), 'constant', constant_values=(const,))
+
+    return o_basis_mat
+
+
+def sob_ops_recursion(j, k, frac=True, leg_omegas=None):
+    if k == 1:
+        print('This method is currently only available for k = 2 or 3.')
+        return
+    # this is so the indices match    
+    j -= 1
+    dtype = object if frac else np.float64
+    o_basis_mat = np.empty((j+2, j+2), dtype=dtype)
+
+    first_mat = generate_op(1, k, normalized=False, frac=frac)
+    const = gm.mpz(0) if frac else 0
+    first_mat = np.pad(first_mat, ((0,0), (0, j)),'constant', constant_values=(const,))
+    o_basis_mat[:2] = first_mat
+
+    
+    func_array = gamma_array if k == 3 else beta_array
+
+    func_arr = func_array(j+3)
+    Polynomial.build_condensed_GM(j+2, k, np.array([1]))
+    GM = Polynomial.GM[lis2str(np.array([1]))][:j+2, :j+2]
+
+    if leg_omegas is None:
+        leg_omegas = leg_ops_recursion(j+1, k, frac=frac)
+    elif isinstance(leg_omegas, tuple):
+        filename, arr = leg_omegas
+        W = np.load(filename, allow_pickle=frac)[arr]
+    
+    for ind in range(1,j+1):
+        func_vec = func_arr[1:ind+2]
+        omega_vec = leg_omegas[ind, :ind+1]
+        zeta_ind = -1/func_arr[0]*func_vec.dot(omega_vec)
+        f_ind = np.insert(omega_vec, 0, zeta_ind)
+        a_ind = Polynomial.fast_inner(f_ind, o_basis_mat[ind,:ind+2], GM[:ind+2, :ind+2])
+        b_ind = Polynomial.fast_inner(f_ind, o_basis_mat[ind-1,:ind+2], GM[:ind+2, :ind+2])
+        a_ind = gm.mpq(a_ind, Polynomial.fast_inner(o_basis_mat[ind, :ind+1], o_basis_mat[ind,:ind+1], GM[:ind+1, :ind+1]))
+        b_ind = gm.mpq(b_ind, Polynomial.fast_inner(o_basis_mat[ind-1, :ind], o_basis_mat[ind-1,:ind], GM[:ind, :ind]))
+        new_vec = f_ind - a_ind*o_basis_mat[ind, :ind+2] - b_ind*o_basis_mat[ind-1, :ind+2]
+
+        o_basis_mat[ind+1] = np.pad(new_vec, (0, j-ind), 'constant', constant_values=(const,))
+
+    return o_basis_mat
+

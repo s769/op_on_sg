@@ -48,9 +48,9 @@ from symmetric import generate_symm_ops
 # np.savez('../data/Tsymm20', ST=ST)
 
 # # T = np.load('../data/T20.npz')['T']
-ST = np.load('../data/Tsymm20.npz')['ST']
-# # scipy.io.savemat('../data/T20.mat', dict(T=T))
-scipy.io.savemat('../data/Tsymm20.mat', dict(ST=ST))
+# ST = np.load('../data/Tsymm20.npz')['ST']
+# # # scipy.io.savemat('../data/T20.mat', dict(T=T))
+# scipy.io.savemat('../data/Tsymm20.mat', dict(ST=ST))
 
 # ops_sym = generate_symm_ops(20, frac=False)
 # np.savez('../data/symops20', ops=ops_sym)

@@ -252,9 +252,9 @@ def alpha_array(max_order):
     for j in range(2, max_order+1):
         for l in range(1, j):
             alpha_arr[j] = alpha_arr[j] + alpha_arr[j-l] * alpha_arr[l]
-        alpha_arr[j] = gm.mpq(alpha_arr[j] * 4 ,(5 ** j - 5))
+        alpha_arr[j,0] = gm.mpq(alpha_arr[j,0] * 4 ,(5 ** j - 5))
 
-    return alpha_arr
+    return alpha_arr[:, 0]
 
 
 @mem2
@@ -283,7 +283,7 @@ def beta_array(max_order):
                             5 ** (l + 1) + 6) * alpha_arr[j-l] * beta_arr[l]
         beta_arr[j] = beta_arr[j] * gm.mpq(2 , (15 * (5 ** j - 1)))
 
-    return beta_arr
+    return beta_arr[:, 0]
 
 
 @mem2
