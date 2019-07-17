@@ -4,9 +4,9 @@ from matplotlib import pyplot as plt
 import gmpy2 as gm
 from scipy.stats import linregress
 import scipy.io
-from plotting import plot_monomial
+from plotting import plot_monomial, plot_op
 from util import rotate_address
-
+from symmetric import generate_symm_ops
 # j = 50
 # ar, br, pr, qr = big_recursion(j)
 # a = np.array([float(x) for x in ar])
@@ -41,15 +41,20 @@ from util import rotate_address
 # scipy.io.savemat('../data/T20', dict(T=T))
 # np.savez('../data/T20', T=T)
 
-ST = generate_T_symmetric(7, 20, frac=0, T=('../data/T20.npz', 'T'))
-#print(rotate_address(7, [0,0,0,0,0,0,0,0], 1))
-# scipy.io.savemat('../data/Tsymm20', dict(ST=ST))
+# ST = generate_T_symmetric(7, 20, frac=0, T=('../data/T20.npz', 'T'))
+# #print(rotate_address(7, [0,0,0,0,0,0,0,0], 1))
+# # scipy.io.savemat('../data/Tsymm20', dict(ST=ST))
 
-np.savez('../data/Tsymm20', ST=ST)
+# np.savez('../data/Tsymm20', ST=ST)
 
 # # T = np.load('../data/T20.npz')['T']
-# # ST = np.load('../data/Tsymm20.npz')['ST']
+ST = np.load('../data/Tsymm20.npz')['ST']
 # # scipy.io.savemat('../data/T20.mat', dict(T=T))
-# # scipy.io.savemat('../data/Tsymm20.mat', dict(ST=ST))
+scipy.io.savemat('../data/Tsymm20.mat', dict(ST=ST))
 
-plot_monomial(3, 3, T=('../data/Tsymm20.npz', 'ST'), symm=True)
+# ops_sym = generate_symm_ops(20, frac=False)
+# np.savez('../data/symops20', ops=ops_sym)
+
+#plot_op(3, 3, T=('../data/Tsymm20.npz', 'ST'), coefs=('../data/symops20.npz', 'ops'), symm=True)
+
+#plot_monomial(3, 3, T=('../data/Tsymm20.npz', 'ST'), symm=True)
