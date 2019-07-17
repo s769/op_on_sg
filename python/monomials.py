@@ -439,17 +439,15 @@ def generate_T_symmetric(level, deg, frac=True, T=None):
     
     dtype = object if frac else np.float64
 
-    ST = np.empty(T.shape, dtype=dtype)
+    ST = np.empty(T.shape[1:], dtype=dtype)
 
-    for page in range(T.shape[0]):
-        for row in range(T.shape[1]):
-            for col in range(T.shape[2]):
-                addr = address_from_index(level, row+1)
-                addr1 = rotate_address(level, addr, 1)
-                addr2 = rotate_address(level, addr, 2)
-                row1 = index_from_address(level, addr1)
-                row2 = index_from_address(level, addr2)
-                ST[page, row, col] = T[page, row, col] + T[page, row1-1, col] + T[page, row2-1, col]
+    for row in range(T.shape[1]):
+        addr = address_from_index(level, row+1)
+        addr1 = rotate_address(level, addr, 1)
+        addr2 = rotate_address(level, addr, 2)
+        row1 = index_from_address(level, addr1)
+        row2 = index_from_address(level, addr2)
+        ST[row, :] = T[0, row, :] + T[0, row1-1, :] + T[0, row2-1, :]
 
 
     return ST

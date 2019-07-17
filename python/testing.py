@@ -3,6 +3,7 @@ from monomials import big_recursion, generate_T, generate_T_symmetric
 from matplotlib import pyplot as plt
 import gmpy2 as gm
 from scipy.stats import linregress
+import scipy.io
 
 
 # j = 50
@@ -34,6 +35,16 @@ from scipy.stats import linregress
 
 # plt.show()
 
+# T = generate_T(7, 20, frac=False)
 
-ST = generate_T_symmetric(2, 5, frac=0)
-print(ST)
+# scipy.io.savemat('../data/T20', dict(T=T))
+# np.savez('../data/T20', T=T)
+
+# ST = generate_T_symmetric(7, 20, frac=0, T=('../data/T20.npz', 'T'))
+# scipy.io.savemat('../data/Tsymm20', dict(ST=ST))
+# np.savez('../data/Tsymm20', ST=ST)
+
+T = np.load('../data/T20.npz')['T']
+ST = np.load('../data/Tsymm20.npz')['ST']
+scipy.io.savemat('../data/T20.mat', dict(T=T))
+scipy.io.savemat('../data/Tsymm20.mat', dict(ST=ST))
