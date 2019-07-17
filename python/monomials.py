@@ -430,6 +430,25 @@ def generate_norm_T(level, deg, frac=True):
 
 
 def generate_T_symmetric(level, deg, frac=True, T=None):
+    '''
+        This function calculates the values of the fully symmetric monomials up to a certain 
+        degree at a given level of SG.
+
+    Args:
+        level: level of SG required
+        deg: maximum degree monomial required
+        frac: Boolean representing whether the coefficients should 
+            remain as fractions or should be converted to floating point 
+            numbers at the end of all calculations.
+        T: array of monomial values at the required level and degree or 
+        tuple of (filename of .npz/.npy file containing this array , array name key string)
+
+    Returns:
+        T: np.array with dimensions 3^(level+1) x deg+1 containing
+            values of the monomials R_j = P_j1^(0) + P_j1^(1) + P_j1^(2)
+            (j = 0...deg) at each of the 3^(level+1) TLR indices of 
+            points on the given level of SG.
+    '''
 
     if T is None:
         T = generate_T(level, deg, frac=frac)
