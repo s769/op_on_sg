@@ -156,7 +156,7 @@ def plot_monomial(num, k, level=7, T=None, symm=False):
     for j in range(num):
         plt.figure()
         ax = plt.axes(projection='3d')
-        p = T[k, :, j]
+        p = T[:, j] if symm else T[k-1, :, j]
         gaskplot(p, level, ax)
     plt.show()    
     return
@@ -182,7 +182,7 @@ def plot_easy_basis(num, k, level=7, W=None):
     elif isinstance(W, (tuple)):
         filename, arr = W
         W = np.load(filename, allow_pickle=False)[arr]
-        
+
     for j in range(num):
         plt.figure()
         ax = plt.axes(projection='3d')
@@ -251,12 +251,12 @@ def eval_op(deg, k, level=7, T=None, frac=True, coefs=None, symm=False):
 
     # Fetch the particular coefficients of SOP 
 
-    W = getOmegas(deg, 3, frac=frac, coefs=coefs, symm=symm)
+    W = getOmegas(deg, k, frac=frac, coefs=coefs, symm=symm)
 
     coefs = W[:deg+1,:deg+1]
    
 
-    Tarr = T[k-1, :, :deg+1]
+    Tarr = T[:, :deg+1] if symm else T[k-1, :, :deg+1]
     dtype = object if frac else np.float64
     q = np.empty((deg+1, Tarr.shape[0]), dtype=dtype)
     print('Evaluating Orthogonal Polynomials')

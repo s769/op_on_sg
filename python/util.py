@@ -87,8 +87,7 @@ def index_from_address(level, address):
 
     # Perform transformation similar to base 3 -> base 10
     for i in range(level+1):
-        index = index + address[i] * (3 ** (level - i))
-
+        index += address[i] * (3 ** (level - i))
     return int(index)
 
 def q_contract(orig_mat, base_point):
@@ -320,10 +319,11 @@ def rotate_address(level, address, rotate_num):
             vector of the rotated point in some SG graph.
 
     """
-    new_address = address
+    new_address = []
 
-    for i in range(level+1):
-        new_address[i] = (address[i] + rotate_num) % 3
+    for i in range(level):
+        new_address.append(int((address[i] + rotate_num) % 3))
+    new_address.append(int(address[-1]))
     return new_address
 
 

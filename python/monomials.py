@@ -441,13 +441,13 @@ def generate_T_symmetric(level, deg, frac=True, T=None):
 
     ST = np.empty(T.shape[1:], dtype=dtype)
 
-    for row in range(T.shape[1]):
+    for row in range(ST.shape[0]):
         addr = address_from_index(level, row+1)
         addr1 = rotate_address(level, addr, 1)
         addr2 = rotate_address(level, addr, 2)
         row1 = index_from_address(level, addr1)
         row2 = index_from_address(level, addr2)
-        ST[row, :] = T[0, row, :] + T[0, row1-1, :] + T[0, row2-1, :]
+        ST[row] = T[0, row] + T[0, row1-1] + T[0, row2-1]
 
 
     return ST
