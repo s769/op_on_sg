@@ -132,7 +132,7 @@ def plot_general(T, level=7):
     return
 
 
-def plot_monomial(num, k, level=7):
+def plot_monomial(num, k, level=7, T=None, symm=False):
     """
     Plot the Monomials
 
@@ -144,7 +144,15 @@ def plot_monomial(num, k, level=7):
     Returns: 
         figures of the SOP of type k, from P_{num-1, k} down to P_{0, k}.
     """
-    T = generate_T(level, num, frac=False)
+    if T is None:
+        if symm:
+            T = generate_T_symmetric(level, num, frac=False)
+        else:
+            T = generate_T(level, num, frac=False)
+    elif isinstance(T, (tuple)):
+        filename, arr = T
+        T = np.load(filename, allow_pickle=False)[arr]
+
     for j in range(num):
         plt.figure()
         ax = plt.axes(projection='3d')
@@ -156,7 +164,7 @@ def plot_monomial(num, k, level=7):
 
 # METHODS FOR PLOTTING EASY BASIS
 
-def plot_easy_basis(num, k, level=7):
+def plot_easy_basis(num, k, level=7, W=None):
     """
     Plot the Easy Basis
 
@@ -168,7 +176,13 @@ def plot_easy_basis(num, k, level=7):
     Returns: 
         figures of the SOP of type k, from P_{num-1, k} down to P_{0, k}.
     """
-    W = generate_W(level, num, frac=False)
+
+    if W is None:
+        W = generate_W(level, num, frac=False)
+    elif isinstance(W, (tuple)):
+        filename, arr = W
+        W = np.load(filename, allow_pickle=False)[arr]
+        
     for j in range(num):
         plt.figure()
         ax = plt.axes(projection='3d')
