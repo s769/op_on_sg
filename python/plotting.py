@@ -84,7 +84,7 @@ def SG(m):
     # ax.plot(y[:,0], y[:, 1], '.')
     return y
 
-def gaskplot(f, m, ax):
+def gaskplot(f, m, ax, color='b'):
     '''
     This function plots a function defined on the level m vertices of
     SG.
@@ -107,7 +107,8 @@ def gaskplot(f, m, ax):
         yy = np.append(y[3*k:3*k+3, 1], y[3*k, 1])
         zz = np.append(f[3*k:3*k+3], f[3*k])
         # Add the points to the plot
-        ax.plot(xx, yy, zz, 'b')
+        print(color)
+        ax.plot(xx, yy, zz, color=color)
     return
 
 
