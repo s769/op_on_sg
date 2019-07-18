@@ -4,7 +4,7 @@ import tqdm
 
 from recursions import zeros_gm
 from innerprods import lis2str, inner_dict, symmetrize, vals_dict, norm_dict
-
+import sys, os
 
 '''
 This file contains the class Polynomial which is used to create orthogonal 
@@ -209,7 +209,7 @@ class Polynomial:
         else:
             lam_arr = [np.array([1]), np.array([0])]
         for lamb in lam_arr:
-            for ind1 in tqdm.tqdm(range(n)):
+            for ind1 in tqdm.tqdm(range(n), file=sys.stdout):
                 for ind2 in range(n):
                     if ind1 <= ind2:
                         arr[ind1, ind2] = \

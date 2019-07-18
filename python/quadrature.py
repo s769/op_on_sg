@@ -5,6 +5,7 @@ import itertools
 from monomials import p_jk, generate_T, f_jk
 from Polynomial import Polynomial
 import sympy as sp
+from util import HiddenPrints
 
 '''
 This file contains functions used to study higher order quadrature on SG using n-harmonic splines
@@ -58,7 +59,8 @@ def quad_mat(j):
         for ind2 in range(3*j+3):
             jj = int(np.floor(ind1/3)) 
             kk = int(ind1 % 3 + 1)
-            q_mat[ind1, ind2] = p_jk(addresses[ind2], jj, kk)
+            with HiddenPrints():
+                q_mat[ind1, ind2] = p_jk(addresses[ind2], jj, kk)
     return q_mat
 
 def ints_vec(j):
@@ -119,13 +121,7 @@ def quad_int(func, j):
     weights = get_weights(j)
     return func_vals.dot(weights)
 
-# p_52 = lambda add: p_jk(add, 5, 2)
 
-# quad = quad_int(p_52, 4)
-# actual = Polynomial.basis_inner(5, 2, 0, 1)
-# print(quad)
-# print(float(actual))
-# print(abs(quad-actual))
 
 def make_block(ind1, ind2):
     '''
@@ -193,16 +189,4 @@ def block_to_regular(mat):
     return res
 
 
-#res = block_to_regular(make_big_mat(3))
-
-# for i in range(10):
-#     print(sp.block_collapse(res**i))
-#print(res)
-# #print(res.eigenvects())
-# print(res.eigenvals())
-
-# C1 = make_block(3, 2)
-# C2 = make_block(2, 3)
-# print(C1*C2-C2*C1)
-#print(sp.block_collapse(res.inverse()))
 

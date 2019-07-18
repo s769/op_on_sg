@@ -7,7 +7,7 @@ import tqdm
 
 from recursions import mem, mem2, alpha, beta, gamma, eta, tau, zeros_gm
 from util import address_from_index, rotate_address, index_from_address
-
+import sys, os
 '''
 This file contains the functions that will compute the values of the 
     easy/monomial basis on a given level of SG. The recursive functions 
@@ -292,14 +292,14 @@ def generate_W(level, deg, frac=True):
         W = np.zeros((3, 3**(level + 1), deg+1))
     
     # Main loop to fill in the values of the W array
-    for i in tqdm.tqdm(range(3**(level + 1))):
+    for i in tqdm.tqdm(range(3**(level + 1)), file=sys.stdout):
         # This preparation is due to the different address structure 
         #   used in this file and in util.py
         addr = address_from_index(level, i+1)
         addr = np.flip(addr)
         addr = ''.join(str(int(x)) for x in addr)
-        for j in tqdm.tqdm(range(deg + 1)):
-            for k in tqdm.tqdm(range(1, 4)):
+        for j in tqdm.tqdm(range(deg + 1), file=sys.stdout):
+            for k in tqdm.tqdm(range(1, 4), file=sys.stdout):
                 W[k-1, i, j] = f_jk(addr, j, k-1)
     return W
 
@@ -331,14 +331,14 @@ def generate_norm_W(level, deg, frac=True):
         norm_W = np.zeros((3, 3**(level + 1), deg+1))
     
     # Main loop to fill in the values of the norm_W array
-    for i in tqdm.tqdm(range(3**(level + 1))):
+    for i in tqdm.tqdm(range(3**(level + 1)), file=sys.stdout):
         # This preparation is due to the different address structure 
         #   used in this file an in util.py
         addr = address_from_index(level, i+1)
         addr = np.flip(addr)
         addr = ''.join(str(int(x)) for x in addr)
-        for j in tqdm.tqdm(range(deg + 1)):
-            for k in tqdm.tqdm(range(1, 4)):
+        for j in tqdm.tqdm(range(deg + 1), file=sys.stdout):
+            for k in tqdm.tqdm(range(1, 4), file=sys.stdout):
                 norm_W[k-1, i, j] = norm_f_jk(addr, j, k-1)
     return norm_W
 
@@ -374,14 +374,14 @@ def generate_T(level, deg, frac=True):
         T = np.zeros((3, 3**(level + 1), deg+1))
 
     # Main loop to fill in the values of the T array
-    for i in tqdm.tqdm(range(3**(level + 1))):
+    for i in tqdm.tqdm(range(3**(level + 1)), file=sys.stdout):
         # This preparation is due to the different address structure 
         #   used in this file and in util.py
         addr = address_from_index(level, i+1)
         addr = np.flip(addr)
         addr = ''.join(str(int(x)) for x in addr)
-        for j in tqdm.tqdm(range(deg + 1)):
-            for k in tqdm.tqdm(range(1, 4)):
+        for j in tqdm.tqdm(range(deg + 1), file=sys.stdout):
+            for k in tqdm.tqdm(range(1, 4), file=sys.stdout):
                 T[k-1, i, j] = p_jk(addr, j, k)
     return T
 
@@ -417,14 +417,14 @@ def generate_norm_T(level, deg, frac=True):
         T = np.zeros((3, 3**(level + 1), deg+1))
 
     # Main loop to fill in the values of the T array
-    for i in tqdm.tqdm(range(3**(level + 1))):
+    for i in tqdm.tqdm(range(3**(level + 1)), file=sys.stdout):
         # This preparation is due to the different address structure 
         #   used in this file an in util.py
         addr = address_from_index(level, i+1)
         addr = np.flip(addr)
         addr = ''.join(str(int(x)) for x in addr)
-        for j in tqdm.tqdm(range(deg + 1)):
-            for k in tqdm.tqdm(range(1, 4)):
+        for j in tqdm.tqdm(range(deg + 1), file=sys.stdout):
+            for k in tqdm.tqdm(range(1, 4), file=sys.stdout):
                 T[k-1, i, j] = norm_p_jk(addr, j, k)
     return T
 

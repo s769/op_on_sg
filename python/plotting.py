@@ -14,6 +14,7 @@ import math
 import itertools
 import gmpy2 as gm
 import tqdm
+import sys, os
 
 
 ### GENERAL PLOTTING METHODS
@@ -150,11 +151,13 @@ def plot_monomial(num, k, level=7, T=None, symm=False):
         figures of the SOP of type k, from P_{num-1, k} down to P_{0, k}.
     """
     if T is None:
+        print('Generating array of monomial values. This may take some time...')
         if symm:
             T = generate_T_symmetric(level, num, frac=False)
         else:
             T = generate_T(level, num, frac=False)
     elif isinstance(T, (tuple)):
+        print('Using preloaded monomial values.')
         filename, arr = T
         T = np.load(filename, allow_pickle=False)[arr]
 
@@ -185,8 +188,10 @@ def plot_easy_basis(num, k, level=7, W=None):
     """
 
     if W is None:
+        print('Generating array of easy basis values. This may take some time...')
         W = generate_W(level, num, frac=False)
     elif isinstance(W, (tuple)):
+        print('Using preloaded easy basis values.')
         filename, arr = W
         W = np.load(filename, allow_pickle=False)[arr]
 
@@ -218,11 +223,13 @@ def getOmegas(deg, k, frac=True, coefs=None, symm=False):
             the Sobolev Orthogonal Polynomial of order 0 - deg+1
     """
     if coefs is None:
+        print('Generating Orthogonal Polynomial coefficients. This may take some time...')
         if symm:
             W = generate_symm_ops(deg, normalized=1, frac=frac)
         else:
             W = generate_op(deg, k, 1, frac=frac)
     elif isinstance(coefs, tuple):
+        print('Using preloaded Orthogonal Polynomial coefficients.')
         filename, arr = coefs
         W = np.load(filename, allow_pickle=frac)[arr]
 
@@ -255,11 +262,13 @@ def eval_op(deg, k, level=7, T=None, frac=True, coefs=None, symm=False):
     """
 
     if T is None:
+        print('Generating array of monomial values. This may take some time...')
         if symm:
             T = generate_T_symmetric(level, deg, frac=frac)
         else:
             T = generate_T(level, deg, frac=frac)
     elif isinstance(T, (tuple)):
+        print('Using preloaded monomial values.')
         filename, arr = T
         T = np.load(filename, allow_pickle=frac)[arr]
 
@@ -276,7 +285,7 @@ def eval_op(deg, k, level=7, T=None, frac=True, coefs=None, symm=False):
     dtype = object if frac else np.float64
     q = np.empty((deg+1, Tarr.shape[0]), dtype=dtype)
     print('Evaluating Orthogonal Polynomials')
-    for i in tqdm.tqdm(range(deg+1)):
+    for i in tqdm.tqdm(range(deg+1), file=sys.stdout):
         q[i] = np.sum(coefs[i]*Tarr, axis=1)
     return q
 

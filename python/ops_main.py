@@ -6,14 +6,16 @@ from recursions import alpha_array, beta_array, gamma_array, eta_array,\
     ap_array, zeros_gm, eye_gm
 from innerprods import lis2str
 from Polynomial import Polynomial
+from util import HiddenPrints
+import sys, os
 
 
 '''
-This is the main file used for computing the orthogonal polynomials.
+This is the main file used for computing the orthogonal polynomial coefficients.
 '''
 
 
-def generate_op(n, k, normalized=True, lam=np.array([1]), frac=True):
+def generate_op_GS(n, k, normalized=True, lam=np.array([1]), frac=True):
     '''
     Generates orthogonal polynomials with respect to a generalized Sobolev 
         inner product. The Gram-Schmidt algorithm is implemented here.
@@ -52,7 +54,7 @@ def generate_op(n, k, normalized=True, lam=np.array([1]), frac=True):
     o_basis_mat[0] = basis_mat[0]
     GM = Polynomial.GM[lis2str(lam)][:n+1, :n+1]
     print('Orthogonalizing Using Gram-Schmidt')
-    for r in tqdm.tqdm(range(1, n+1)):
+    for r in tqdm.tqdm(range(1, n+1), file=sys.stdout):
 
         u_r = basis_mat[r]
         for i in range(r):
@@ -69,7 +71,7 @@ def generate_op(n, k, normalized=True, lam=np.array([1]), frac=True):
         if normalized:
             o_basis_arr = np.zeros((n+1, n+1))
             print('Normalizing')
-            for i in tqdm.tqdm(range(n+1)):
+            for i in tqdm.tqdm(range(n+1), file=sys.stdout):
                 norm = Polynomial.fast_inner(o_basis_mat[i], o_basis_mat[i],
                                             GM)
                 o_basis_arr[i] = o_basis_mat[i]/gm.sqrt(norm)
@@ -82,7 +84,7 @@ def generate_op(n, k, normalized=True, lam=np.array([1]), frac=True):
 
 
 
-def leg_ops_recursion(j, k, frac=True):
+def leg_ops_recursion(j, k, normalized=True, frac=True):
     '''
         This function uses the three term recursion from the Kasso Tuley paper to generate the first j
         Legendre orthogonal polynomials.
@@ -90,37 +92,44 @@ def leg_ops_recursion(j, k, frac=True):
         Args:
             j: maximum degree of polynomials
             k: family of monomials to use in the construction of the orthogonal polynomials 
-            (only k = 2,3 supported currently)
+                (only k = 2,3 supported currently)
+            normalized: Boolean representing whether the resulting polynomials 
+                should be normalized or monic.
             frac: Boolean representing whether the coefficients should remain as fractions or should be
-            converted to floating point numbers at the end of all calculations
+                converted to floating point numbers at the end of all calculations
 
         Returns:
             np.array of coefficients of the Legendre orthogonal polynomials with 
                 respect to the basis {P_0k, P_1k,..., P_jk}. Each row in 
                 this array is a polynomial, and there are j+1 rows and j+1 
-                columns.
+                columns. If normalized is True, the polynomials will be normalized. 
+                Otherwise, the polynomials will be monic. If normalized is True, frac must be False
+                to obtain normalized coefficients.
     '''
 
     if k == 1:
         print('This method is currently only available for k = 2 or 3.')
         return
-    # this is so the indices match    
-    j -= 1
-    dtype = object if frac else np.float64
-    o_basis_mat = np.empty((j+2, j+2), dtype=dtype)
-
-    first_mat = generate_op(1, k, normalized=False, lam=np.array([0]), frac=frac)
+    # this is so the indices match
+        
+    o_basis_mat = np.empty((j+1, j+1), dtype=object)
+    print('Using Gram-Schmidt to get the initial Legendre polynomials for recursion')
+    with HiddenPrints():
+        first_mat = generate_op_GS(1, k, normalized=False, lam=np.array([0]), frac=frac)
     const = gm.mpz(0) if frac else 0
-    first_mat = np.pad(first_mat, ((0,0), (0, j)),'constant', constant_values=(const,))
+    first_mat = np.pad(first_mat, ((0,0), (0, j-1)),'constant', constant_values=(const,))
     o_basis_mat[:2] = first_mat
 
     func_array = gamma_array if k == 3 else beta_array
+    print('Generating values for f_n')
+    func_arr = func_array(j+2)
+    print('Building Gram Matrix for inner product caluclation.')
+    Polynomial.build_condensed_GM(j+1, k, np.array([0]))
+    GM = Polynomial.GM[lis2str(np.array([0]))][:j+1, :j+1]
 
-    func_arr = func_array(j+3)
-    Polynomial.build_condensed_GM(j+2, k, np.array([0]))
-    GM = Polynomial.GM[lis2str(np.array([0]))][:j+2, :j+2]
+    print('Using recursion to generate the rest of the Legendre Poynomials')
 
-    for ind in range(1,j+1):
+    for ind in tqdm.tqdm(range(1,j), file=sys.stdout):
         func_vec = func_arr[1:ind+2]
         omega_vec = o_basis_mat[ind, :ind+1]
         zeta_ind = -1/func_arr[0]*func_vec.dot(omega_vec)
@@ -132,12 +141,29 @@ def leg_ops_recursion(j, k, frac=True):
 
         new_vec = f_ind - b_ind*o_basis_mat[ind, :ind+2] - c_ind*o_basis_mat[ind-1, :ind+2]
 
-        o_basis_mat[ind+1] = np.pad(new_vec, (0, j-ind), 'constant', constant_values=(const,))
+        o_basis_mat[ind+1] = np.pad(new_vec, (0, j-ind-1), 'constant', constant_values=(const,))
+    
+    
+
+    if frac and normalized:
+        print('Normalization requires conversion to float. Please set frac = False.')
+        print('Generating non-normalized coefficients now...')
+    if not frac:
+        if normalized:
+            o_basis_arr = np.zeros((j+1, j+1))
+            print('Normalizing')
+            for i in tqdm.tqdm(range(j+1), file=sys.stdout):
+                norm = Polynomial.fast_inner(o_basis_mat[i], o_basis_mat[i],
+                                            GM)
+                o_basis_arr[i] = o_basis_mat[i]/gm.sqrt(norm)
+            return o_basis_arr
+        return np.array(o_basis_mat, dtype=np.float64)
+
 
     return o_basis_mat
 
 
-def sob_ops_recursion(j, k, frac=True, leg_omegas=None):
+def sob_ops_recursion(j, k, normalized=True, frac=True, leg_omegas=None):
     '''
         This function uses the three term recursion we developed to generate the first j
         Sobolev orthogonal polynomials.
@@ -145,43 +171,54 @@ def sob_ops_recursion(j, k, frac=True, leg_omegas=None):
         Args:
             j: maximum degree of polynomials
             k: family of monomials to use in the construction of the orthogonal polynomials 
-            (only k = 2,3 supported currently)
+                (only k = 2,3 supported currently)
+            normalized: Boolean representing whether the resulting polynomials 
+                should be normalized or monic.
             frac: Boolean representing whether the coefficients should remain as fractions or should be
-            converted to floating point numbers at the end of all calculations
+                converted to floating point numbers at the end of all calculations
+            leg_omegas: array of Legendre coefficient values at the required degree and symmetry or 
+                tuple of (filename of .npz/.npy file containing this array , array name key string)
 
         Returns:
             np.array of coefficients of the Sobolev orthogonal polynomials with 
                 respect to the basis {P_0k, P_1k,..., P_jk}. Each row in 
                 this array is a polynomial, and there are j+1 rows and j+1 
-                columns.
+                columns. If normalized is True, the polynomials will be normalized. 
+                Otherwise, the polynomials will be monic. If normalized is True, frac must be False
+                to obtain normalized coefficients.
     '''
     if k == 1:
         print('This method is currently only available for k = 2 or 3.')
         return
     # this is so the indices match    
-    j -= 1
-    dtype = object if frac else np.float64
-    o_basis_mat = np.empty((j+2, j+2), dtype=dtype)
-
-    first_mat = generate_op(1, k, normalized=False, frac=frac)
+    o_basis_mat = np.empty((j+1, j+1), dtype=object)
+    print('Using Gram-Schmidt to generate initial Sobolev Polynomials')
+    with HiddenPrints():
+        first_mat = generate_op_GS(1, k, normalized=False, frac=frac)
     const = gm.mpz(0) if frac else 0
-    first_mat = np.pad(first_mat, ((0,0), (0, j)),'constant', constant_values=(const,))
+    first_mat = np.pad(first_mat, ((0,0), (0, j-1)),'constant', constant_values=(const,))
     o_basis_mat[:2] = first_mat
 
     
     func_array = gamma_array if k == 3 else beta_array
 
-    func_arr = func_array(j+3)
-    Polynomial.build_condensed_GM(j+2, k, np.array([1]))
-    GM = Polynomial.GM[lis2str(np.array([1]))][:j+2, :j+2]
+    print('Generating values for f_n')
+    func_arr = func_array(j+2)
+    print('Building Gram Matrix for inner product caluclation.')
+    Polynomial.build_condensed_GM(j+1, k, np.array([1]))
+    GM = Polynomial.GM[lis2str(np.array([1]))][:j+1, :j+1]
 
     if leg_omegas is None:
-        leg_omegas = leg_ops_recursion(j+1, k, frac=frac)
+        print('Generating Legendre Polynomials to use in recursion')
+        leg_omegas = leg_ops_recursion(j, k, frac=frac, normalized=False)
     elif isinstance(leg_omegas, tuple):
+        print('Using preloaded Legendre Polynomials')
         filename, arr = leg_omegas
         leg_omegas = np.load(filename, allow_pickle=frac)[arr]
     
-    for ind in range(1,j+1):
+    print('Using recursion to generate the rest of the Sobolev Polynomials')
+
+    for ind in tqdm.tqdm(range(1,j), file=sys.stdout):
         func_vec = func_arr[1:ind+2]
         omega_vec = leg_omegas[ind, :ind+1]
         zeta_ind = -1/func_arr[0]*func_vec.dot(omega_vec)
@@ -192,7 +229,66 @@ def sob_ops_recursion(j, k, frac=True, leg_omegas=None):
         b_ind = gm.mpq(b_ind, Polynomial.fast_inner(o_basis_mat[ind-1, :ind], o_basis_mat[ind-1,:ind], GM[:ind, :ind]))
         new_vec = f_ind - a_ind*o_basis_mat[ind, :ind+2] - b_ind*o_basis_mat[ind-1, :ind+2]
 
-        o_basis_mat[ind+1] = np.pad(new_vec, (0, j-ind), 'constant', constant_values=(const,))
+        o_basis_mat[ind+1] = np.pad(new_vec, (0, j-ind-1), 'constant', constant_values=(const,))
+
+
+    if frac and normalized:
+        print('Normalization requires conversion to float. Please set frac = False.')
+        print('Generating non-normalized coefficients now...')
+    if not frac:
+        if normalized:
+            o_basis_arr = np.zeros((j+1, j+1))
+            print('Normalizing')
+            for i in tqdm.tqdm(range(j+1), file=sys.stdout):
+                norm = Polynomial.fast_inner(o_basis_mat[i], o_basis_mat[i],
+                                            GM)
+                o_basis_arr[i] = o_basis_mat[i]/gm.sqrt(norm)
+            return o_basis_arr
+        return np.array(o_basis_mat, dtype=np.float64)
+
 
     return o_basis_mat
+
+
+def generate_op(n, k, normalized=True, lam=np.array([1]), frac=True):
+    '''
+        Generates orthogonal polynomials with respect to a generalized Sobolev 
+        inner product. If possible, a recursion formula is used to improve efficiency.
+        Otherwise, the Gram-Schmidt algorithm is used.
+
+        Args:
+            n: Maximum degree of orthogonal polynomial.
+            k: family of monomials to use in Gram-Schmidt (k = 1, 2, or 3)
+            normalized: Boolean representing whether the resulting polynomials 
+                should be normalized or monic.
+            lam: np.array of lambda values for the generalized Sobolev inner 
+                product. The default value is 1 (corresponding to the regular 
+                Sobolev inner product). If lam = np.array([0]), 
+                this is the L2 inner product.
+            frac: Boolean representing whether the coefficients should remain as fractions or should be
+            converted to floating point numbers at the end of all calculations.
+
+        Returns:
+            np.array of coefficients of the orthogonal polynomials with 
+                respect to the basis {P_0k, P_1k,..., P_nk}. Each row in 
+                this array is a polynomial, and there are n+1 rows and n+1 
+                columns.
+                If normalized is True, the polynomials will be normalized. 
+                Otherwise, the polynomials will be monic. If normalized is True, frac must be False
+                to obtain normalized coefficients.
+    '''
+    if k == 2 or k == 3:
+        if lam == np.array([0]):
+            print('Using Legendre recursion formula to generate OPs')
+            return leg_ops_recursion(n, k, normalized=normalized, frac=frac)
+        elif lam == np.array([1]):
+
+            print('Using Sobolev recursion formula to generate OPs')
+            return sob_ops_recursion(n, k, normalized=normalized, frac=frac)
+        else:
+            print('Using Gram-Schmidt to generate OPs')
+            return generate_op_GS(n, k, normalized=normalized, lam=lam, frac=frac)
+    
+    print('Using Gram-Schmidt to generate OPs')
+    return generate_op_GS(n, k, normalized=normalized, lam=lam, frac=frac)    
 

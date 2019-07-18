@@ -1,13 +1,36 @@
-import sys
+import sys, os
 
 import numpy as np
 import gmpy2 as gm
 
 from recursions import alpha_array, gamma_array
 
+
 """
 This file will implement general helper functions. 
 """
+
+
+class HiddenPrints:
+    '''
+        This is a class that can be used to suppress stdout from function calls.
+
+        Usage:
+            with HiddenPrints():
+                >>do stuff without printing
+            
+    '''
+    def __enter__(self):
+        self._original_stdout = sys.stdout
+        sys.stdout = open(os.devnull, 'w')
+        # self._original_sterr = sys.stderr
+        # sys.stderr = open(os.devnull, 'w')
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        sys.stdout.close()
+        # sys.stderr.close()
+        sys.stdout = self._original_stdout
+        # sys.stderr = self._original_sterr
 
 def address_from_index(level, index):
     """Computes address vector from the index.
