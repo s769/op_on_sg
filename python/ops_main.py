@@ -290,5 +290,6 @@ def generate_op(n, k, normalized=True, lam=np.array([1]), frac=True):
             return generate_op_GS(n, k, normalized=normalized, lam=lam, frac=frac)
     
     print('Using Gram-Schmidt to generate OPs')
-    return generate_op_GS(n, k, normalized=normalized, lam=lam, frac=frac)    
+    return generate_op_GS(n, k, normalized=normalized, lam=lam, frac=frac)   
+
 

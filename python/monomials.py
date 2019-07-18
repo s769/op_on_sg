@@ -203,7 +203,7 @@ def norm_f_jk(addr, j, k):
     '''
 
     # Finds the values of pi and qi from the recursion
-    arr = big_recursion(j-1)
+    arr = big_recursion(j)
     a1 = copy.deepcopy(arr[0, j-1])
     b1 = copy.deepcopy(arr[1, j-1])
 
@@ -249,6 +249,7 @@ def norm_p_jk(addr, j, k):
         value of partial_{n}p_jk(F_w(q_n))
     '''
     # Based on (2.14), (2.20) of the Calculus paper
+
     if k == 1:
         res = norm_f_jk(addr, j, 0)
         for l in range(j+1):
