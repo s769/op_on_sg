@@ -5,9 +5,9 @@ import gmpy2 as gm
 
 from util import address_from_index
 from recursions import alpha
-from monomials import generate_W, generate_T, generate_norm_W, generate_norm_T
+from monomials import generate_W, generate_T, generate_norm_W, generate_norm_T, norm_p_jk, f_lkFiqn, norm_f_jk
 from plotting import plot_monomial, plot_easy_basis, plot_op, plot_general
-from chebyshev import plot_h1_family, plot_h1
+from chebyshev import eval_poly_h1, plot_h1_family, plot_h1, max_h1_family, max_h1_val, max_h1_val_family
 
 np.set_printoptions(threshold=sys.maxsize)
 
@@ -28,17 +28,15 @@ np.set_printoptions(threshold=sys.maxsize)
 # k = 0
 
 
-# a. To plot the monomials, use plot_monomial
+# 1-a. To plot the monomials, use plot_monomial
 #plot_monomial(num, k)
 
 
-# b. To plot the easy basis, use plot_easy_basis
+# 1-b. To plot the easy basis, use plot_easy_basis
 #plot_easy_basis(num, k)
 
 
-# c. This plots the Sobolov Orthogonal Polynomials
-# num represent the highest power to be plotted
-# k represent the type of monomial {0,1,2} -> {1, 2, 3}
+# 1-c. This plots the Sobolov Orthogonal Polynomials
 #plot_SOP(num, k)
 
 
@@ -222,9 +220,51 @@ np.set_printoptions(threshold=sys.maxsize)
 
 
 #plot_h1(0, 0, float(-alpha(2) / (2*alpha(1))), 0, 0, 1, 7)
-start = float(-alpha(2)/alpha(1) - alpha(2)/(4*alpha(1)))
-end = float(-alpha(2)/alpha(1) + alpha(2)/(4*alpha(1)))
+#start = float(-2*alpha(2)/alpha(1))
+#end = 0
+
+#start = float(-alpha(2)/alpha(1) - alpha(2)/(4*alpha(1)))
+#end = float(-alpha(2)/alpha(1) + alpha(2)/(4*alpha(1)))
+
+start = -0.02757
+end = -0.02747
 
 
-plot_h1_family(start, end, 3, 3, 7)
+#start = -0.0275068
+#end = -0.0275015
 
+#plot_h1_family(start, end, 10, 3, 7)
+# T = eval_poly_h1(0, 0, -0.027, 0, 0, 1, 7)
+# T = np.abs(T)
+# ind_arrange_1 = np.flip(np.argsort(T))
+
+# for i in range(10):
+#     temp_add = address_from_index(7, ind_arrange_1[i]+1)
+#     print("Address ", i)
+#     print(temp_add)
+#     print("Index", i)
+#     print(ind_arrange_1[i])
+#     print("Value ", i)
+#     print(T[ind_arrange_1[i]])
+
+#max_h1_val(-0.0275068, 3, 10, 9)
+
+#new_range = np.linspace(start, end, 10)
+#max_h1_family(start, end, 20, 3, 7)
+#max_h1_val_family(start, end, 20, 3, 10)
+
+# addr = address_from_index(7, 3 ** 8)
+# print(addr)
+# addr = np.flip(addr)
+# addr = ''.join(str(int(x)) for x in addr)
+
+# print(norm_p_jk(addr, 1, 3) - 0.0275013 * norm_p_jk(addr, 0, 3))
+# print(norm_p_jk(addr, 1, 3))
+# print(norm_p_jk(addr, 0, 3))
+
+# #max_h1_val(-0.0275013, 3, 10, 7)
+
+plot_h1(-1/12,0,0, 1, 0, 0, 7)
+#plot_h1(0,0,-0.0275013, 0, 0, 1, 7)
+
+#print(alpha(3))

@@ -1,14 +1,16 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
+from util import address_from_index
 from monomials import generate_T
 from plotting import gaskplot, plot_general
 from recursions import alpha
 
+
 # Method for plotting any function in H0
 
 
-# Methods for plotting any function in H1
+# Method for evaluating any function in H1 and returning all values
 def eval_poly_h1(a, b, c, d, e, f, level = 7):
     """
     Function that evaluates a polynomial in H1. We can represent any 
@@ -40,6 +42,7 @@ def eval_poly_h1(a, b, c, d, e, f, level = 7):
     return poly_temp
 
 
+# Method for plotting any function in H1 given coefficients
 def plot_h1(a, b, c, d, e, f, level = 7):
     """
     Function that plots a polynomial in H1. This follows from the 
@@ -101,3 +104,96 @@ def plot_h1_family(start, end, num_points, k, level = 7):
 
 
 # Methods for finding numerical values of maximal/minimal points
+def max_h1_family(start, end, num_points, k, level = 7):
+    T = generate_T(level, 2, frac=False)
+    P01_temp = T[0, :, 0]
+    P02_temp = T[1, :, 0]
+    P03_temp = T[2, :, 0]
+    P11_temp = T[0, :, 1]
+    P12_temp = T[1, :, 1]
+    P13_temp = T[2, :, 1]
+
+    index = np.linspace(start, end, num_points)
+    max_list = np.zeros(num_points)
+
+    for i in range(num_points):
+        t = index[i]
+        if (k == 1):
+            poly_temp = t * P01_temp + P11_temp
+        elif (k == 2):
+            poly_temp = t * P02_temp + P12_temp
+        else:
+            poly_temp = t * P03_temp + P13_temp
+        poly_temp = np.abs(poly_temp)
+        max_list[i] = max(poly_temp)
+
+    print()
+    print()
+    print(index)
+    print(max_list)
+    
+
+# Methods for finding value and position of maximal points at a single
+def max_h1_val(t, k, num_max, level = 7):
+    # t is the constant denoting P_{1k}+tP_{0k}
+    T = generate_T(level, 2, frac=False)
+    P01_temp = T[0, :, 0]
+    P02_temp = T[1, :, 0]
+    P03_temp = T[2, :, 0]
+    P11_temp = T[0, :, 1]
+    P12_temp = T[1, :, 1]
+    P13_temp = T[2, :, 1]
+
+    if (k == 1):
+        poly_temp = t * P01_temp + P11_temp
+    elif (k == 2):
+        poly_temp = t * P02_temp + P12_temp
+    else:
+        poly_temp = t * P03_temp + P13_temp
+    poly_temp = np.abs(poly_temp)
+    ind_arrange_1 = np.flip(np.argsort(poly_temp))
+
+    for i in range(num_max):       
+        temp_add = address_from_index(level, ind_arrange_1[i]+1)
+        print("Address ", i)
+        print(temp_add)
+        print("Index", i)
+        print(ind_arrange_1[i])
+        print("Value ", i)
+        print(poly_temp[ind_arrange_1[i]])
+
+
+
+
+
+# Methods for finding value and position of maximal points at a single
+def max_h1_val_family(start, end, num_points, k, level = 7):
+    # t is the constant denoting P_{1k}+tP_{0k}
+    T = generate_T(level, 2, frac=False)
+    P01_temp = T[0, :, 0]
+    P02_temp = T[1, :, 0]
+    P03_temp = T[2, :, 0]
+    P11_temp = T[0, :, 1]
+    P12_temp = T[1, :, 1]
+    P13_temp = T[2, :, 1]
+
+    index = np.linspace(start, end, num_points)
+
+    for i in range(num_points):
+        t = index[i]
+        if (k == 1):
+            poly_temp = t * P01_temp + P11_temp
+        elif (k == 2):
+            poly_temp = t * P02_temp + P12_temp
+        else:
+            poly_temp = t * P03_temp + P13_temp
+        poly_temp = np.abs(poly_temp)
+        max_val = np.max(poly_temp)
+        max_pos = np.argmax(poly_temp)
+        max_add = address_from_index(level, max_pos+1)
+
+        print()
+        print()
+        print('Coefficient is ', t)
+        print('Maximum value is', max_val)
+        print('Maximum achieved at address ', max_add)
