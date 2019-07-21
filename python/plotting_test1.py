@@ -4,11 +4,10 @@ import numpy as np
 import gmpy2 as gm
 
 from util import address_from_index
-from recursions import alpha
-from monomials import generate_W, generate_T, generate_norm_W, generate_norm_T, norm_p_jk, f_lkFiqn, norm_f_jk
+from recursions import alpha, beta
+from monomials import p_jk, generate_W, generate_T, generate_norm_W, generate_norm_T, norm_p_jk, f_lkFiqn, norm_f_jk
 from plotting import plot_monomial, plot_easy_basis, plot_op, plot_general
-from chebyshev import eval_poly_h1, plot_h1_family, plot_h1, max_h1_family, max_h1_val, max_h1_val_family
-
+from chebyshev import eval_poly_h1, plot_h1, extremal_val, extremal_val_h1, max_h1_val_family
 np.set_printoptions(threshold=sys.maxsize)
 
 # An outline of the functionalities are listed here.
@@ -40,231 +39,195 @@ np.set_printoptions(threshold=sys.maxsize)
 #plot_SOP(num, k)
 
 
+######## 2. Code for Plotting a general polynomial in H1 ########
 
-######## 2. Code for Plotting a general polynomial ########
+# Example: Compute P_{13} + 1/2*P_{03}
+#plot_h1(0, 0, 1/2, 0, 0, 1, 7)
 
-# Example: Compute P_{13} + a*P_{03}
 
-# Hyperparameters
-#a = 1 / 2
 
-# Maximum order of the basis we're working with
-#j = 1
+### Section II. Maximal, Minimal, Sup-norms
 
-# # Fetch the values for P
-# T = generate_T(7, j+2, False)
-# P13_seq = T[2, :, 1]
-# P03_seq = T[2, :, 0]
+######## 1. Code for finding sup-norm of general polynomials ########
 
-# # print()
-# # print()
-# # print()
+### Example A: Sup-norm of f_{j0}
+# We can see from the following code that f_{j0} always take the maximum
+# norm at point F_0F_1q_2=F_0F_2q_1
 
-#plot_general(prop, level)
+# # Initiaize the parameters
+# j = 3
+# num_points = 10
 
-######## II. Verifying the Sup norm of the easy basis f_{jk} ########
-
-# Since the f_{jk}'s are just rotations of each other,
-# we can just assume k = 0.
-
-# # Order of the easy basis j
-# j = 5
-
-# # Fetch the values for f_{jk}
+# # Generate the values of the polynomial
 # W = generate_W(7, j+1, False)
-# fj0_seq = W[0, :, j]
+# fj1_val = W[0, :, j]
 
-# # Sort the values on all the points 
-# if (j % 2 == 0):
-#     ind_arrange = np.flip(np.argsort(f10_seq))
-# else:
-#     ind_arrange = np.argsort(f10_seq)
-
-# # Find the address of the maximal points
-# for i in range(10):
-#     temp_add = address_from_index(7, ind_arrange[i]+1)
-#     print("Address ", i)
-#     print(temp_add)
-#     print("Index", i)
-#     print(ind_arrange[i])
-#     print("Value ", i)
-#     print(fj0_seq[ind_arrange[i]])
-
-# We can see from the printed statements that the sup norm
-# is always achieved at F_0F_1q_2=F_0F_2q_1
+# # Find the extremal value
+# extremal_val(fj1_val, num_points, flag=3, level=7)
 
 
+### Example B: Sup-norm of f_{j+1, k} / f_{j, k} 
+# We can see that the sup-norm is achieved at F_{1}q_{2}
 
-
-######## 3. Verifying the sup norm of f_{j+1,k} / f_{j, k} ########
-
-# Again we can assume k = 0.
-
-# # Order of the easy basis j (>=0)
+# # Initiaize the parameters
 # j = 7
+# num_points = 10
 
-# # Fetch the values for f_{jk}
+# # Generate the values of the polynomial
 # W = generate_W(7, j+2, False)
 # fj0_seq = W[0, :, j]
 # fj1_0_seq = W[0, :, j+1]
-
-# # print()
-# # print()
-# # print()
-# # print(fj0_seq.size)
-# # print(fj1_0_seq.size)
-
 # prop = np.abs(np.divide(fj1_0_seq, fj0_seq))
 
-# ind_arrange_1 = np.flip(np.argsort(prop))
-# ind_arrange_2 = np.argsort(prop)
-
-# for i in range(10):
-#     temp_add = address_from_index(7, ind_arrange_1[i]+1)
-#     print("Address ", i)
-#     print(temp_add)
-#     print("Index", i)
-#     print(ind_arrange_1[i])
-#     print("Value ", i)
-#     print(prop[ind_arrange_1[i]])
-
-# for i in range(10):
-#     temp_add = address_from_index(7, ind_arrange_2[i]+1)
-#     print("Address ", (i+10))
-#     print(temp_add)
-#     print("Index", (i+10))
-#     print(ind_arrange_2[i])
-#     print("Value ", (i+10))
-#     print(prop[ind_arrange_2[i]])
+# # Find the extremal value
+# extremal_val(prop, num_points, flag=3, level=7)
 
 
-######## 4. Verifying the value of \partial_{n}p_{jk} ########
+### Example C: Sup norm of P_{03} / P_{11}
+# The result is not very clear - seems that a lot of points have
+# similar values.
 
-# Again we can assume k = 0.
+# # Initiaize the parameters
+# j = 0
+# num_points = 10
 
-# Order of the easy basis j (>=0)
-# j = 4
+# # Generate the values of the polynomial
+# T = generate_T(7, j+2, False)
+# P03_seq = T[2, :, 0]
+# P11_seq = T[0, :, 1]
+# prop = np.abs(np.divide(P03_seq, P11_seq))
 
-# Fetch the values for \partial_{n}p_{jk}
-# norm_W = generate_norm_W(1, j+2, False)
-# norm_f00 = norm_W[0, :, j]
-# print(norm_f00)
-
-# Fetch the values for \partial_{n}p_{jk}
-# norm_T = generate_norm_T(1, j+2, False)
-# norm_P01 = norm_T[2, :, j]
-# print()
-# print()
-# print(norm_P01)
+# # Find the extremal value
+# extremal_val(prop, num_points, flag=3, level=7)
 
 
-### 5. Verifying the sup norm of P_{03} / P_{11} ###
+### Actual work 1: Sup norm of P_{13} + a * P_{03}
 
-#Again we can assume k = 0.
+# Initialization of the coefficients
 
-#level = 7
+### Here we find the optimal value theore
+# # This indicates we evaluate 20 points one time.
+# num_points = 20
 
-# Fetch the values for P_{03} and P_{11}
-#T = generate_T(level, 2, False)
-#P03_seq = T[2, :, 0]
-#P11_seq = T[0, :, 1]
+# # Initial start and end values
+# start = float(-2 * alpha(2) / alpha(1))
+# end = 0
+# level = 7
 
-# print()
-# print()
-# print()
-# print(fj0_seq.size)
-# print(fj1_0_seq.size)
+# # Second set of start and end values
+# start = -0.0315789
+# end = -0.0245614
+# level = 7
 
-#prop = np.divide(P03_seq, P11_seq)
+# # Third set of start and end values
+# start = -0.0278855
+# end = -0.0271468
+# level = 7
 
-#plot_general(prop, level)
+# # Fourth set of start and end values
+# # From here we start using 10 levels
+# start = -0.0275744 
+# end = -0.0274578
+# level = 10
 
+# # Fifth set of start and end values
+# start = -0.0275068 
+# end = -0.0274946
+# level = 10
 
+# # Fifth set of start and end values
+# start = -0.0275035
+# end = -0.0275023
+# level = 10
 
-# ind_arrange_1 = np.flip(np.argsort(prop))
-# ind_arrange_2 = np.argsort(prop)
+# # Sixth set of start and end values
+# start = -0.0275024
+# end = -0.0275023
+# level = 10
 
-# for i in range(10):
-#     temp_add = address_from_index(level, ind_arrange_1[i]+1)
-#     print("Address ", i)
-#     print(temp_add)
-#     print("Index", i)
-#     print(ind_arrange_1[i])
-#     print("Value ", i)
-#     print(prop[ind_arrange_1[i]])
+# # Print the maximal norm at each coefficient
+# max_h1_val_family(start, end, num_points, 3, level)
 
-# for i in range(10):
-#     temp_add = address_from_index(level, ind_arrange_2[i]+1)
-#     print("Address ", (i+10))
-#     print(temp_add)
-#     print("Index", (i+10))
-#     print(ind_arrange_2[i])
-#     print("Value ", (i+10))
-#     print(prop[ind_arrange_2[i]])
+# # This implies the optimal coefficient is around -0.02750235
+# best_coeff = -0.02750235
 
-
-### 3. Verifying the sup norm of f_{j+1,k} / f_{j, k} ###
-
-# Again we can assume k = 0.
-
-# # Order of the easy basis j (>=0)
-# j = 7
-
-# # Fetch the values for f_{jk}
-# T = generate_T(1, j+2, False)
-# P11_seq = T[0, :, 6]
-
-# print()
-# print()
-# print(P11_seq)
+# # We finally print the graph of the final polynomial we obtain
+# plot_h1(0, 0, best_coeff, 0, 0, 1, 7)
 
 
-#plot_h1(0, 0, float(-alpha(2) / (2*alpha(1))), 0, 0, 1, 7)
-#start = float(-2*alpha(2)/alpha(1))
-#end = 0
+### Actual work 2: Sup norm of P_{12} + a * P_{02}
 
-#start = float(-alpha(2)/alpha(1) - alpha(2)/(4*alpha(1)))
-#end = float(-alpha(2)/alpha(1) + alpha(2)/(4*alpha(1)))
+### Here we find the optimal value theore
+# # This indicates we evaluate 20 points one time.
+# num_points = 20
 
-start = -0.02757
-end = -0.02747
+# # Initial start and end values
+# start = float(-2 * beta(1) / beta(0))
+# end = 0
+# level = 7
 
+# # Second start and end values
+# start = -0.0748538
+# end = -0.0561403
+# level = 7
 
-#start = -0.0275068
-#end = -0.0275015
+# # Third start and end values
+# start = -0.0630347
+# end = -0.0610649
+# level = 7
 
-#plot_h1_family(start, end, 10, 3, 7)
-# T = eval_poly_h1(0, 0, -0.027, 0, 0, 1, 7)
-# T = np.abs(T)
-# ind_arrange_1 = np.flip(np.argsort(T))
+# # Fourth start and end values
+# start = -0.0621016
+# end = -0.0618943
+# level = 10
 
-# for i in range(10):
-#     temp_add = address_from_index(7, ind_arrange_1[i]+1)
-#     print("Address ", i)
-#     print(temp_add)
-#     print("Index", i)
-#     print(ind_arrange_1[i])
-#     print("Value ", i)
-#     print(T[ind_arrange_1[i]])
+# # Fifth start and end values
+# start = -0.0619488
+# end = -0.0619270
+# level = 10
 
-#max_h1_val(-0.0275068, 3, 10, 9)
+# # Sixth start and end values
+# start = -0.0619350
+# end = -0.0619327
+# level = 10
 
-#new_range = np.linspace(start, end, 10)
-#max_h1_family(start, end, 20, 3, 7)
-#max_h1_val_family(start, end, 20, 3, 10)
+# # Sixth start and end values
+# start = -0.0619340
+# end = -0.0619337
+# level = 10
 
-# addr = address_from_index(7, 3 ** 8)
-# print(addr)
+# # Print the maximal norm at each coefficient
+# max_h1_val_family(start, end, num_points, 2, level)
+
+# # This implies the optimal coefficient is around -0.0619339
+# best_coeff = -0.0619339
+
+# Well, something we noted in the process is that the sup-norm seems
+# to be achieved at the point where the function has the same 
+# norm at F_0F_1q_2 and at q_1/q_2. 
+
+# Based on this conjecture, we can solve a linear equation that gives
+# the exact value of a:
+addr = [0, 1, 2]
+addr = np.flip(addr)
+addr = ''.join(str(int(x)) for x in addr)
+best_coeff = -(p_jk(addr, 1, 2) + beta(1)) / (p_jk(addr, 0, 2) + beta(0))
+print(float(best_coeff))
+print(float(beta(1) + best_coeff * beta(0)))
+
+# # We finally print the graph of the final polynomial we obtain
+# plot_h1(0, best_coeff, 0, 0, 1, 0, 7)
+
+#extremal_val_h1(10, 0, best_coeff, 0, 0, 1, 0, 3, 7)
+
+# ###
+# addr = [0, 1, 2]
 # addr = np.flip(addr)
 # addr = ''.join(str(int(x)) for x in addr)
 
-# print(norm_p_jk(addr, 1, 3) - 0.0275013 * norm_p_jk(addr, 0, 3))
-# print(norm_p_jk(addr, 1, 3))
-# print(norm_p_jk(addr, 0, 3))
-
-# #max_h1_val(-0.0275013, 3, 10, 7)
-
-plot_h1(-1/12,0,0, 1, 0, 0, 7)
-#plot_h1(0,0,-0.0275013, 0, 0, 1, 7)
-
-#print(alpha(3))
+# print(p_jk(addr, 1, 2))
+# print(p_jk(addr, 0, 2))
+# # a = -(p_jk(addr, 1, 2) - beta(1)) / (p_jk(addr, 1, 2) - beta(0))
+# # or negative
+# a = -(p_jk(addr, 1, 2) + beta(1)) / (p_jk(addr, 0, 2) + beta(0))
+# print(a)

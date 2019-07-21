@@ -7,9 +7,6 @@ from plotting import gaskplot, plot_general
 from recursions import alpha
 
 
-# Method for plotting any function in H0
-
-
 # Method for evaluating any function in H1 and returning all values
 def eval_poly_h1(a, b, c, d, e, f, level = 7):
     """
@@ -58,13 +55,13 @@ def plot_h1(a, b, c, d, e, f, level = 7):
         level - The level we would like to plot
     
     Returns:
-        poly_temp - a np.array of length 3^(level+1), containing the 
-            values of the polynomial.
+        A plot of the polynomial
     """
     poly_temp = eval_poly_h1(a, b, c, d, e, f, level)
     plot_general(poly_temp, level)
 
 
+# Plot a family of polynomials based on one varying coefficient
 def plot_h1_family(start, end, num_points, k, level = 7):
     """
     Function that plots the polynomial of one certain family in H1, with
@@ -76,6 +73,9 @@ def plot_h1_family(start, end, num_points, k, level = 7):
         num_points - number of points we would like to evaluate
         k - The type of polynomial family (k=1,2,3)
         level - The level we would like to plot
+    
+    Returns:
+        A plot of graphs of polynomials in the same picture.
     """
     T = generate_T(level, 2, frac=False)
     P01_temp = T[0, :, 0]
@@ -87,7 +87,8 @@ def plot_h1_family(start, end, num_points, k, level = 7):
 
     plt.figure()
     ax = plt.axes(projection='3d')
-    color_list = ['red', 'orange', 'yellow', 'green', 'cyan', 'blue', 'purple', 'black', 'brown', 'gray']
+    color_list = ['red', 'orange', 'yellow', 'green', 'cyan', 'blue', \
+        'purple', 'black', 'brown', 'gray']
 
     for i in range(num_points):
         t = np.linspace(start, end, num_points)[i]
@@ -103,72 +104,103 @@ def plot_h1_family(start, end, num_points, k, level = 7):
     return
 
 
-# Methods for finding numerical values of maximal/minimal points
-def max_h1_family(start, end, num_points, k, level = 7):
-    T = generate_T(level, 2, frac=False)
-    P01_temp = T[0, :, 0]
-    P02_temp = T[1, :, 0]
-    P03_temp = T[2, :, 0]
-    P11_temp = T[0, :, 1]
-    P12_temp = T[1, :, 1]
-    P13_temp = T[2, :, 1]
+def extremal_val(poly_temp, num_points, flag, level = 7):
+    """
+    This function finds the points in a single polynomial, 
+        with one of the following properties:
+        (1) maximal value (2) minimal value (3) largest absolute value 
+        and returns their value and address.
 
-    index = np.linspace(start, end, num_points)
-    max_list = np.zeros(num_points)
-
-    for i in range(num_points):
-        t = index[i]
-        if (k == 1):
-            poly_temp = t * P01_temp + P11_temp
-        elif (k == 2):
-            poly_temp = t * P02_temp + P12_temp
-        else:
-            poly_temp = t * P03_temp + P13_temp
-        poly_temp = np.abs(poly_temp)
-        max_list[i] = max(poly_temp)
-
-    print()
-    print()
-    print(index)
-    print(max_list)
+    Args:
+        poly_temp - evaluation of the polynomial to some level
+        num_points - the number of maximal/minimal points
+        flag - the kind of extremum we're trying to find. 1 represent 
+            maximal value, 2 represent minimal value, and 3 represent
+            maximal of absolute value.
+        level - The level we would like to evaluate 
     
+    Returns:
+        Prints the top values of the address and value of extremal points
+    """
 
-# Methods for finding value and position of maximal points at a single
-def max_h1_val(t, k, num_max, level = 7):
-    # t is the constant denoting P_{1k}+tP_{0k}
-    T = generate_T(level, 2, frac=False)
-    P01_temp = T[0, :, 0]
-    P02_temp = T[1, :, 0]
-    P03_temp = T[2, :, 0]
-    P11_temp = T[0, :, 1]
-    P12_temp = T[1, :, 1]
-    P13_temp = T[2, :, 1]
+    # If we need to find the sup-norm, take the absolute value
+    if (flag == 3):
+        poly_temp = np.abs(poly_temp)
+    
+    # If we need to find the maximum, we flip the sequence
+    if (flag == 1 or flag == 3):
+        ind_arrange = np.flip(np.argsort(poly_temp))
+    else: 
+        # If we need to find the minimum, no need to flip
+        ind_arrange = np.argsort(poly_temp)
 
-    if (k == 1):
-        poly_temp = t * P01_temp + P11_temp
-    elif (k == 2):
-        poly_temp = t * P02_temp + P12_temp
-    else:
-        poly_temp = t * P03_temp + P13_temp
-    poly_temp = np.abs(poly_temp)
-    ind_arrange_1 = np.flip(np.argsort(poly_temp))
-
-    for i in range(num_max):       
-        temp_add = address_from_index(level, ind_arrange_1[i]+1)
+    # Find the top points
+    for i in range(num_points):
+        temp_add = address_from_index(level, ind_arrange[i]+1)
         print("Address ", i)
         print(temp_add)
         print("Index", i)
-        print(ind_arrange_1[i])
+        print(ind_arrange[i])
         print("Value ", i)
-        print(poly_temp[ind_arrange_1[i]])
+        print(poly_temp[ind_arrange[i]])
 
 
+# Methods for finding value and position of multiple maximal points 
+#   for a single function in h1
+def extremal_val_h1(num_points, a, b, c, d, e, f, flag, level = 7):
+    """
+    This function finds the points in a single polynomial in H^{1}, 
+        with one of the following properties:
+        (1) maximal value (2) minimal value (3) largest absolute value 
+        and returns their value and address.
+
+    Args:
+        num_points - the number of maximal/minimal points
+        a - coefficient of P_01
+        b - coefficient of P_02
+        c - coefficient of P_03
+        d - coefficient of P_11
+        e - coefficient of P_12
+        f - coefficient of P_13
+        flag - the kind of extremum we're trying to find. 1 represent 
+            maximal value, 2 represent minimal value, and 3 represent
+            maximal of absolute value.
+        level - The level we would like to evaluate 
+    
+    Returns:
+        Prints the top values of the address and value of extremal points
+    """
+
+    T = generate_T(level, 2, frac=False)
+    P01_temp = T[0, :, 0]
+    P02_temp = T[1, :, 0]
+    P03_temp = T[2, :, 0]
+    P11_temp = T[0, :, 1]
+    P12_temp = T[1, :, 1]
+    P13_temp = T[2, :, 1]
+
+    poly_temp = a * P01_temp + b * P02_temp + c * P03_temp +\
+        d * P11_temp + e * P12_temp + f * P13_temp
+
+    extremal_val(poly_temp, num_points, flag, level)
 
 
-
-# Methods for finding value and position of maximal points at a single
 def max_h1_val_family(start, end, num_points, k, level = 7):
-    # t is the constant denoting P_{1k}+tP_{0k}
+    """
+    Function that prints a list of supremum values for a certain family,
+    given different coefficients.
+
+    Args:
+        start - starting value of evaluation
+        end - ending value of evaluation
+        num_points - number of points we would like to evaluate
+        k - The type of polynomial family (k=1,2,3)
+        level - The level we would like to plot
+
+    Returns:
+        For each coefficient, prints out the address and value of 
+            extremal points.
+    """
     T = generate_T(level, 2, frac=False)
     P01_temp = T[0, :, 0]
     P02_temp = T[1, :, 0]
@@ -197,3 +229,10 @@ def max_h1_val_family(start, end, num_points, k, level = 7):
         print('Coefficient is ', t)
         print('Maximum value is', max_val)
         print('Maximum achieved at address ', max_add)
+
+
+def poly_sup_division(j1, k1, j2, k2, ):
+    """
+    This function calculates the 
+    """
+    pass
