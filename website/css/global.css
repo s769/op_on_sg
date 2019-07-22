@@ -199,6 +199,7 @@ a.article:hover {
     float: left;
     background-color: #B31B1B;
     border-color: #B31B1B;
+    position: fixed;
 }
 
 /* Style the Image Used to Trigger the Modal */
@@ -280,3 +281,10 @@ a.article:hover {
       width: 100%;
     }
   }
+
+  .back-to-top {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    display: none;
+}
