@@ -32,6 +32,25 @@ class HiddenPrints:
         sys.stdout = self._original_stdout
         # sys.stderr = self._original_sterr
 
+
+def bmatrix(a):
+    """
+        Converts np.array into a LaTeX bmatrix
+        Args:
+            a: numpy array
+        Returns: 
+            LaTeX bmatrix of a as a string
+    """
+    if len(a.shape) > 2:
+        raise ValueError('bmatrix can at most display two dimensions')
+    lines = str(a).replace('[', '').replace(']', '').splitlines()
+    rv = [r'\begin{bmatrix}']
+    rv += ['  ' + ' & '.join(l.split()) + r'\\' for l in lines]
+    rv +=  [r'\end{bmatrix}']
+    for i in rv:
+      print(i)
+    return 
+
 def address_from_index(level, index):
     """Computes address vector from the index.
 

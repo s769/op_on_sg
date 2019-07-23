@@ -5,7 +5,9 @@ import itertools
 from monomials import p_jk, generate_T, f_jk
 from Polynomial import Polynomial
 import sympy as sp
-from util import HiddenPrints
+from util import HiddenPrints, bmatrix
+from matplotlib import pyplot as plt
+import tqdm
 
 '''
 This file contains functions used to study higher order quadrature on SG using n-harmonic splines
@@ -187,6 +189,5 @@ def block_to_regular(mat):
         for j in range(mat.cols):
             res[i, j] = mat[i, j]
     return res
-
 
 
