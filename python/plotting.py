@@ -108,7 +108,7 @@ def gaskplot(f, m, ax, color='b'):
         yy = np.append(y[3*k:3*k+3, 1], y[3*k, 1])
         zz = np.append(f[3*k:3*k+3], f[3*k])
         # Add the points to the plot
-        print(color)
+        # print(color)
         ax.plot(xx, yy, zz, color=color)
     return
 

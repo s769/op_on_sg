@@ -186,6 +186,43 @@ def p_jk(addr, j, k):
     return res
 
 
+
+def f_jk_addr_list(addr, j, k):
+    """
+    Evaluate f_jk when the address provided is a list in the order
+    [w1, w2, ..., wm, qn] for F_{w1}...F_{wm}q_{n}.
+
+    Args:
+        j, k: indices mentioned in preceding paragraph.
+        addr: address of evaluation point F_w(q_i) given as a list of 
+            indices of F and q as defined above.
+
+    Returns:
+        value of f_jk(F_w(q_i))
+    """
+    addr = np.flip(addr)
+    addr = ''.join(str(int(x)) for x in addr)
+    return(f_jk(addr, j, k))
+
+
+def p_jk_addr_list(addr, j, k):
+    """
+    Evaluate p_jk when the address provided is a list in the order
+    [w1, w2, ..., wm, qn] for F_{w1}...F_{wm}q_{n}.
+
+    Args:
+        j, k: indices mentioned in preceding paragraph.
+        addr: address of evaluation point F_w(q_i) given as a list of 
+            indices of F and q as defined above.
+
+    Returns:
+        value of p_jk(F_w(q_i))
+    """
+    addr = np.flip(addr)
+    addr = ''.join(str(int(x)) for x in addr)
+    return(p_jk(addr, j, k))
+
+
 @mem
 def norm_f_jk(addr, j, k):
     '''
