@@ -8,6 +8,8 @@ from plotting import gaskplot, plot_general
 from recursions import alpha
 
 
+# We first present functions specifically for H1
+
 # Method for evaluating any function in H1 and returning all values
 def eval_poly_h1(a, b, c, d, e, f, level = 7):
     """
@@ -107,7 +109,7 @@ def plot_h1_family(start, end, num_points, k, level = 7):
 
 # Methods for finding value and position of multiple maximal points 
 #   for a single function in h1
-def extremal_val_h1(num_points, a, b, c, d, e, f, flag, level = 7):
+def extremal_val_h1(a, b, c, d, e, f, num_points, flag, level = 7):
     """
     This function finds the points in a single polynomial in H^{1}, 
         with one of the following properties:
@@ -116,13 +118,14 @@ def extremal_val_h1(num_points, a, b, c, d, e, f, flag, level = 7):
         and returns their value and address.
 
     Args:
-        num_points - the number of maximal/minimal points
         a - coefficient of P_01
         b - coefficient of P_02
         c - coefficient of P_03
         d - coefficient of P_11
         e - coefficient of P_12
         f - coefficient of P_13
+        num_points - the number of maximal/minimal points we would like
+            to check
         flag - the kind of extremum we're trying to find. 1 represent 
             maximal value, 2 represent minimal value, and 3 represent
             maximal of absolute value.
@@ -191,6 +194,8 @@ def max_h1_val_family(start, end, num_points, k, level = 7):
         print('Maximum value is', max_val)
         print('Maximum achieved at address ', max_add)
 
+
+# We then provide functions for general H^{n}
 
 def extremal_val(poly_temp, num_points, flag, level = 7):
     """
@@ -284,7 +289,7 @@ def plot_hn(coeff_arr, level = 7):
 
 # Methods for finding value and position of multiple maximal points 
 #   for a single function in H^{n}
-def extremal_val_hn(num_points, coeff_arr, flag, level = 7):
+def extremal_val_hn(coeff_arr, num_points, flag, level = 7):
     """
     This function finds the points in a single polynomial in H^{1}, 
         with one of the following properties:
@@ -293,11 +298,12 @@ def extremal_val_hn(num_points, coeff_arr, flag, level = 7):
         and returns their value and address.
 
     Args:
-        num_points - the number of maximal/minimal points
         coeff_arr - n*3 ndarray storing the coefficients of the polynomial
             coeff_arr[j, 0] represent coefficient of P_{j1}
             coeff_arr[j, 1] represent coefficient of P_{j2}
             coeff_arr[j, 2] represent coefficient of P_{j3}
+        num_points - the number of maximal/minimal points we would like
+            to evaluate
         flag - the kind of extremum we're trying to find. 1 represent 
             maximal value, 2 represent minimal value, 3 represent
             maximal of absolute value, 4 represent minimal of absolute
@@ -312,7 +318,32 @@ def extremal_val_hn(num_points, coeff_arr, flag, level = 7):
     extremal_val(poly_temp, num_points, flag, level)
 
 
-def max_h2_val_family(start0, end0, num0, start1, end1, num1, num_max, k, level=7):
+def max_h2_val_family(start0, end0, num0, start1, end1, num1, num_max, \
+    k, level=7, verbose_flag=False):
+    """
+    Function that prints a list of supremum values for a certain family,
+    given different coefficients. [This essentially acts like a grid
+    search of coefficients.]
+
+    Args:
+        start0 - starting value for P_0k coefficient
+        end0 - ending value of P_0k coefficient
+        num0 - number of points to evaluate for P_0k coefficient
+        start1 - starting value for P_1k coefficient
+        end1 - ending value of P_1k coefficient
+        num1 - number of points to evaluate for P_1k coefficient
+        num_max - maximum number of output coefficients with smallest 
+            norm that we would like to see.
+        k - The type of polynomial family (k=1,2,3)
+        level - The level we would like to plot
+        verbose - A flag that determines if we print best stats and 
+            address during the iterations
+
+    Returns:
+        For each coefficient, prints out the address and value of 
+            extremal points.
+    """
+    # Generate values of the polynomial
     T = generate_T(level, 3, frac=False)
     P01_temp = T[0, :, 0]
     P02_temp = T[1, :, 0]
@@ -324,53 +355,61 @@ def max_h2_val_family(start0, end0, num0, start1, end1, num1, num_max, k, level=
     P22_temp = T[1, :, 2]
     P23_temp = T[2, :, 2]
 
+    # Generate space of coefficients we would like to grid search on
     index_0 = np.linspace(start0, end0, num0)
     index_1 = np.linspace(start1, end1, num1)
 
+    # Storage of the values obtained at the best coefficients
     xs = np.zeros((num0, num1))
-    ys = np.zeros_like(xs)
-    zs = np.zeros_like(xs)
-    pos_arr = np.zeros_like(xs) 
+    ys = np.zeros((num0, num1))
+    zs = np.zeros((num0, num1))
+    pos_arr = np.zeros((num0, num1))
 
-
+    # Main loop over all coefficients
     for i in range(num0):
         for j in range(num1):
+            # Pick the coefficient value
             t0 = index_0[i]
             t1 = index_1[j]
 
+            # Evaluate the polynomial
             if (k == 1):
                 poly_temp = t0 * P01_temp + t1 * P11_temp + P21_temp
             elif (k == 2):
                 poly_temp = t0 * P02_temp + t1 * P12_temp + P22_temp
             else:
                 poly_temp = t0 * P03_temp + t1 * P13_temp + P23_temp
+            
+            # Find the max-norm of the polynomial
             poly_temp = np.abs(poly_temp)
             max_val = np.max(poly_temp)
             max_pos = np.argmax(poly_temp)
             max_add = address_from_index(level, max_pos+1)
+            
+            # Store the max-norm and the address
             xs[i, j] = t0
             ys[i, j] = t1
             zs[i, j] = max_val
             pos_arr[i, j] = max_pos
             
-            # print()
-            # print()
-            # print('Coefficient of P0k is ', t0)
-            # print('Coefficient of P1k is ', t1)
-            # print('Maximum value is', max_val)
-            # print('Maximum achieved at address ', max_add)
+            # Print max-norm and address, if requested
+            if verbose_flag:
+                print()
+                print()
+                print('Coefficient of P0k is ', t0)
+                print('Coefficient of P1k is ', t1)
+                print('Maximum value is', max_val)
+                print('Maximum achieved at address ', max_add)
     
     # Reshape the arrays to have the right shape
     xs = xs.reshape(num0*num1)
     ys = ys.reshape(num0*num1)
     zs = zs.reshape(num0*num1)
-    #print(zs)
 
     # Sort the array based on the minimum max_norm
     index = np.argsort(zs)
-    print(index)
 
-    # Find the best points
+    # Find the best coefficients and return their values
     for i in range(num_max):
         temp_ind = index[i]
         
@@ -380,22 +419,6 @@ def max_h2_val_family(start0, end0, num0, start1, end1, num1, num_max, k, level=
         print(ys[temp_ind])
         print("Value with ranking", i)
         print(zs[temp_ind])
-        
-
-    # xs = xs.reshape(num0*num1)
-    # ys = ys.reshape(num0*num1)
-    # zs = zs.reshape(num0*num1)
-    # print(xs)
-    # print(ys)
-    # print(zs)
-
-    # fig = plt.figure()
-    # ax = fig.add_subplot(111, projection='3d')
-    # ax.scatter3D(xs, ys, zs)
-    # plt.show()
-    
-
-
 
 
 # def max_hn_val_family(n, range_list, num_points, k, level = 7):
