@@ -199,7 +199,9 @@ a.article:hover {
     float: left;
     background-color: #B31B1B;
     border-color: #B31B1B;
-    position: fixed;
+    position: sticky;
+    top:5%;
+
 }
 
 /* Style the Image Used to Trigger the Modal */

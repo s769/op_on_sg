@@ -1,0 +1,13 @@
+RewriteEngine On
+
+#if request is mydomain.com/something OR
+RewriteCond %{HTTP_HOST} ^https://e.math.cornell.edu/sites/op_on_sg/$ [OR]
+
+# or www.mydomain.com/something
+RewriteCond %{HTTP_HOST} ^e.math.cornell.edu/sites/op_on_sg/$
+
+# but not mydomain.com/blog
+RewriteCond %{REQUEST_URI} !^/html/
+
+#change it to mydomain.com/blog/something
+RewriteRule (.*) /html/$1 [R=301]

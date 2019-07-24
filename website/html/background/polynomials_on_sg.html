@@ -44,95 +44,13 @@
 </head>
 <body>
     
-    <div class="wrapper">
-        <!-- Sidebar  -->
-        <nav id="sidebar">
-
-
-            <div class="sidebar-header">
-                <a href=../index.html>
-                    <img class="img-fluid" src="../../images/logo.png" alt="Chania">
-                </a>
-            </div>
-
-            <ul class="list-unstyled components">
-                <li>
-                    <a href="../index.html">Home</a>
-                </li>
-                <li  class="active">
-                    <a href="#bgSubmenu" data-toggle="collapse" aria-expanded="false" >Background</a>
-                    <ul class="collapse list-unstyled" id="bgSubmenu" data-parent="#sidebar">
-                        <li>
-                            <a href="../background/analysis_on_fractals.html">Analysis on Fractals</a>
-                        </li>
-                        <li class="active">
-                            <a href="../background/polynomials_on_sg.html">Polynomials on SG</a>
-                        </li>
-                    </ul>
-                </li>
-
-                <li>
-                    <a href="#theorySubmenu" data-toggle="collapse" aria-expanded="false" >Theory</a>
-                    <ul class="collapse list-unstyled" id="theorySubmenu" data-parent="#sidebar">
-                        <li>
-                            <a href="../theory/sobolev_ops.html">Sobolev Orthogonal Polynomials</a>
-                        </li>
-                        <li>
-                            <a href="../theory/chebyshev_ops.html">Chebyshev Polynomials</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#numSubmenu" data-toggle="collapse" aria-expanded="false" >Numerical Results</a>
-                    <ul class="collapse list-unstyled" id="numSubmenu" data-parent="#sidebar">
-                        <li>
-                            <a href="../numerical_results/antisymmetric.html">Antisymmetric SOPs</a>
-                        </li>
-                        <li>
-                            <a href="../numerical_results/symmetric.html">Symmetric SOPs</a>
-                        </li>
-                        <li>
-                            <a href="../numerical_results/comparisons.html">Comparisons</a>
-                        </li>
-                        <li>
-                            <a href="../numerical_results/zeros.html">Zeros</a>
-                        </li>
-                        <li>
-                                <a href="../numerical_results/applications.html">Applications</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#resourceSubmenu" data-toggle="collapse" aria-expanded="false" >Resources</a>
-                    <ul class="collapse list-unstyled" id="resourceSubmenu" data-parent="#sidebar">
-                        <li>
-                            <a href="../resources/data.html">Data</a>
-                        </li>
-                        <li>
-                            <a href="../resources/programs.html">Software and Programs</a>
-                        </li>
-                        <li>
-                            <a href="../resources/presentations.html">Presentations</a>
-                        </li>
-                        <li>
-                            <a href="../resources/references.html">References</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="../contact.html">Contact Us</a>
-                </li>
-            </ul>
-
-            
-        </nav>
+    <div class="wrapper" id="main">
+  
 
         <!-- Page Content  -->
         <div id="content">
                 <div class="container-fluid">
-                    <button type="button" id="sidebarCollapse" class="btn btn-info pull-left">
-                        <i class="fas fa-align-justify"></i>
-                    </button>
+                     
                     <h1 id="page-header" class="text-center">
                       Polynomials on the Sierpinksi Gasket
                     </h1>  
@@ -145,28 +63,23 @@
         </div>
 
         <div class="container">
-          <img class="img-fluid" src="../../images/SG.png" alt="Chania">
+          <img class="img-fluid" src="../../images/SG.png" alt="SG">
           <p class="text-center">Here is an image of SG</p>
         </div>
 
-        <div id="myModal" class="modal">
-
-            <!-- The Close Button -->
-            <span class="close">&times;</span>
-    
-            <!-- Modal Content (The Image) -->
-            <img class="modal-content" id="img01">
-    
-            <!-- Modal Caption (Image Text) -->
-            <div id="caption"></div>
-        </div>
 
 
         </div>
-        <a id="back-to-top" href="#" class="btn btn-dark btn-lg back-to-top" role="button"><i class="fas fa-chevron-up"></i></a>
     </div>
 
-    <div class="overlay"></div>
 
+<script>
+$(document).ready(function (){ 
+    $("#sidebg").addClass("active");
+    $("#sidepoly").addClass("active");
+
+
+});
+</script>
 </body>
 </html>
