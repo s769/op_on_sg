@@ -289,4 +289,9 @@ a.article:hover {
     bottom: 25px;
     right: 25px;
     display: none;
+    z-index: 10;
+}
+
+#heading {
+    margin-bottom:5%;
 }

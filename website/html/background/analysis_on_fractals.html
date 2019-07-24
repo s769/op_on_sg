@@ -48,7 +48,7 @@
         
         <!-- Page Content  -->
         <div id="content">
-                <div class="container-fluid">
+                 <div class="container-fluid" id="heading">
                      
                     <h1 id="page-header" class="text-center">
                       Analysis on Fractals
@@ -56,14 +56,28 @@
         </div>
 
         <div class="container">
-            <p>Overview:
-            Here is some math \(5^2 = 25\)
-            </p>
+          <h2>The Sierpinski Gasket</h2>
+            <ul>
+                <li><p>Let <span class="math inline">\(V_0 = \{q_0, q_1, q_2\} \in \mathbb{R}^2\)</span> and <span class="math inline">\(F_i(x) = \frac{1}{2}(x+q_i)\)</span> for <span class="math inline">\(i=0,1,2\)</span>. Then <span class="math display">\[SG = \overline{\bigcup_{m=1}^{\infty}\bigcup_\limits{|w|=m}F_w(V_0)}\]</span></p></li>
+                <li><p>We work on the finite graph approximation <span class="math inline">\(V_m = \bigcup_{|w|=m}F_{w}(V_0)\)</span></p></li>
+                </ul>
+        </div>
+
+        <div class="container text-center">
+          <img class="img-fluid imgModal" src="../../images/V4.png" alt="Level 4 Graph Approximation of SG">
+          <p class="text-center">Level 4 Graph Approximation of SG</p>
         </div>
 
         <div class="container">
-          <img class="img-fluid" src="../../images/SG.png" alt="SG">
-          <p class="text-center">Here is an image of SG</p>
+          <h2>
+            Preliminary Definitions
+          </h2>
+          <ul>
+              <li><p>Let <span class="math inline">\(u: SG \mapsto \mathbb{R}\)</span>. Then the <strong class="font-weight-bold">Laplacian</strong> <span class="math inline">\(\Delta_{\mu}\)</span> is defined as <span class="math display">\[\Delta_{\mu}u(x) = \frac{3}{2}\lim_{m \to \infty}5^m\Delta_mu(x)\]</span></p></li>
+              <li><p><span class="math inline">\(G: SG \times SG \mapsto R\)</span> is called <strong class="font-weight-bold">Green’s Function</strong> where <span class="math display">\[-\Delta u = f, u|_{V_0} = 0 \iff u(x) = \int_{SG}G(x,y)f(y)\,d\mu\]</span></p></li>
+              <li><p><span class="math inline">\(\partial_nu(q_i)\)</span> is the <strong class="font-weight-bold">normal derivative</strong> of <span class="math inline">\(u\)</span> at <span class="math inline">\(q_i\)</span> where <span class="math display">\[\partial_nu(q_i) = \lim_{m \to \infty}\Big(\frac{5}{3}\Big)^m(2u(q_i) - u(F^{m}_{i+1}q_i) - u(F^{m}_{i-1}q_i))\]</span></p></li>
+              <li><p><span class="math inline">\(\partial_Tu(q_i)\)</span> is the <strong class="font-weight-bold">tangential derivative</strong> of <span class="math inline">\(u\)</span> at <span class="math inline">\(q_i\)</span> where <span class="math display">\[\partial_{T}u(q_i) = \lim_{m\to\infty}5^m(u(F^{m}_{i+1}q_i) - u(F^{m}_{i-1}q_i))\]</span></p></li>
+              </ul>
         </div>
 
 

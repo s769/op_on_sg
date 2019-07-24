@@ -49,22 +49,108 @@
 
         <!-- Page Content  -->
         <div id="content">
-                <div class="container-fluid">
+                 <div class="container-fluid" id="heading">
                      
                     <h1 id="page-header" class="text-center">
-                      Polynomials on the Sierpinksi Gasket
+                      Polynomials on the Sierpinski Gasket
                     </h1>  
         </div>
 
         <div class="container">
-            <p>Overview:
-            Here is some math \(5^2 = 25\)
-            </p>
+            <h2>The space <span class="math inline">\(\mathcal{H}_j\)</span></h2>
+            <ul>
+                <li><p>Let <span class="math inline">\(f: SG \mapsto \mathbb{R}\)</span>. Then <span class="math inline">\(f\)</span> is a <span class="math inline">\(j\)</span>-degree polynomial iff<br />
+                <span class="math inline">\(\Delta^{j+1}f = 0\)</span> and <span class="math inline">\(\Delta^{j}f\neq 0\)</span>, i.e <span class="math inline">\(f\)</span> is <span class="math inline">\(j\)</span>-harmonic but not <span class="math inline">\((j-1)\)</span>-harmonic.</p></li>
+                <li><p>The space of polynomials with degree <span class="math inline">\(\le j\)</span> is denoted <span class="math inline">\(\mathcal{H}_{j}\)</span></p></li>
+                <li><p>Let <span class="math inline">\(f \in \mathcal{H}_j\)</span>. Then <span class="math inline">\(f\)</span> is determined uniquely by the values <span class="math inline">\((f(q_0), f(q_1), f(q_2), \Delta f(q_0), \Delta f(q_1), \ldots, \Delta^jf(q_2))\)</span></p></li>
+                <li><p>dim(<span class="math inline">\(\mathcal{H}_j\)</span>) = <span class="math inline">\(3j + 3\)</span></p></li>
+                <li><p>A natural basis for <span class="math inline">\(\mathcal{H}_{j}\)</span> is the family of functions <span class="math inline">\(\{f_{nk}\}\)</span> where <span class="math display">\[\Delta^{m}f_{nk}(q_i) = \delta_{mn}\delta_{ki}\]</span></p></li>
+                <li><p>For example, the three harmonic functions <span class="math inline">\(h_i\)</span> where <span class="math inline">\(h_i(q_j) = \delta_{ij}\)</span> form a basis for <span class="math inline">\(\mathcal{H}_0\)</span></p></li>
+                </ul>
         </div>
 
         <div class="container">
-          <img class="img-fluid" src="../../images/SG.png" alt="SG">
-          <p class="text-center">Here is an image of SG</p>
+          <h2>The Monomial Basis</h2>
+          <ul>
+              <li><p>We want to mimic the case on <span class="math inline">\(I = [0,1]\)</span> where we can expand a function as a Taylor series in terms of basis functions where we use derivative information at one point.</p></li>
+              <li><p>For example, for harmonic functions, we have the following basis <span class="math inline">\(\{P_{0k}\}\)</span> where the tuple of values <span class="math inline">\((u(q_0), \partial_nu(q_0), \partial_Tu(q_0)) = e_k\)</span>: <span class="math display">\[P_{01} = h_0 + h_1 + h_2 \hspace{0.35in} P_{02} = -\frac{1}{2}(h_1 + h_2) \hspace{0.35in} P_{03} = \frac{1}{2}(h_1 - h_2)\]</span> If <span class="math inline">\(f \in \mathcal{H}_0\)</span> then <span class="math inline">\(f = f(q_0)P_{01} + \partial_nf(q_0)P_{02} + \partial_Tf(q_0)P_{03}\)</span></p></li>
+              <li><p>We introduce the following basis <span class="math inline">\(\{P_{jk}\}\)</span> where <span class="math display">\[\begin{aligned}
+                          \Delta^nP_{jk}(q_0) &amp;= \delta_{nj}\delta_{k1}\\
+                          \Delta^n\partial_nP_{jk}(q_0) &amp;= \delta_{nj}\delta_{k2}\\
+                          \Delta^n\partial_TP_{jk}(q_0) &amp;= \delta_{nj}\delta_{k3}\\
+                      \end{aligned}\]</span> This is known as the <strong class="font-weight-bold">monomial basis</strong>.</p></li>
+              </ul>
+        </div>
+        <div class="container">
+          <div class="row">
+              <div class="col-md-3 col-sm-6 col-xs-12">
+                  <img class="img-fluid imgModal" src="../../images/monomial3_1.png" alt="Degree 3 1-Type Monomial">
+              </div>
+      
+              <div class="col-md-3 col-sm-6 col-xs-12">
+                  <img class="img-fluid imgModal" src="../../images/monomial0_2.png" alt="Degree 0 2-Type Monomial">
+              </div>
+      
+              <div class="col-md-3 col-sm-6 col-xs-12">
+                  <img class="img-fluid imgModal" src="../../images/monomial8_2.png" alt="Degree 8 2-Type Monomial">
+              </div>
+      
+              <div class="col-md-3 col-sm-6 col-xs-12">
+                  <img class="img-fluid imgModal" src="../../images/monomial5_3.png" alt="Degree 5 3-Type Monomial">
+              </div>
+          </div>
+          <br>
+          <p class="text-center">Examples of Monomials</p>
+          
+        </div>
+
+        <div class="container">
+            <h2>Orthogonal Polynomials</h2>
+            <ul>
+                <li><p>The space of polynomials on <span class="math inline">\(\mathbb{R}\)</span>, denoted <span class="math inline">\(P(\mathbb{R})\)</span> can be endowed with the following inner product: <span class="math display">\[\langle f,g \rangle = \int_{\mathbb{R}}f(x)g(x)w(x)\,dx\]</span> where <span class="math inline">\(w(x) \in L^1(\mathbb{R})\)</span></p></li>
+                <li><p>Given an inner product space, we can generate an <em>orthogonal basis</em> using the Gram-Schmidt process. The resulting polynomials are called <span class="math inline">\(\textbf{orthogonal polynomials}\)</span></p></li>
+                <li><p>Common examples for <span class="math inline">\(w(x)\)</span> include <span class="math inline">\(\chi_{[-1,1]}(1-x)^\alpha(1+x)^\beta\)</span>, <span class="math inline">\(e^{-x^2}\)</span>, and <span class="math inline">\(\chi_{[0,\infty)}e^{-x}\)</span></p></li>
+                </ul>
+        </div>
+
+        <div class="container text-center">
+            <table class="table">
+                <thead>
+                <tr class="header">
+                <th style="text-align: center;"><span class="math inline">\(w(x)\)</span></th>
+                <th style="text-align: center;">Name</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="odd">
+                <td style="text-align: center;"><span class="math inline">\(\chi_{[-1,1]}(1-x)^\alpha(1+x)^\beta\)</span></td>
+                <td style="text-align: center;">Jacobi</td>
+                </tr>
+                <tr class="even">
+                <td style="text-align: center;"><span class="math inline">\(e^{-x^2}\)</span></td>
+                <td style="text-align: center;">Hermite</td>
+                </tr>
+                <tr class="odd">
+                <td style="text-align: center;"><span class="math inline">\(\chi_{[0,\infty)}e^{-x}\)</span></td>
+                <td style="text-align: center;">Laguerre</td>
+                </tr>
+                </tbody>
+                </table>
+        </div>
+        <div class="container">
+            <p>There are two special cases of Jacobi polynomials:</p>
+            <ul>
+            <li><p>When <span class="math inline">\(\alpha = \beta = 0\)</span>, they are known as the <strong class="font-weight-bold">Legendre polynomials</strong>. In this case the inner product is the standard <span class="math inline">\(L^2\)</span> product on <span class="math inline">\([-1,1]\)</span>: <span class="math inline">\(\langle f, g \rangle_{L^2} = \int_{-1}^{1}fg\,dx\)</span>.</p></li>
+            <li><p>When <span class="math inline">\(\alpha = \beta = 1/2\)</span>, they are known as the <strong class="font-weight-bold">Chebyshev polynomials</strong>. Here the weight function is <span class="math inline">\(\sqrt{1-x^2}\)</span>.</p></li>
+            </ul>
+
+            <p>Classical orthogonal polynomials, denoted <span class="math inline">\(P_n\)</span> satisfy the following properties:</p>
+            <ol>
+            <li><p><span class="math inline">\(Q(x)P&#39;&#39;_n(x) + L(x)P&#39;_n(x) + \lambda_nP_n(x) = 0\)</span> where <span class="math inline">\(Q,L\)</span> are polynomials and <span class="math inline">\(\lambda_n \in \mathbb{R}\)</span></p></li>
+            <li><p><span class="math inline">\(P_n(x) = \frac{1}{e_nw(x)}\dfrac{d^n}{dx^n}(w(x)[Q(x)]^n)\)</span>. This is known as the <strong class="font-weight-bold">Rodrigues’ formula</strong>.</p></li>
+            <li><p>Two term recurrence: <span class="math inline">\(a_nxP_{n}(x) = b_nP_{n+1}(x) + c_nP_{n-1}(x)\)</span></p></li>
+            </ol>
+            <p>Okoudjou et. al (2012) found the Legendre polynomials on SG (the orthogonal polynomials with respect to the <span class="math inline">\(L^2\)</span> inner product). We will study orthogonal polynomials with respect to other inner products, usually involving the Laplacian. These will be known as the <span class="math inline">\(\textbf{Sobolev}\)</span> inner products.</p>
         </div>
 
 

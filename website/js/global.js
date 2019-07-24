@@ -150,6 +150,7 @@ $(document).ready(function () {
     });
     // scroll body to 0px on click
     $('#back-to-top').click(function () {
+        console.log('sus');
         $('body,html').animate({
             scrollTop: 0
         }, 400);
