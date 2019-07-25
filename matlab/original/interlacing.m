@@ -4,20 +4,24 @@ bottomedgeindices = SGedge23(level);
 load sob20coefs ops
 W1 = ops;
 
-load leg20coefs ops
-W2 = ops;
+%load leg20coefs ops
+%W2 = ops;
+
+% load sobolevsymmetric20 sobsymmtricops20
+% W2 = sobsymmtricops20;
 
 m=level;
 %Generating legendre values
-coefflegendre=W2(deg,:);
+%coefflegendre=W2(deg,:);
+%coefflegendre=W2(deg+1,:);
+%legendrevalues=zeros(3^(m+1),1);
+legendrevalues = SGorthoPolyssk(T,deg);
+% for k=0:deg
+%     
+%         legendrevalues = legendrevalues + coefflegendre(k+1)*T(:,k+1,3);
+%     
+% end
 
-legendrevalues=zeros(3^(m+1),1);
-
-for k=0:deg
-    
-        legendrevalues = legendrevalues + coefflegendre(k+1)*T(:,k+1,3);
-    
-end
 %Generating sobolev values 
 coeffsobolev=W1(deg,:);
 
@@ -65,7 +69,7 @@ for k=1:2
    if k == 1
         edge=edgelegendre;
         legstring = 'P_{';
-        
+       
     else
         edge=edgesobolev;
         sobstring = 'S_{';
@@ -83,7 +87,7 @@ for k=1:2
 end
 w(w==-1) = nan;
 x=zeros(2*(2^(level) + 1)-1,1);
-box on
+
 
 
 %formatting the plot
@@ -93,18 +97,23 @@ box on
 % set(gcf, 'PaperPosition', [0 0 6 1.25]);
 % set(gca,'Position',[50,25,400,75]);
 
-
+figure; 
 z=zeros(size(bottomedgeindices));
-plot(real(10^(3)*edgesobolev), 'r-','LineWidth',1,'DisplayName','Sobolev');
+% plot(real(10^(3)*edgesobolev), 'r-','LineWidth',1,'DisplayName','Sobolev');
+% hold on
+% plot(real(edgelegendre), 'b-','LineWidth',1,'DisplayName','Legendre');
+
+plot(real(edgesobolev), 'r-','LineWidth',1,'DisplayName',strcat("S_{",num2str(deg-1),"}"));
 hold on
-plot(real(edgelegendre), 'b-','LineWidth',1,'DisplayName','Legendre');
+plot(real(edgelegendre), 'b-','LineWidth',1,'DisplayName',strcat("D_{",num2str(deg-1),"}"));
+
 
 plot(z,'LineWidth',1,'Color','Black','Handlevisibility','off');
 set(gca, 'XLim',[0,max(size(bottomedgeindices))-1]);
 
 ax1 = gca; 
 legend('Location','SouthWest');
-title(strcat("Legendre and Sobolev Polynomials of Degree ",num2str(deg))); 
+title(strcat("Degree = ",num2str(deg-1))); 
 xlabel('Bottom Edge');
 ax2 = axes('Position',[0.25 0.7 0.5 0.2]);
 
@@ -120,6 +129,6 @@ box on;
 
     set(ax2,'XTick',[]);
 
-saveas(gca,strcat('interlacingLSBE',num2str(j-1)),'jpg');
+saveas(gca,strcat('sd',num2str(deg-1)),'png');
     %set(gca,'YTick',-1:4:3);
 
