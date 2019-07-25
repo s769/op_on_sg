@@ -1,100 +1,115 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>SOPs on SG | Numerical Results | Zeros</title>
-<link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
-<link rel="manifest" href="../../favicon/site.webmanifest">
-<meta name="msapplication-TileColor" content="#da532c">
-<meta name="theme-color" content="#ffffff">
+  <title>SOPs on SG | Numerical Results | Zeros</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+  <link rel="manifest" href="../../favicon/site.webmanifest">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
 
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
-<!-- jQuery library -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <!-- jQuery library -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-<!-- Latest compiled JavaScript -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
-<meta charset="utf-8"> 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Latest compiled JavaScript -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link rel="stylesheet" href="../../css/global.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+  <link rel="stylesheet" href="../../css/global.css" />
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 
-<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
-<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
-<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+    integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+    crossorigin="anonymous"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+    integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+    crossorigin="anonymous"></script>
 
-<!-- jQuery CDN - Slim version (=without AJAX) -->
-<script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
-<!-- Popper.JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
-<!-- Bootstrap JS -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-<!-- jQuery Custom Scroller CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+  <!-- jQuery CDN - Slim version (=without AJAX) -->
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <!-- Popper.JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+    integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+    crossorigin="anonymous"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
+    integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
+    crossorigin="anonymous"></script>
+  <!-- jQuery Custom Scroller CDN -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
 
-<script src="../../js/global.js"></script>
+  <script src="../../js/global.js"></script>
 </head>
+
 <body>
-    
-    <div class="wrapper" id="main">
 
-        <!-- Page Content  -->
-        <div id="content">
-                 <div class="container-fluid" id="heading">
-                     
-                    <h1 id="page-header" class="text-center">
-                      Zeros of Orthogonal Polynomials on the Sierpinksi Gasket
-                    </h1>  
-        </div>
+  <div class="wrapper" id="main">
 
-        <div class="container">
+    <!-- Page Content  -->
+    <div id="content">
+      <div class="container-fluid" id="heading">
 
-        </div>
+        <h1 id="page-header" class="text-center">
+          Zeros of Orthogonal Polynomials on the Sierpinksi Gasket
+        </h1>
+      </div>
 
-        <div class="container text-center">
-          <h2>How many zeros do the Orthogonal Polynomials have?</h2>
-          <img class="img-fluid imgModal" src="../../images/SAntiSym2.png" alt="Degree 2 Antisymmetric Sobolev Orthogonal Polynomial">
-          <p class="text-center">Degree 2 Antisymmetric Sobolev Orthogonal Polynomial</p>
-        </div>
-         
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 col-sm-6 col-xs-12">
-                    <img class="img-fluid imgModal" src="../../images/BEzeroes.png" alt="Bottom Edge Zeros of Sobolev and Legendre Polynomials">
-                </div>
-        
-                <div class="col-md-4 col-sm-6 col-xs-12">
-                    <img class="img-fluid imgModal" src="../../images/TotalZeroes.png" alt="Total Edge Zeros of Sobolev and Legendre Polynomials">
-                </div>
-        
-                <div class="col-md-4 col-sm-6 col-xs-12">
-                    <img class="img-fluid imgModal" src="../../images/SEzeroes.png" alt="Side Edge Zeros of Sobolev and Legendre Polynomials">
-                </div>
-        
-            </div>
-            <br>
-            <p class="text-center">Edge Zeros of Sobolev and Legendre Polynomials</p>
-            <p>Notice that some polynomials have more than <span class="math inline">\(3n + 3\)</span> zeros...</p>
+      <div class="container">
 
+      </div>
+
+      <div class="container text-center">
+        <h2>How many zeros do the Orthogonal Polynomials have?</h2>
+        <img class="img-fluid imgModal" src="../../images/SAntiSym2.png"
+          alt="Degree 2 Antisymmetric Sobolev Orthogonal Polynomial">
+        <p class="text-center">Degree 2 Antisymmetric Sobolev Orthogonal Polynomial</p>
+      </div>
+
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 col-sm-6 col-xs-12">
+            <img class="img-fluid imgModal" src="../../images/BEzeroes.png"
+              alt="Bottom Edge Zeros of Sobolev and Legendre Polynomials">
+          </div>
+
+          <div class="col-md-4 col-sm-6 col-xs-12">
+            <img class="img-fluid imgModal" src="../../images/TotalZeroes.png"
+              alt="Total Edge Zeros of Sobolev and Legendre Polynomials">
+          </div>
+
+          <div class="col-md-4 col-sm-6 col-xs-12">
+            <img class="img-fluid imgModal" src="../../images/SEzeroes.png"
+              alt="Side Edge Zeros of Sobolev and Legendre Polynomials">
           </div>
 
         </div>
+        <br>
+        <p class="text-center">Edge Zeros of Sobolev and Legendre Polynomials</p>
+        <p>Notice that some polynomials have more than <span class="math inline">\(3n + 3\)</span> zeros...</p>
+
       </div>
 
-  
-<script>
-$(document).ready(function (){ 
-    $("#sidenumerical").addClass("active");
-    $("#sidezero").addClass("active");
-});
-</script>
+    </div>
+  </div>
+
+
+  <script>
+    $(document).ready(function () {
+      $("#sidenumerical").addClass("active");
+      $("#sidezero").addClass("active");
+    });
+  </script>
 </body>
+
 </html>

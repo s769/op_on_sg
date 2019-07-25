@@ -1,98 +1,136 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>SOPs on SG | Background | Analysis on Fractals</title>
-<link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
-<link rel="manifest" href="../../favicon/site.webmanifest">
-<meta name="msapplication-TileColor" content="#da532c">
-<meta name="theme-color" content="#ffffff">
+  <title>SOPs on SG | Background | Analysis on Fractals</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+  <link rel="manifest" href="../../favicon/site.webmanifest">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
 
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
-<!-- jQuery library -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <!-- jQuery library -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-<!-- Latest compiled JavaScript -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
-<meta charset="utf-8"> 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Latest compiled JavaScript -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link rel="stylesheet" href="../../css/global.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+  <link rel="stylesheet" href="../../css/global.css" />
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 
-<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
-<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
-<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+    integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+    crossorigin="anonymous"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+    integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+    crossorigin="anonymous"></script>
 
-<!-- jQuery CDN - Slim version (=without AJAX) -->
-<script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
-<!-- Popper.JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
-<!-- Bootstrap JS -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-<!-- jQuery Custom Scroller CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+  <!-- jQuery CDN - Slim version (=without AJAX) -->
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <!-- Popper.JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+    integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+    crossorigin="anonymous"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
+    integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
+    crossorigin="anonymous"></script>
+  <!-- jQuery Custom Scroller CDN -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
 
-<script src="../../js/global.js"></script>
+  <script src="../../js/global.js"></script>
 </head>
+
 <body>
-    
-    <div class="wrapper" id="main">
-        
-        <!-- Page Content  -->
-        <div id="content">
-                 <div class="container-fluid" id="heading">
-                     
-                    <h1 id="page-header" class="text-center">
-                      Analysis on Fractals
-                    </h1>  
-        </div>
 
-        <div class="container">
-          <h2>The Sierpinski Gasket</h2>
-            <ul>
-                <li><p>Let <span class="math inline">\(V_0 = \{q_0, q_1, q_2\} \in \mathbb{R}^2\)</span> and <span class="math inline">\(F_i(x) = \frac{1}{2}(x+q_i)\)</span> for <span class="math inline">\(i=0,1,2\)</span>. Then <span class="math display">\[SG = \overline{\bigcup_{m=1}^{\infty}\bigcup_\limits{|w|=m}F_w(V_0)}\]</span></p></li>
-                <li><p>We work on the finite graph approximation <span class="math inline">\(V_m = \bigcup_{|w|=m}F_{w}(V_0)\)</span></p></li>
-                </ul>
-        </div>
+  <div class="wrapper" id="main">
 
-        <div class="container text-center">
-          <img class="img-fluid imgModal" src="../../images/V4.png" alt="Level 4 Graph Approximation of SG">
-          <p class="text-center">Level 4 Graph Approximation of SG</p>
-        </div>
+    <!-- Page Content  -->
+    <div id="content">
+      <div class="container-fluid" id="heading">
 
-        <div class="container">
-          <h2>
-            Preliminary Definitions
-          </h2>
-          <ul>
-              <li><p>Let <span class="math inline">\(u: SG \mapsto \mathbb{R}\)</span>. Then the <strong class="font-weight-bold">Laplacian</strong> <span class="math inline">\(\Delta_{\mu}\)</span> is defined as <span class="math display">\[\Delta_{\mu}u(x) = \frac{3}{2}\lim_{m \to \infty}5^m\Delta_mu(x)\]</span></p></li>
-              <li><p><span class="math inline">\(G: SG \times SG \mapsto R\)</span> is called <strong class="font-weight-bold">Green’s Function</strong> where <span class="math display">\[-\Delta u = f, u|_{V_0} = 0 \iff u(x) = \int_{SG}G(x,y)f(y)\,d\mu\]</span></p></li>
-              <li><p><span class="math inline">\(\partial_nu(q_i)\)</span> is the <strong class="font-weight-bold">normal derivative</strong> of <span class="math inline">\(u\)</span> at <span class="math inline">\(q_i\)</span> where <span class="math display">\[\partial_nu(q_i) = \lim_{m \to \infty}\Big(\frac{5}{3}\Big)^m(2u(q_i) - u(F^{m}_{i+1}q_i) - u(F^{m}_{i-1}q_i))\]</span></p></li>
-              <li><p><span class="math inline">\(\partial_Tu(q_i)\)</span> is the <strong class="font-weight-bold">tangential derivative</strong> of <span class="math inline">\(u\)</span> at <span class="math inline">\(q_i\)</span> where <span class="math display">\[\partial_{T}u(q_i) = \lim_{m\to\infty}5^m(u(F^{m}_{i+1}q_i) - u(F^{m}_{i-1}q_i))\]</span></p></li>
-              </ul>
-        </div>
+        <h1 id="page-header" class="text-center">
+          Analysis on Fractals
+        </h1>
+      </div>
+
+      <div class="container">
+        <h2>The Sierpinski Gasket</h2>
+        <ul>
+          <li>
+            <p>Let <span class="math inline">\(V_0 = \{q_0, q_1, q_2\} \in \mathbb{R}^2\)</span> and <span
+                class="math inline">\(F_i(x) = \frac{1}{2}(x+q_i)\)</span> for <span
+                class="math inline">\(i=0,1,2\)</span>. Then <span class="math display">\[SG =
+                \overline{\bigcup_{m=1}^{\infty}\bigcup_\limits{|w|=m}F_w(V_0)}\]</span></p>
+          </li>
+          <li>
+            <p>We work on the finite graph approximation <span class="math inline">\(V_m =
+                \bigcup_{|w|=m}F_{w}(V_0)\)</span></p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="container text-center">
+        <img class="img-fluid imgModal" src="../../images/V4.png" alt="Level 4 Graph Approximation of SG">
+        <p class="text-center">Level 4 Graph Approximation of SG</p>
+      </div>
+
+      <div class="container">
+        <h2>
+          Preliminary Definitions
+        </h2>
+        <ul>
+          <li>
+            <p>Let <span class="math inline">\(u: SG \mapsto \mathbb{R}\)</span>. Then the <strong
+                class="font-weight-bold">Laplacian</strong> <span class="math inline">\(\Delta_{\mu}\)</span> is defined
+              as <span class="math display">\[\Delta_{\mu}u(x) = \frac{3}{2}\lim_{m \to \infty}5^m\Delta_mu(x)\]</span>
+            </p>
+          </li>
+          <li>
+            <p><span class="math inline">\(G: SG \times SG \mapsto R\)</span> is called <strong
+                class="font-weight-bold">Green’s Function</strong> where <span class="math display">\[-\Delta u = f,
+                u|_{V_0} = 0 \iff u(x) = \int_{SG}G(x,y)f(y)\,d\mu\]</span></p>
+          </li>
+          <li>
+            <p><span class="math inline">\(\partial_nu(q_i)\)</span> is the <strong class="font-weight-bold">normal
+                derivative</strong> of <span class="math inline">\(u\)</span> at <span
+                class="math inline">\(q_i\)</span> where <span class="math display">\[\partial_nu(q_i) = \lim_{m \to
+                \infty}\Big(\frac{5}{3}\Big)^m(2u(q_i) - u(F^{m}_{i+1}q_i) - u(F^{m}_{i-1}q_i))\]</span></p>
+          </li>
+          <li>
+            <p><span class="math inline">\(\partial_Tu(q_i)\)</span> is the <strong class="font-weight-bold">tangential
+                derivative</strong> of <span class="math inline">\(u\)</span> at <span
+                class="math inline">\(q_i\)</span> where <span class="math display">\[\partial_{T}u(q_i) =
+                \lim_{m\to\infty}5^m(u(F^{m}_{i+1}q_i) - u(F^{m}_{i-1}q_i))\]</span></p>
+          </li>
+        </ul>
+      </div>
 
 
 
-        </div>
     </div>
+  </div>
 
 
-<script>
-$(document).ready(function (){ 
-    $("#sidebg").addClass("active");
-    $("#sideanalysis").addClass("active");
+  <script>
+    $(document).ready(function () {
+      $("#sidebg").addClass("active");
+      $("#sideanalysis").addClass("active");
 
 
-});
-</script>
+    });
+  </script>
 </body>
+
 </html>

@@ -1,84 +1,424 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>SOPs on SG | Theory | Chebyshev</title>
-<link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
-<link rel="manifest" href="../../favicon/site.webmanifest">
-<meta name="msapplication-TileColor" content="#da532c">
-<meta name="theme-color" content="#ffffff">
+  <title>SOPs on SG | Theory | Chebyshev</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+  <link rel="manifest" href="../../favicon/site.webmanifest">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
 
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
-<!-- jQuery library -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <!-- jQuery library -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-<!-- Latest compiled JavaScript -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
-<meta charset="utf-8"> 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Latest compiled JavaScript -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link rel="stylesheet" href="../../css/global.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+  <link rel="stylesheet" href="../../css/global.css" />
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 
-<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
-<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
-<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+    integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+    crossorigin="anonymous"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+    integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+    crossorigin="anonymous"></script>
 
-<!-- jQuery CDN - Slim version (=without AJAX) -->
-<script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
-<!-- Popper.JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
-<!-- Bootstrap JS -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-<!-- jQuery Custom Scroller CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+  <!-- jQuery CDN - Slim version (=without AJAX) -->
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <!-- Popper.JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+    integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+    crossorigin="anonymous"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
+    integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
+    crossorigin="anonymous"></script>
+  <!-- jQuery Custom Scroller CDN -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
 
-<script src="../../js/global.js"></script>
+  <script src="../../js/global.js"></script>
 
 </head>
+
 <body>
-    
-    <div class="wrapper" id="main">
- 
-        <!-- Page Content  -->
-        <div id="content">
-                 <div class="container-fluid" id="heading">
-                     
-                    <h1 id="page-header" class="text-center">
-                      Chebyshev Polynomials on the Sierpinksi Gasket
-                    </h1>  
-        </div>
 
-        <div class="container">
-            <p>Overview:
-            Here is some math \(5^2 = 25\)
-            </p>
-        </div>
+  <div class="wrapper" id="main">
 
-        <div class="container">
-          <img class="img-fluid" src="../../images/SG.png" alt="SG">
-          <p class="text-center">Here is an image of SG</p>
-        </div>
-         
+    <!-- Page Content  -->
+    <div id="content">
+      <div class="container-fluid" id="heading">
 
-
-        </div>
+        <h1 id="page-header" class="text-center">
+          Chebyshev Polynomials on the Sierpinksi Gasket
+        </h1>
       </div>
 
-  
- 
-<script>
-$(document).ready(function (){ 
-    $("#sidetheory").addClass("active");
-    $("#sideCP").addClass("active");
-});
-</script>
+      <div class="container">
+        <h2>Extrema of Polynomials</h2>
+        <p>Definition of local extrema:</p>
+        <ol>
+          <li>
+            <p>For a function <span class="math inline">\(u\)</span> defined on SG and <span class="math inline">\(x\in
+                SG\)</span>, we say that <span class="math inline">\(x\)</span> is a <strong
+                class="font-weight-bold">local maximum
+                (minimum)</strong> of <span class="math inline">\(u\)</span> if <span
+                class="math inline">\(\exists\)</span> neighborhood <span class="math inline">\(U\)</span> s.t. <span
+                class="math inline">\(x\in U\subseteq SG\)</span> and <span class="math inline">\(\forall y\in
+                U\)</span>, we have <span class="math inline">\(u(x)\geq u(y)\)</span> (or <span
+                class="math inline">\(u(x)\leq u(y)\)</span>).</p>
+          </li>
+          <li>
+            <p>For a function <span class="math inline">\(u\)</span> defined on SG and <span
+                class="math inline">\(x=F_{w}q_{n}=F_{w&#39;}q_{n&#39;}\in SG\)</span>, we say that <span
+                class="math inline">\(x\)</span> is a <strong class="font-weight-bold">local edge maximum
+                (minimum)</strong> of <span class="math inline">\(u\)</span> if <span
+                class="math inline">\(\exists\)</span> <span class="math inline">\(M\)</span> s.t. <span
+                class="math inline">\(\forall m\geq M\)</span>, <span class="math inline">\(u(x)\geq
+                u(F_{w}F_{n}^{m}q_{j})\)</span> for <span class="math inline">\(j=n-1,n+1\)</span> and <span
+                class="math inline">\(u(x)\geq
+                u(F_{w&#39;}F_{n&#39;}^{m}q_{j&#39;})\)</span> for <span class="math inline">\(j&#39;=n&#39;-1,
+                n&#39;+1\)</span>. [<span class="math inline">\(u\)</span> is larger than a discrete set of points on
+              all neighboring edges]</p>
+          </li>
+        </ol>
+        <p><span class="math inline">\(\Rightarrow\)</span> Local edge extrema are weaker than local extrema.</p>
+        <h3>General Case</h3>
+        <p><strong class="font-weight-bold">Theorem</strong>:</p>
+        <p>(Necessary conditions for <span class="math inline">\(x\)</span> to be a local edge extrema of <span
+            class="math inline">\(u\)</span>)</p>
+        <ol>
+          <li>
+            <p>If <span class="math inline">\(x\in V_{0}\)</span> is on the boundary, then <span
+                class="math inline">\(\partial_{n}u(x)\geq 0\)</span> if <span class="math inline">\(x\)</span> is a
+              local maximum (or <span class="math inline">\(\partial_{n}u(x)\leq 0\)</span> for <span
+                class="math inline">\(x\)</span> a local minimum)</p>
+          </li>
+          <li>
+            <p>If <span class="math inline">\(x\)</span> is not on the boundary, then <span
+                class="math inline">\(\partial_{n}u(x)=0\)</span>, and <span class="math inline">\(\Delta u(x)\leq
+                0\)</span> if <span class="math inline">\(x\)</span> is a local maximum (or <span
+                class="math inline">\(\Delta u(x)\geq 0\)</span> if <span class="math inline">\(x\)</span> is a local
+              maximum)</p>
+          </li>
+        </ol>
+        <p><strong class="font-weight-bold">Corollary</strong>: <span class="math inline">\(P_{11}\geq 0\)</span></p>
+        <p><strong class="font-weight-bold">Theorem</strong>:</p>
+        <p>(Sufficient conditions for <span class="math inline">\(x\)</span> to be a local edge extrema of <span
+            class="math inline">\(u\)</span>)</p>
+        <ol>
+          <li>
+            <p>Let <span class="math inline">\(u\in dom\Delta_{\mu}\)</span> and <span
+                class="math inline">\(x=F_{w}q_{n}=F_{w&#39;}q_{n&#39;}\)</span> be a junction point satisfying <span
+                class="math inline">\(\begin{cases}
+                \Delta u(x)&lt;0 \text{ (or } \Delta u(x)&gt;0) \\
+                \partial_{n}u(F_{w}q_{n})=\partial_{n}u(F_{w&#39;}q_{n&#39;})=0 \\
+                \partial_{T}u(F_{w}q_{n})=\partial_{T}u(F_{w&#39;}q_{n&#39;})=0
+                \end{cases}\)</span></p>
+            <p>Then <span class="math inline">\(t\)</span> is a local edge maximum (or minimum) of <span
+                class="math inline">\(u\)</span> on SG.</p>
+          </li>
+        </ol>
+        <p><span class="math inline">\(\Rightarrow\)</span> This only holds for local edge maximum, not local maximum.
+          (Normal derivatives and tangential derivatives are very weak characterizations of local behavior)</p>
+        <h3>Harmonic Case</h3>
+        <p><strong class="font-weight-bold">Lemma</strong>: (Behavior of Harmonic Function on Outmost Edges)</p>
+        <p>Let <span class="math inline">\(h\)</span> be a harmonic function on SG, and we consider the edge between
+          <span class="math inline">\(q_{0}, q_{1}\in V_{0}\)</span>, assuming <span class="math inline">\(h(q_{0})\leq
+            h(q_{1})\)</span>.</p>
+        <ol>
+          <li>
+            <p>If <span class="math inline">\(\partial_{n}h(q_{0})\cdot \partial_{n}h(q_{1})\leq 0\)</span>, then <span
+                class="math inline">\(h\)</span> is increasing from <span class="math inline">\(q_{0}\)</span> to <span
+                class="math inline">\(q_{1}\)</span>.</p>
+          </li>
+          <li>
+            <p>If <span class="math inline">\(\partial_{n}h(q_{0}), \partial_{n}h(q_{1})&gt;0\)</span>, then <span
+                class="math inline">\(h\)</span> first decrease then increase from <span
+                class="math inline">\(q_{0}\)</span> to <span class="math inline">\(q_{1}\)</span>.</p>
+          </li>
+          <li>
+            <p>If <span class="math inline">\(\partial_{n}h(q_{0}), \partial_{n}h(q_{1})&lt;0\)</span>, then <span
+                class="math inline">\(h\)</span> first increase then decrease from <span
+                class="math inline">\(q_{0}\)</span> to <span class="math inline">\(q_{1}\)</span>.</p>
+          </li>
+        </ol>
+        <p><span class="math inline">\(\Rightarrow\)</span> Behavior of harmonic functions on edges is completely
+          characterized by sign of normal derivatives on <span class="math inline">\(V_{0}\)</span>.</p>
+        <p><span class="math inline">\(\Rightarrow\)</span> This only holds for local edge maximum, not local maximum.
+          (Normal derivatives and tangential derivatives are very weak characterizations of local behavior)</p>
+        <p><strong class="font-weight-bold">Theorem</strong>: (Local Extrema of Harmonic Functions)</p>
+        <p>Let <span class="math inline">\(h\)</span> be a non-constant harmonic function: <span
+            class="math inline">\(h(q_{0})=\alpha\)</span>, <span class="math inline">\(h(q_{1})=\beta\)</span>, <span
+            class="math inline">\(h(q_{2})=\gamma\)</span> with <span class="math inline">\(\alpha\leq \beta\leq
+            \gamma\)</span> not all equal.</p>
+        <ol>
+          <li>
+            <p>If <span class="math inline">\(\partial_{n}h(q_{1})=0\)</span>, then <span
+                class="math inline">\(q_{0}\)</span> is the unique local minimum and <span
+                class="math inline">\(q_{2}\)</span> is the unique local maximum.</p>
+          </li>
+          <li>
+            <p>If <span class="math inline">\(\partial_{n}h(q_{1})&lt;0\)</span>, then <span
+                class="math inline">\(q_{0}\)</span>, <span class="math inline">\(q_{1}\)</span> are the only local
+              minima and <span class="math inline">\(q_{2}\)</span> is the unique local maximum.</p>
+          </li>
+          <li>
+            <p>If <span class="math inline">\(\partial_{n}h(q_{1})&gt;0\)</span>, then <span
+                class="math inline">\(q_{0}\)</span> is the unique local minimum and <span class="math inline">\(q_{1},
+                q_{2}\)</span> are the only local maxima.</p>
+          </li>
+        </ol>
+        <h3>Biharmonic Case</h3>
+        <p><strong class="font-weight-bold">Theorem</strong>:</p>
+        <p>(Necessary conditions for local extrema of biharmonic functions)</p>
+        <p>Let <span class="math inline">\(u\in\mathcal{H}^{1}\)</span> be a nonconstant biharmonic function on SG, and
+          <span class="math inline">\(x=F_{w}q_{n}=F_{w&#39;}q_{n&#39;}\)</span> be a junction point that is a local
+          extrema of <span class="math inline">\(u\)</span>. Then we have:</p>
+        <ol>
+          <li>
+            <p><span class="math inline">\(\partial_{n}u(x)=0\)</span>.</p>
+          </li>
+          <li>
+            <p>Either <span class="math inline">\(\Delta u(x)\neq 0\)</span> or <span
+                class="math inline">\(\partial_{n}\Delta u(x)\neq 0\)</span>.</p>
+          </li>
+        </ol>
+        <p><span class="math inline">\(\Rightarrow\)</span> Proof: From the properties of antisymmetric functions.</p>
+
+        <p><strong class="font-weight-bold">Theorem</strong>:</p>
+        <p>(Sufficient conditions for local extrema of biharmonic functions)</p>
+        <p>Let <span class="math inline">\(u\in\mathcal{H}^{1}\)</span> be a function on <span
+            class="math inline">\(SG\)</span>, and <span
+            class="math inline">\(x=F_{w}q_{n}=F_{w&#39;}q_{n&#39;}\)</span> be a junction point. Suppose <span
+            class="math inline">\(\begin{cases}
+            \partial_{n}u(x) = 0 \\
+            \partial_{T}u(x) = 0 \\
+            \partial_{n}\Delta u(x) = 0 \\
+            \partial_{T}\Delta u(x) = 0
+            \end{cases}\)</span>, then <span class="math inline">\(x\)</span> is a local optimum of <span
+            class="math inline">\(u\)</span>.</p>
+        <p><span class="math inline">\(\Rightarrow\)</span> This comes from the property that <span
+            class="math inline">\(P_{11}\)</span> achieves global maximum/minimum on the boundary.</p>
+        <h3>Recap</h3>
+        <ol>
+          <li>
+            <p>Define local extrema and local edge extrema</p>
+          </li>
+          <li>
+            <p>Local edge extrema + functions in the domain of Laplacian</p>
+          </li>
+          <li>
+            <p>Local extrema + harmonic/biharmonic functions</p>
+          </li>
+        </ol>
+        <h3>Questions to Consider</h3>
+        <ol>
+          <li>
+            <p>Can any of the above be generalized to n-harmonic functions?</p>
+          </li>
+          <li>
+            <p>Is it possible to design an efficient algorithm to find local extrema of n-harmonic functions, given that
+              we can evaluate the <span class="math inline">\(n\)</span>-jet at all points?</p>
+          </li>
+        </ol>
+      </div>
+
+
+
+      <div class="container">
+        <h2>Chebyshev Polynomials on SG</h2>
+        <p>Definition of Chebyshev Polynomials on <span class="math inline">\([-1,1]\)</span>: <strong
+            class="font-weight-bold">The <span class="math inline">\(n^{th}\)</span> Chebyshev polynomial <span
+              class="math inline">\(T_{n}(x): [-1, 1]
+              \rightarrow \mathbb{R}\)</span></strong> is defined as <span class="math inline">\(T_{n}(x) :=
+            \cos(n\cos^{-1}(x))\)</span> An important property of Chebyshev Polynomials on <span
+            class="math inline">\([-1,1]\)</span> is the extremal principle: <span class="math inline">\(\forall
+            P(x):[-1,1] \rightarrow \mathbb{R}\)</span>, monic polynomial of degree <span
+            class="math inline">\(n\)</span>, <span class="math inline">\(||2^{1-n}T_{n}(x)||_{u} \leq
+            ||P(x)||_{u}\)</span>, where <span class="math inline">\(|| \cdotp ||_{u}\)</span> is the uniform norm of
+          functions. Remark: the leading coefficient of <span class="math inline">\(T_{n}(x)\)</span> is <span
+            class="math inline">\(2^{1-n}\)</span>, and hence <span class="math inline">\(2^{1-n}T_{n}(x)\)</span> is
+          the monic polynomial on <span class="math inline">\([-1,1]\)</span> that minimizes the uniform norm.</p>
+        <p>The revised definition of Chebyshev Polynomials on any compact <span class="math inline">\(K \subseteq
+            \mathbb{R}\)</span>: <strong class="font-weight-bold">The <span class="math inline">\(n^{th}\)</span>
+            Chebyshev polynomial <span class="math inline">\(T_{n}(x): K \rightarrow \mathbb{R}\)</span></strong> is
+          defined as the monic
+          polynomial of degree <span class="math inline">\(n\)</span> that has the smallest uniform norm of all monic
+          polynomial of degree <span class="math inline">\(n\)</span>. Fix <span class="math inline">\(k\)</span>, then
+          <strong class="font-weight-bold">the monic polynomial of degree <span
+              class="math inline">\(j\)</span></strong> is a polynomial of the
+          form <span class="math inline">\(\sum_{l=0}^{j}c_{l}P_{lk}\)</span>, where <span class="math inline">\(c_{j} =
+            1\)</span>. Definition of the <span class="math inline">\(j^{th}\)</span> Chebyshev Polynomials of family
+          <span class="math inline">\(k\)</span> on SG: Fix <span class="math inline">\(k = 1,2,3\)</span>, then
+          <strong class="font-weight-bold">the <span class="math inline">\(j^{th}\)</span> Chebyshev Polynomials of
+            family <span class="math inline">\(k\)</span>, <span class="math inline">\(T_{jk}(x)\)</span></strong>, is
+          the monic
+          polynomial of degree <span class="math inline">\(j\)</span>, such that <span class="math inline">\(\forall
+            P(x)\)</span> a monic polynomial of degree <span class="math inline">\(j\)</span>, <span
+            class="math inline">\(||T_{jk}||_{u} \leq ||P||_{u}\)</span></p>
+        <p>The problem right now reduces to for fixed <span class="math inline">\(k\)</span>, find <span
+            class="math inline">\(a_{k}\)</span>, such that <span
+            class="math inline">\(P_{1k}(x)+a_{k}P_{0k}(x)\)</span> has the smallest uniform norm of all monic
+          polynomial of degree <span class="math inline">\(1\)</span>.</p>
+        <ul>
+          <li>
+            <p>For the 1-family, we have an exact answer, that <span class="math inline">\(T_{11}(x) =
+                P_{11}(x)-\frac{1}{12}P_{01}(x)\)</span></p>
+          </li>
+          <li>
+            <p>This is because <span class="math inline">\(P_{11} \geq 0\)</span> and hence it achieves the minimum
+              value <span class="math inline">\(0\)</span> at <span class="math inline">\(q_{0}\)</span> and the maximum
+              value <span class="math inline">\(\frac{1}{6}\)</span> at <span class="math inline">\(q_{1}\)</span> and
+              <span class="math inline">\(q_{2}\)</span>.</p>
+          </li>
+          <li>
+            <p>Unfortunately, the proof that <span class="math inline">\(P_{11} \geq 0\)</span> is overcomplicated and
+              cannot be generalized to arbitrary <span class="math inline">\(j\)</span>.</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="container">
+        <img class="img-fluid imgModal" src="../../images/chebyshev_p11_0_0833.png"
+          alt="Degree 1 Chebyshev Polynomial of Family 1">
+        <p class="text-center">Plot of Chebyshev polynomial of order <span class="math inline">\(1\)</span> of family
+          <span class="math inline">\(1\)</span>, with <span class="math inline">\(a=-\frac{1}{12}\)</span>. The
+          boundary node on the left is <span class="math inline">\(q_{1}\)</span>, the one on the right is <span
+            class="math inline">\(q_{2}\)</span>, and the boundary node on the back is <span
+            class="math inline">\(q_{0}\)</span>.</p>
+      </div>
+
+      <div class="container">
+        <h2>Partial Results on <span class="math inline">\(\mathcal{H}_1\)</span></h2>
+        <ul>
+          <li>
+            <p>For the <span class="math inline">\(2^{nd}\)</span> Chebyshev polynomials of family <span
+                class="math inline">\(2\)</span> and the family <span class="math inline">\(3\)</span>, we only have
+              experimental result, and our experiments show that <span class="math inline">\(a_{2} = −0.0619339\)</span>
+              and <span class="math inline">\(a_{3} = −0.0275013\)</span></p>
+          </li>
+          <li>
+            <p>We found those values by firstly determining loose bounds of <span class="math inline">\(a_{2}\)</span>
+              and <span class="math inline">\(a_{3}\)</span>, which are <span
+                class="math inline">\([-\frac{2\beta_{1}}{\beta_{0}}, 0]=[-\frac{8}{45}, 0]\)</span> for <span
+                class="math inline">\(a_{2}\)</span> and <span class="math inline">\([-\frac{2\alpha_{1}}{\alpha_{0}},
+                0]=[-\frac{1}{15}, 0]\)</span> for <span class="math inline">\(a_{3}\)</span>.</p>
+          </li>
+          <li>
+            <p>Then we partition the intervals, test out each <span class="math inline">\(a_{k}\)</span>, and look for
+              the <span class="math inline">\(a_{k}\)</span> that gives the smallest uniform norm.</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="container">
+        <img class="img-fluid imgModal" src="../../images/chebyshev_p12_0_0619339.png"
+          alt="Degree 1 Chebyshev Polynomial of Family 2">
+        <p class="text-center">Plot of Chebyshev polynomial of order <span class="math inline">\(1\)</span> of family
+          <span class="math inline">\(2\)</span>, with <span class="math inline">\(a\approx -0.0619339\)</span>. The
+          boundary node on the left is <span class="math inline">\(q_{1}\)</span>, the one on the right is <span
+            class="math inline">\(q_{2}\)</span>, and the hidden boundary node on the back is <span
+            class="math inline">\(q_{0}\)</span>.</p>
+      </div>
+
+      <div class="container">
+        <img class="img-fluid imgModal" src="../../images/chebyshev_p13_0_02750235.png"
+          alt="Degree 1 Chebyshev Polynomial of Family 3">
+        <p class="text-center">Plot of Chebyshev polynomial of order <span class="math inline">\(1\)</span> of family
+          <span class="math inline">\(3\)</span>, with <span class="math inline">\(a\approx -0.02750235\)</span>. The
+          boundary node on the left is <span class="math inline">\(q_{1}\)</span>, the one on the right is <span
+            class="math inline">\(q_{2}\)</span>, and the hidden boundary node on the back is <span
+            class="math inline">\(q_{0}\)</span>.</p>
+      </div>
+
+      <div class="container">
+        <h2>Alternating Property of Chebyshev Polynomials</h2>
+        <ul>
+          <li>
+            <p>A degree <span class="math inline">\(n\)</span> polynomial <span class="math inline">\(P_{n}(x)\)</span>
+              defined on a compact set <span class="math inline">\(K \subseteq \mathbb{R}\)</span>, has <strong
+                class="font-weight-bold">an
+                alternating set</strong>, if <span class="math inline">\(\exists \{x_{j}\}_{j=0}^n\)</span> with <span
+                class="math inline">\(x_{0} &lt; x_{1} &lt; ...&lt; x_{n}\)</span>, so that <span
+                class="math inline">\(P_{n}(x_{j}) = (-1)^{n-j}||P_{n}(x)||_{u}\)</span>.</p>
+          </li>
+          <li>
+            <p><strong class="font-weight-bold">The Alternation Theorem</strong>: A monic polynomial of degree n is the
+              Chebyshev polynomial if
+              and only if it has an alternating set.</p>
+          </li>
+          <li>
+            <p>The experimental results also show that the absolute value of the minimum and the maximum of the monic
+              polynomials become closer when <span class="math inline">\(a_{2}\)</span> and <span
+                class="math inline">\(a_{3}\)</span> approach the values that minimize their uniform norms.</p>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <p>Assume that there exist an <span class="math inline">\(a\)</span>, such that <span
+                class="math inline">\(Q(x) := P_{13}(x)+aP_{03}(x)\)</span> achieves maximum norm at two distinct points
+              <span class="math inline">\(y \in \bigcup\limits_{m=0}^{\infty} F_{0}^{m}F_{1}SG\)</span> and <span
+                class="math inline">\(z \in \bigcup\limits_{m=0}^{\infty} F_{0}^{m}F_{1}SG\)</span>, and <span
+                class="math inline">\(z = -y\)</span>. Then <span class="math inline">\(Q(x)\)</span> is the <span
+                class="math inline">\(1^{st}\)</span> Chebyshev polynomial of the 3-family.</p>
+          </li>
+          <li>
+            <p>Assume <span class="math inline">\(Q(x)\)</span> is not the first Chebyshev polynomial of the 3-family.
+              Then <span class="math inline">\(||T_{13}||_{\infty} &lt; ||Q||_{\infty}\)</span>. This implies that <span
+                class="math inline">\(|T_{13}(x)| &lt; |Q(x)|\)</span> at <span class="math inline">\(y\)</span> and
+              <span class="math inline">\(z\)</span>. Thus <span class="math inline">\(T_{13} - Q(x)\)</span> cannot be
+              both positive or negative at <span class="math inline">\(y\)</span> and <span
+                class="math inline">\(z\)</span>. Since both <span class="math inline">\(T_{13}(x)\)</span> and <span
+                class="math inline">\(Q(x)\)</span> are monic, <span class="math inline">\(T_{13} - Q(x)\)</span> is
+              spanned by <span class="math inline">\(P_{03}\)</span>, and hence <span class="math inline">\(T_{13} -
+                Q(x)\)</span> has to be both positive or negative at <span class="math inline">\(y\)</span> and <span
+                class="math inline">\(z\)</span>. We have a contradiction.</p>
+          </li>
+        </ul>
+      </div>
+      <div class="container">
+        <h2>Further Questions</h2>
+        <ul>
+          <li>
+            <p>Find explicit formulas for Chebyshev polynomials of any degree.</p>
+          </li>
+          <li>
+            <p>Replicate the alternation theorem to polynomials on SG.</p>
+          </li>
+          <li>
+            <p>Study the orthogonality.</p>
+          </li>
+          <li>
+            <p>Find the recurrence relation, if any.</p>
+          </li>
+        </ul>
+      </div>
+
+
+    </div>
+  </div>
+
+
+
+  <script>
+    $(document).ready(function () {
+      $("#sidetheory").addClass("active");
+      $("#sideCP").addClass("active");
+    });
+  </script>
 </body>
+
 </html>

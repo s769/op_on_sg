@@ -1,166 +1,309 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>SOPs on SG | Theory | Sobolev</title>
-<link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
-<link rel="manifest" href="../../favicon/site.webmanifest">
-<meta name="msapplication-TileColor" content="#da532c">
-<meta name="theme-color" content="#ffffff">
+  <title>SOPs on SG | Theory | Sobolev</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+  <link rel="manifest" href="../../favicon/site.webmanifest">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
 
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
-<!-- jQuery library -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <!-- jQuery library -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-<!-- Latest compiled JavaScript -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
-<meta charset="utf-8"> 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Latest compiled JavaScript -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link rel="stylesheet" href="../../css/global.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+  <link rel="stylesheet" href="../../css/global.css" />
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 
-<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
-<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
-<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+    integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+    crossorigin="anonymous"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+    integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+    crossorigin="anonymous"></script>
 
-<!-- jQuery CDN - Slim version (=without AJAX) -->
-<script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
-<!-- Popper.JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
-<!-- Bootstrap JS -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-<!-- jQuery Custom Scroller CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+  <!-- jQuery CDN - Slim version (=without AJAX) -->
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <!-- Popper.JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+    integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+    crossorigin="anonymous"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
+    integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
+    crossorigin="anonymous"></script>
+  <!-- jQuery Custom Scroller CDN -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
 
-<script src="../../js/global.js"></script>
+  <script src="../../js/global.js"></script>
 
 </head>
+
 <body>
-    
-    <div class="wrapper" id="main">
+
+  <div class="wrapper" id="main">
 
 
-        <!-- Page Content  -->
-        <div id="content">
-                 <div class="container-fluid" id="heading">
-                     
-                    <h1 id="page-header" class="text-center">
-                      Sobolev Orthogonal Polynomials on the Sierpinksi Gasket
-                    </h1>  
-        </div>
+    <!-- Page Content  -->
+    <div id="content">
+      <div class="container-fluid" id="heading">
 
-        <div class="container">
-          <h2>Origin</h2>
-            <ul>
-                <li><p>Idea (Lewis): Given <span class="math inline">\(f \in L^2[-1,1]\)</span>, find polynomial <span class="math inline">\(g\)</span> with deg <span class="math inline">\(g\le n\)</span> such that <span class="math inline">\(g\)</span> minimizes the quantity <span class="math inline">\(\|f-g\|_{H}\)</span>, where <span class="math inline">\(\|h\|_{H}^2:=\int (h^2(x)dx+h&#39;{^2}(x))dx\)</span></p></li>
-                <li><p>Solution: <span class="math inline">\(\widetilde g=\sum\limits^{n}_{i=0} \langle f,e_i\rangle_H\,e_i\)</span>, <span class="math inline">\(\{e_i\}\)</span> orthonormal basis</p></li>
-                <li><p>Core idea: Approximate a function with polynomials as “close” as possible.</p></li>
-                </ul>
-        </div>
-
-        <div class="container">
-          <h2>Generalization to SG</h2>
-            <ul>
-                <li><p>Unless specified we will consider the Sobolev inner product <span class="math inline">\(\langle f,g\rangle_H:=\langle f,g\rangle_{L^2}+\lambda\langle \Delta f,\Delta g\rangle_{L^2}\)</span> for some nonnegative constant <span class="math inline">\(\lambda\)</span>, where <span class="math inline">\(\langle f,g\rangle_{L^2}:=\int fg\,d\mu\)</span> for a regular Borel probability measure <span class="math inline">\(\mu\)</span> that is symmetric with respect to the line passing through <span class="math inline">\(q_0\)</span> and the midpoint of the side opposing <span class="math inline">\(q_0\)</span></p></li>
-                <li><p>the monic Sobolev polynomials <span class="math inline">\(\{S_{nk}(x;\lambda)\}_{n=0}^{\infty}\)</span>(For simplicity, write as <span class="math inline">\(\{S_{n}\}_{n=0}^{\infty}\)</span>), is obtained by Gram-Schmidt Process.</p></li>
-                </ul>
-        </div>
-
-        <div class="container">
-          <h2>Recurrence Relations (Case 1: \(k = 2\) or \(3\))</h2> 
-          <p><strong class="font-weight-bold">Theorem</strong>: When <span class="math inline">\(k = 2\)</span> or <span class="math inline">\(3\)</span> we have the following recurrence relation for <span class="math inline">\(n\geq-1\)</span>, where <span class="math inline">\(S_{-1}:=0\)</span>. <span class="math display">\[S_{n+2} - a_nS_{n+1}-b_nS_n = f_{n+2}\]</span> where <span class="math inline">\(f_{n+2} := \mathcal{G}(p_{n+1})\)</span>, and <span class="math inline">\(\mathcal{G}(g)(x):=-\int_{SG}G(x,y)g_{n+1}(y)dy\)</span>,<br />
-            <span class="math display">\[a_n = -\frac{\langle f_{n+2}S_{n+1}\rangle_H}{\|S_{n+1}\|_H^2}\]</span> <span class="math display">\[b_n = -\frac{\langle f_{n+2},S_{n}\rangle_H}{\|S_{n}\|_H^2}\]</span></p>
-            <p><strong class="font-weight-bold">Remark</strong>: When <span class="math inline">\(k = 2\)</span> or <span class="math inline">\(3\)</span>, the same recursive relation is still valid if we replace the Sobolev inner product by <span class="math inline">\(\langle f,g\rangle_H:=\)</span> <span class="math display">\[\langle f,g\rangle_{L^2}+\lambda_1 \langle \Delta f,\Delta g\rangle_{L^2}+\lambda_2\,\varepsilon(f,g)+\]</span> <span class="math display">\[[f(q_0)\,f(q_1)\,f(q_2)] M [g(q_0)\,g(q_1)\,g(q_2)]^T\]</span> for nonnegative constants <span class="math inline">\(\lambda_1\)</span> and <span class="math inline">\(\lambda_2\)</span>, positive semidefinite <span class="math inline">\(3\times3\)</span> matrix <span class="math inline">\(M\)</span></p>
-            <p><strong class="font-weight-bold">Corollary</strong>: When <span class="math inline">\(k =2\)</span> or <span class="math inline">\(3\)</span>, <span class="math inline">\((a_n, b_n)\)</span> is the unique solution to the system <span class="math inline">\(a_n S_{n+1}(q_1)+b_nS_n(q_1)=S_{n+2}(q_1)\)</span> and <span class="math inline">\(a_n \partial_n S_{n+1}(q_1)+b_n\partial_n S_n(q_1)=\partial_n S_{n+2}(q_1)\)</span>. In particular, the matrix <span class="math inline">\(\left[\begin{matrix}
-                S_{n+1}(q_1)&amp;S_n(q_1)\\
-                \partial_n S_{n+1}(q_1) &amp;\partial_n S_n(q_1)
-                \end{matrix}\right]\)</span> is non-singular for any integer <span class="math inline">\(n\geq 0\)</span>.</p>
-                
-            </div>
-        <div class="container">
-          <h2 > Asymptotics (Case 1: \(k = 2\) or \(3\))</h2>
-          <ul>
-              <li><p>First, We are interested in the case when <span class="math inline">\(\lambda\rightarrow\infty\)</span>.</p></li>
-              <li><p><strong class="font-weight-bold">Estimates</strong>: <span class="math inline">\(\|S_n\|_{H}^2=\Theta (\lambda)\)</span>, <span class="math inline">\(|a_n|=O(\lambda^{-1})\)</span>, <span class="math inline">\(|b_n|=\Theta(\lambda^{-1})\)</span> <span class="math display">\[\|\Delta S_n\|_{L^2}^2\le \lambda^{-1}\|G\|_{L^2}^2\|p_{n-1}\|_{L^2}^2+\|p_{n-1}\|_{L^2}^2\]</span> <span class="math display">\[\|S_n\|_{L^{\infty}}\le C(1+\lambda^{-\frac12})\|p_{n-1}\|_{L^2}\]</span> (C is independent of <span class="math inline">\(n\)</span> and <span class="math inline">\(\lambda\)</span>)</p></li>
-              </ul>
-              <p><strong class="font-weight-bold">Theorem</strong>: Suppose <span class="math inline">\(k=2\)</span> or <span class="math inline">\(3\)</span>. Then for any <span class="math inline">\(n\ge3\)</span>, <span class="math inline">\(S_n(x;\lambda)\)</span> converges to <span class="math inline">\(f_n\)</span> uniformly in <span class="math inline">\(x\)</span> as <span class="math inline">\(\lambda\rightarrow\infty\)</span>. Consequently <span class="math inline">\(\Delta S_n\rightarrow p_{n-1}\)</span> uniformly as <span class="math inline">\(\lambda\rightarrow\infty\)</span>. Also,</p>
-            <p><span class="math display">\[\lambda(S_n(\lambda)-f_n)\rightarrow-\frac{\langle f_n,f_{n-1}\rangle_{L^2}}{\|p_{n-2}\|_{L^2}^2}f_{n-1}-\frac{\|p_{n-1}\|_{L^2}^2}{\|p_{n-3}\|_{L^2}^2}f_{n-2}\]</span> uniformly in <span class="math inline">\(x\)</span> as <span class="math inline">\(\lambda\rightarrow\infty\)</span></p>
-        </div>
-
-        <div class="container">
-            <h2>Recurrence Relations (Case 2: \(k = 1\))</h2> 
-            <ul>
-                <li><p>More complicated!</p></li>
-                <li><p>Requires a conjecture: <span class="math inline">\(\partial_n f_t(q_0)\neq 0\)</span>, where <span class="math inline">\(f_t:=\mathcal{G} (p_{t-1})\)</span>.</p></li>
-                <li><p><strong class="font-weight-bold">Theorem</strong>: Let <span class="math inline">\(S_{-1}:=0\)</span>, k=1, <span class="math inline">\(f_{n+2}= \mathcal{G}(p_{n+1})\)</span> and suppose that <span class="math inline">\(\partial_n f_{n+2}(q_0)\neq 0\)</span>, then <span class="math inline">\(S_{n+3}-a_nS_{n+2} - b_nS_{n+1}-c_nS_n = f_{n+3}+d_nf_{n+2}\)</span>, The matrix<span class="math display">\[\begin{aligned}
-                     \begin{bmatrix}
-                    S_{n+2}(q_1)&amp;S_{n+1}(q_1)&amp;S_{n}(q_1)\\
-                    \partial_n S_{n+2}(q_1) &amp;\partial_n S_{n+1}(q_1)&amp;\partial_n S_{n}(q_1)\\
-                    S_{n+2}(q_0)&amp;S_{n+1}(q_0)&amp;S_{n}(q_0)
-                    \end{bmatrix} \end{aligned}\]</span> is non-singular.</p></li>
-                </ul>
-              </div>
-              
-              <div class="container">
-
-                <h2>Asymptotics (Case 2: \(k = 1\))</h2>
-                <p><strong class="font-weight-bold">Theorem</strong>: Assume the normal derivative conjecture is true. Then there exists a sequence of monic polynomials <span class="math inline">\(\{g_n\}_{n=0}^{\infty}\)</span> independent of <span class="math inline">\(\lambda\)</span> such that for any <span class="math inline">\(n\ge0\)</span>, <span class="math inline">\(deg\, g_n=n\)</span>, <span class="math inline">\(S_n\)</span> converges uniformly in <span class="math inline">\(x\)</span> to <span class="math inline">\(g_n\)</span>. And <span class="math inline">\(g_{n+3}+d_ng_{n+2}=f_{n+3}+d_nf_{n+2}\)</span> for any <span class="math inline">\(n\ge 1\)</span>. For the basic cases, <span class="math inline">\(g_0=p_0\)</span>, <span class="math inline">\(g_1=p_1\)</span>, <span class="math inline">\(g_{2}+d_{-1}g_{1}=f_{2}+d_{-1}f_{1}-\frac{\langle f_2+d_{-1}f_1,{g_0}\rangle_{L^2}}{{\|g_0\|_{L^2}^2}}g_{0}\)</span>, and <span class="math inline">\(g_{3}+d_{0}g_{2}=f_{3}+d_{0}f_{2}-\frac{\langle f_3+d_{0}f_2,{g_0}\rangle_{L^2}}{{\|g_0\|_{L^2}^2}}g_{0}\)</span>. Moreover, for any <span class="math inline">\(\alpha&lt;1\)</span>, <span class="math inline">\(n\ge0\)</span>, <span class="math inline">\(\lim\limits_{\lambda \rightarrow\infty}\lambda^\alpha(S_n(\lambda)-g_n)=0\)</span> uniformly in <span class="math inline">\(x\)</span>.</p>
-
-              </div>
-
-              <div class="container">
-                <h2>Generalized Recurrence (\(k = 2\) or \(3\))</h2>
-                  <ul>
-                      <li><p>Consider the inner product: <span class="math inline">\(\langle f,g\rangle_{H^m} = \sum\limits_{l = 0}^m \lambda_l\int_{SG}\Delta^lf\Delta^lg\,d\mu\)</span></p></li>
-                      <li><p><strong class="font-weight-bold">Theorem</strong>: <span class="math inline">\(S_{n+m+1} - \mathcal{F}_{n+m+1} - \sum\limits_{l = 0}^{2m-1}a_{n, l}S_{n+m-l} = 0\)</span>, where <span class="math inline">\(\mathcal{F}_{n+m+1} := \mathcal{G}^mp_{n+1}\)</span></p></li>
-                      <li><p><strong class="font-weight-bold">Remark</strong>: It is still true if we consider <span class="math inline">\(\langle f,g\rangle_{H^m}= 
-                      \sum\limits_{l = 0}^m \lambda_l\int_{SG}\Delta^lf\Delta^lg\,d\mu+\sum\limits_{l=0}^{m-1}\beta_l\,\varepsilon(\Delta^l f,\Delta^l g)+\nonumber
-                      \sum\limits_{l=0}^{m-1}[\Delta ^lf(q_0)\,\Delta ^lf(q_1)\,\Delta ^lf(q_2)] M_l [\Delta ^lg(q_0)\,\Delta ^lg(q_1)\,\Delta ^lg(q_2)]^T\)</span>, where <span class="math inline">\(M_l\)</span> are positive definite <span class="math inline">\(3\times 3\)</span> matrices.</p></li>
-                      </ul>
-              </div>
-
-              <div class="container">
-                <h2>Generalized Asymptotics (\(k = 2\) or \(3\))</h2>
-                <p>Asymptotic: we consider the case <span class="math inline">\(\lambda_m\rightarrow\infty\)</span>, and the other parameters are bounded.<br />
-                  <strong class="font-weight-bold">Theorem</strong>: Suppose <span class="math inline">\(k=2\)</span> or <span class="math inline">\(3\)</span>, and there exists <span class="math inline">\(M&gt;0\)</span> such that <span class="math inline">\(\lambda_l\le M\)</span> for any <span class="math inline">\(l&lt;m\)</span>. Then for any <span class="math inline">\(n\ge 2m+1\)</span>, we have<span class="math display">\[\|S_n-\mathcal{F}_n\|_{L^2}\le
-                     C(n,M,m,\mu)\lambda_m^{-1}\]</span> Consequently, <span class="math inline">\(\lim\limits_{\lambda_m\rightarrow\infty}\|\Delta^i S_n-\mathcal{G}^{m-i}p_{n-m}\|_{L^\infty}\rightarrow 0\)</span> for any <span class="math inline">\(0\le i\le m\)</span>.</p>
-              </div>
-
-        
-              <div class="container">
-                  <h2>Zeros</h2>
-                  <p><strong class="font-weight-bold">Theorem</strong>: (Topological result): Let <span class="math inline">\(f\)</span> be a continuous function defined on <span class="math inline">\(SG\)</span>. Suppose <span class="math inline">\(f\)</span> has finitely many zeros. Let <span class="math inline">\(Z_0\)</span> be the intersection of zero set <span class="math inline">\(Z\)</span> of <span class="math inline">\(f\)</span> and <span class="math inline">\(V^*\)</span>. Then for any connected component <span class="math inline">\(D\)</span> in <span class="math inline">\(SG\setminus Z_0\)</span>, either <span class="math inline">\(f\ge0\)</span> on <span class="math inline">\(D\)</span> or <span class="math inline">\(f\le0\)</span> on <span class="math inline">\(D\)</span>.</p>
-                  <p><strong class="font-weight-bold">Theorem</strong>: Suppose <span class="math inline">\(f(x)=\sum\limits^\infty_{j=t_1}c_{j1}P_{j1}^{(0)}(x)+\sum\limits^\infty_{j=t_2}c_{j2}P_{j2}^{(0)}(x)+\sum\limits^\infty_{j=t_3}c_{j3}P_{j3}^{(0)}(x)\)</span> where <span class="math inline">\(c_{t_1,1}\)</span>, <span class="math inline">\(c_{t_2,2}\)</span> and <span class="math inline">\(c_{t_3,3}\)</span> are nonzero and has zero set <span class="math inline">\(Z\)</span>. Then</p>
-                  <ol>
-                  <li><p><span class="math inline">\(Z\)</span> is compact and nowhere dense in <span class="math inline">\(SG\)</span>.</p></li>
-                  <li><p>If <span class="math inline">\(t_3&lt;t_1-1\)</span> and <span class="math inline">\(t_3&lt;t_2\)</span>, then <span class="math inline">\(f\)</span> has infinitely many zeros that has limit point <span class="math inline">\(q_0\)</span>. Moreover, suppose the conjecture <span class="math inline">\(P_{j1}&gt;0\)</span> is true, <span class="math inline">\(t_1\le t_2\)</span> and <span class="math inline">\(t_1\le t_3\)</span>. Then <span class="math inline">\(q_0\)</span> has a neighborhood <span class="math inline">\(U\)</span> such that <span class="math inline">\(Z\cap U\subset\{q_0\}.\)</span></p></li>
-                  </ol>
-                </div>
-
-
-
-         
-
-        </div>
+        <h1 id="page-header" class="text-center">
+          Sobolev Orthogonal Polynomials on the Sierpinksi Gasket
+        </h1>
       </div>
 
-  
-    
+      <div class="container">
+        <h2>Origin</h2>
+        <ul>
+          <li>
+            <p>Idea (Lewis): Given <span class="math inline">\(f \in L^2[-1,1]\)</span>, find polynomial <span
+                class="math inline">\(g\)</span> with deg <span class="math inline">\(g\le n\)</span> such that <span
+                class="math inline">\(g\)</span> minimizes the quantity <span
+                class="math inline">\(\|f-g\|_{H}\)</span>, where <span class="math inline">\(\|h\|_{H}^2:=\int
+                (h^2(x)dx+h&#39;{^2}(x))dx\)</span></p>
+          </li>
+          <li>
+            <p>Solution: <span class="math inline">\(\widetilde g=\sum\limits^{n}_{i=0} \langle
+                f,e_i\rangle_H\,e_i\)</span>, <span class="math inline">\(\{e_i\}\)</span> orthonormal basis</p>
+          </li>
+          <li>
+            <p>Core idea: Approximate a function with polynomials as “close” as possible.</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="container">
+        <h2>Generalization to SG</h2>
+        <ul>
+          <li>
+            <p>Unless specified we will consider the Sobolev inner product <span class="math inline">\(\langle
+                f,g\rangle_H:=\langle f,g\rangle_{L^2}+\lambda\langle \Delta f,\Delta g\rangle_{L^2}\)</span> for some
+              nonnegative constant <span class="math inline">\(\lambda\)</span>, where <span
+                class="math inline">\(\langle f,g\rangle_{L^2}:=\int fg\,d\mu\)</span> for a regular Borel probability
+              measure <span class="math inline">\(\mu\)</span> that is symmetric with respect to the line passing
+              through <span class="math inline">\(q_0\)</span> and the midpoint of the side opposing <span
+                class="math inline">\(q_0\)</span></p>
+          </li>
+          <li>
+            <p>the monic Sobolev polynomials <span
+                class="math inline">\(\{S_{nk}(x;\lambda)\}_{n=0}^{\infty}\)</span>(For simplicity, write as <span
+                class="math inline">\(\{S_{n}\}_{n=0}^{\infty}\)</span>), is obtained by Gram-Schmidt Process.</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="container">
+        <h2>Recurrence Relations (Case 1: \(k = 2\) or \(3\))</h2>
+        <p><strong class="font-weight-bold">Theorem:/</strong> When <span class="math inline">\(k = 2\)</span> or <span
+            class="math inline">\(3\)</span> we have the following recurrence relation for <span
+            class="math inline">\(n\geq-1\)</span>, where <span class="math inline">\(S_{-1}:=0\)</span>. <span
+            class="math display">\[S_{n+2} - a_nS_{n+1}-b_nS_n = f_{n+2}\]</span> where <span
+            class="math inline">\(f_{n+2} := \mathcal{G}(p_{n+1})\)</span>, and <span
+            class="math inline">\(\mathcal{G}(g)(x):=-\int_{SG}G(x,y)g_{n+1}(y)dy\)</span>,<br />
+          <span class="math display">\[a_n = -\frac{\langle f_{n+2}S_{n+1}\rangle_H}{\|S_{n+1}\|_H^2}\]</span> <span
+            class="math display">\[b_n = -\frac{\langle f_{n+2},S_{n}\rangle_H}{\|S_{n}\|_H^2}\]</span></p>
+        <p><strong class="font-weight-bold">Remark:/</strong> When <span class="math inline">\(k = 2\)</span> or <span
+            class="math inline">\(3\)</span>, the same recursive relation is still valid if we replace the Sobolev inner
+          product by <span class="math inline">\(\langle f,g\rangle_H:=\)</span> <span class="math display">\[\langle
+            f,g\rangle_{L^2}+\lambda_1 \langle \Delta f,\Delta g\rangle_{L^2}+\lambda_2\,\varepsilon(f,g)+\]</span>
+          <span class="math display">\[[f(q_0)\,f(q_1)\,f(q_2)] M [g(q_0)\,g(q_1)\,g(q_2)]^T\]</span> for nonnegative
+          constants <span class="math inline">\(\lambda_1\)</span> and <span class="math inline">\(\lambda_2\)</span>,
+          positive semidefinite <span class="math inline">\(3\times3\)</span> matrix <span
+            class="math inline">\(M\)</span></p>
+        <p><strong class="font-weight-bold">Corollary:/</strong> When <span class="math inline">\(k =2\)</span> or <span
+            class="math inline">\(3\)</span>, <span class="math inline">\((a_n, b_n)\)</span> is the unique solution to
+          the system <span class="math inline">\(a_n S_{n+1}(q_1)+b_nS_n(q_1)=S_{n+2}(q_1)\)</span> and <span
+            class="math inline">\(a_n \partial_n S_{n+1}(q_1)+b_n\partial_n S_n(q_1)=\partial_n S_{n+2}(q_1)\)</span>.
+          In particular, the matrix <span class="math inline">\(\left[\begin{matrix}
+            S_{n+1}(q_1)&amp;S_n(q_1)\\
+            \partial_n S_{n+1}(q_1) &amp;\partial_n S_n(q_1)
+            \end{matrix}\right]\)</span> is non-singular for any integer <span class="math inline">\(n\geq 0\)</span>.
+        </p>
+
+      </div>
+      <div class="container">
+        <h2> Asymptotics (Case 1: \(k = 2\) or \(3\))</h2>
+        <ul>
+          <li>
+            <p>First, We are interested in the case when <span class="math inline">\(\lambda\rightarrow\infty\)</span>.
+            </p>
+          </li>
+          <li>
+            <p><strong class="font-weight-bold">Estimates:/</strong> <span class="math inline">\(\|S_n\|_{H}^2=\Theta
+                (\lambda)\)</span>, <span class="math inline">\(|a_n|=O(\lambda^{-1})\)</span>, <span
+                class="math inline">\(|b_n|=\Theta(\lambda^{-1})\)</span> <span class="math display">\[\|\Delta
+                S_n\|_{L^2}^2\le \lambda^{-1}\|G\|_{L^2}^2\|p_{n-1}\|_{L^2}^2+\|p_{n-1}\|_{L^2}^2\]</span> <span
+                class="math display">\[\|S_n\|_{L^{\infty}}\le C(1+\lambda^{-\frac12})\|p_{n-1}\|_{L^2}\]</span> (C is
+              independent of <span class="math inline">\(n\)</span> and <span class="math inline">\(\lambda\)</span>)
+            </p>
+          </li>
+        </ul>
+        <p><strong class="font-weight-bold">Theorem:/</strong> Suppose <span class="math inline">\(k=2\)</span> or <span
+            class="math inline">\(3\)</span>. Then for any <span class="math inline">\(n\ge3\)</span>, <span
+            class="math inline">\(S_n(x;\lambda)\)</span> converges to <span class="math inline">\(f_n\)</span>
+          uniformly in <span class="math inline">\(x\)</span> as <span
+            class="math inline">\(\lambda\rightarrow\infty\)</span>. Consequently <span class="math inline">\(\Delta
+            S_n\rightarrow p_{n-1}\)</span> uniformly as <span class="math inline">\(\lambda\rightarrow\infty\)</span>.
+          Also,</p>
+        <p><span class="math display">\[\lambda(S_n(\lambda)-f_n)\rightarrow-\frac{\langle
+            f_n,f_{n-1}\rangle_{L^2}}{\|p_{n-2}\|_{L^2}^2}f_{n-1}-\frac{\|p_{n-1}\|_{L^2}^2}{\|p_{n-3}\|_{L^2}^2}f_{n-2}\]</span>
+          uniformly in <span class="math inline">\(x\)</span> as <span
+            class="math inline">\(\lambda\rightarrow\infty\)</span></p>
+      </div>
+
+      <div class="container">
+        <h2>Recurrence Relations (Case 2: \(k = 1\))</h2>
+        <ul>
+          <li>
+            <p>More complicated!</p>
+          </li>
+          <li>
+            <p>Requires a conjecture: <span class="math inline">\(\partial_n f_t(q_0)\neq 0\)</span>, where <span
+                class="math inline">\(f_t:=\mathcal{G} (p_{t-1})\)</span>.</p>
+          </li>
+          <li>
+            <p><strong class="font-weight-bold">Theorem:/</strong> Let <span class="math inline">\(S_{-1}:=0\)</span>,
+              k=1, <span class="math inline">\(f_{n+2}= \mathcal{G}(p_{n+1})\)</span> and suppose that <span
+                class="math inline">\(\partial_n f_{n+2}(q_0)\neq 0\)</span>, then <span
+                class="math inline">\(S_{n+3}-a_nS_{n+2} - b_nS_{n+1}-c_nS_n = f_{n+3}+d_nf_{n+2}\)</span>, The
+              matrix<span class="math display">\[\begin{aligned}
+                \begin{bmatrix}
+                S_{n+2}(q_1)&amp;S_{n+1}(q_1)&amp;S_{n}(q_1)\\
+                \partial_n S_{n+2}(q_1) &amp;\partial_n S_{n+1}(q_1)&amp;\partial_n S_{n}(q_1)\\
+                S_{n+2}(q_0)&amp;S_{n+1}(q_0)&amp;S_{n}(q_0)
+                \end{bmatrix} \end{aligned}\]</span> is non-singular.</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="container">
+
+        <h2>Asymptotics (Case 2: \(k = 1\))</h2>
+        <p><strong class="font-weight-bold">Theorem:/</strong> Assume the normal derivative conjecture is true. Then
+          there exists a sequence of monic polynomials <span class="math inline">\(\{g_n\}_{n=0}^{\infty}\)</span>
+          independent of <span class="math inline">\(\lambda\)</span> such that for any <span
+            class="math inline">\(n\ge0\)</span>, <span class="math inline">\(deg\, g_n=n\)</span>, <span
+            class="math inline">\(S_n\)</span> converges uniformly in <span class="math inline">\(x\)</span> to <span
+            class="math inline">\(g_n\)</span>. And <span
+            class="math inline">\(g_{n+3}+d_ng_{n+2}=f_{n+3}+d_nf_{n+2}\)</span> for any <span
+            class="math inline">\(n\ge 1\)</span>. For the basic cases, <span class="math inline">\(g_0=p_0\)</span>,
+          <span class="math inline">\(g_1=p_1\)</span>, <span
+            class="math inline">\(g_{2}+d_{-1}g_{1}=f_{2}+d_{-1}f_{1}-\frac{\langle
+            f_2+d_{-1}f_1,{g_0}\rangle_{L^2}}{{\|g_0\|_{L^2}^2}}g_{0}\)</span>, and <span
+            class="math inline">\(g_{3}+d_{0}g_{2}=f_{3}+d_{0}f_{2}-\frac{\langle
+            f_3+d_{0}f_2,{g_0}\rangle_{L^2}}{{\|g_0\|_{L^2}^2}}g_{0}\)</span>. Moreover, for any <span
+            class="math inline">\(\alpha&lt;1\)</span>, <span class="math inline">\(n\ge0\)</span>, <span
+            class="math inline">\(\lim\limits_{\lambda \rightarrow\infty}\lambda^\alpha(S_n(\lambda)-g_n)=0\)</span>
+          uniformly in <span class="math inline">\(x\)</span>.</p>
+
+      </div>
+
+      <div class="container">
+        <h2>Generalized Recurrence (\(k = 2\) or \(3\))</h2>
+        <ul>
+          <li>
+            <p>Consider the inner product: <span class="math inline">\(\langle f,g\rangle_{H^m} = \sum\limits_{l = 0}^m
+                \lambda_l\int_{SG}\Delta^lf\Delta^lg\,d\mu\)</span></p>
+          </li>
+          <li>
+            <p><strong class="font-weight-bold">Theorem:/</strong> <span class="math inline">\(S_{n+m+1} -
+                \mathcal{F}_{n+m+1} - \sum\limits_{l = 0}^{2m-1}a_{n, l}S_{n+m-l} = 0\)</span>, where <span
+                class="math inline">\(\mathcal{F}_{n+m+1} := \mathcal{G}^mp_{n+1}\)</span></p>
+          </li>
+          <li>
+            <p><strong class="font-weight-bold">Remark:/</strong> It is still true if we consider <span
+                class="math inline">\(\langle f,g\rangle_{H^m}=
+                \sum\limits_{l = 0}^m
+                \lambda_l\int_{SG}\Delta^lf\Delta^lg\,d\mu+\sum\limits_{l=0}^{m-1}\beta_l\,\varepsilon(\Delta^l
+                f,\Delta^l g)+\nonumber
+                \sum\limits_{l=0}^{m-1}[\Delta ^lf(q_0)\,\Delta ^lf(q_1)\,\Delta ^lf(q_2)] M_l [\Delta ^lg(q_0)\,\Delta
+                ^lg(q_1)\,\Delta ^lg(q_2)]^T\)</span>, where <span class="math inline">\(M_l\)</span> are positive
+              definite <span class="math inline">\(3\times 3\)</span> matrices.</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="container">
+        <h2>Generalized Asymptotics (\(k = 2\) or \(3\))</h2>
+        <p>Asymptotic: we consider the case <span class="math inline">\(\lambda_m\rightarrow\infty\)</span>, and the
+          other parameters are bounded.<br />
+          <strong class="font-weight-bold">Theorem:/</strong> Suppose <span class="math inline">\(k=2\)</span> or <span
+            class="math inline">\(3\)</span>, and there exists <span class="math inline">\(M&gt;0\)</span> such that
+          <span class="math inline">\(\lambda_l\le M\)</span> for any <span class="math inline">\(l&lt;m\)</span>. Then
+          for any <span class="math inline">\(n\ge 2m+1\)</span>, we have<span
+            class="math display">\[\|S_n-\mathcal{F}_n\|_{L^2}\le
+            C(n,M,m,\mu)\lambda_m^{-1}\]</span> Consequently, <span
+            class="math inline">\(\lim\limits_{\lambda_m\rightarrow\infty}\|\Delta^i
+            S_n-\mathcal{G}^{m-i}p_{n-m}\|_{L^\infty}\rightarrow 0\)</span> for any <span class="math inline">\(0\le
+            i\le m\)</span>.</p>
+      </div>
 
 
-<script>
-$(document).ready(function (){ 
-    $("#sidetheory").addClass("active");
-    $("#sideSOP").addClass("active");
-});
-</script>
+      <div class="container">
+        <h2>Zeros</h2>
+        <p><strong class="font-weight-bold">Theorem:/</strong> (Topological result): Let <span
+            class="math inline">\(f\)</span> be a continuous function defined on <span
+            class="math inline">\(SG\)</span>. Suppose <span class="math inline">\(f\)</span> has finitely many zeros.
+          Let <span class="math inline">\(Z_0\)</span> be the intersection of zero set <span
+            class="math inline">\(Z\)</span> of <span class="math inline">\(f\)</span> and <span
+            class="math inline">\(V^*\)</span>. Then for any connected component <span class="math inline">\(D\)</span>
+          in <span class="math inline">\(SG\setminus Z_0\)</span>, either <span class="math inline">\(f\ge0\)</span> on
+          <span class="math inline">\(D\)</span> or <span class="math inline">\(f\le0\)</span> on <span
+            class="math inline">\(D\)</span>.</p>
+        <p><strong class="font-weight-bold">Theorem:/</strong> Suppose <span
+            class="math inline">\(f(x)=\sum\limits^\infty_{j=t_1}c_{j1}P_{j1}^{(0)}(x)+\sum\limits^\infty_{j=t_2}c_{j2}P_{j2}^{(0)}(x)+\sum\limits^\infty_{j=t_3}c_{j3}P_{j3}^{(0)}(x)\)</span>
+          where <span class="math inline">\(c_{t_1,1}\)</span>, <span class="math inline">\(c_{t_2,2}\)</span> and <span
+            class="math inline">\(c_{t_3,3}\)</span> are nonzero and has zero set <span
+            class="math inline">\(Z\)</span>. Then</p>
+        <ol>
+          <li>
+            <p><span class="math inline">\(Z\)</span> is compact and nowhere dense in <span
+                class="math inline">\(SG\)</span>.</p>
+          </li>
+          <li>
+            <p>If <span class="math inline">\(t_3&lt;t_1-1\)</span> and <span class="math inline">\(t_3&lt;t_2\)</span>,
+              then <span class="math inline">\(f\)</span> has infinitely many zeros that has limit point <span
+                class="math inline">\(q_0\)</span>. Moreover, suppose the conjecture <span
+                class="math inline">\(P_{j1}&gt;0\)</span> is true, <span class="math inline">\(t_1\le t_2\)</span> and
+              <span class="math inline">\(t_1\le t_3\)</span>. Then <span class="math inline">\(q_0\)</span> has a
+              neighborhood <span class="math inline">\(U\)</span> such that <span class="math inline">\(Z\cap
+                U\subset\{q_0\}.\)</span></p>
+          </li>
+        </ol>
+      </div>
+
+
+
+
+
+    </div>
+  </div>
+
+
+
+
+
+  <script>
+    $(document).ready(function () {
+      $("#sidetheory").addClass("active");
+      $("#sideSOP").addClass("active");
+    });
+  </script>
 </body>
+
 </html>

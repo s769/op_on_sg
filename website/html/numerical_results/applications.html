@@ -1,85 +1,266 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>SOPs on SG | Numerical Results | Applications</title>
-<link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
-<link rel="manifest" href="../../favicon/site.webmanifest">
-<meta name="msapplication-TileColor" content="#da532c">
-<meta name="theme-color" content="#ffffff">
+  <title>SOPs on SG | Numerical Results | Applications</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+  <link rel="manifest" href="../../favicon/site.webmanifest">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
 
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
-<!-- jQuery library -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <!-- jQuery library -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-<!-- Latest compiled JavaScript -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
-<meta charset="utf-8"> 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Latest compiled JavaScript -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link rel="stylesheet" href="../../css/global.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+  <link rel="stylesheet" href="../../css/global.css" />
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 
-<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
-<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
-<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+    integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+    crossorigin="anonymous"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+    integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+    crossorigin="anonymous"></script>
 
-<!-- jQuery CDN - Slim version (=without AJAX) -->
-<script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
-<!-- Popper.JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
-<!-- Bootstrap JS -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-<!-- jQuery Custom Scroller CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+  <!-- jQuery CDN - Slim version (=without AJAX) -->
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <!-- Popper.JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+    integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+    crossorigin="anonymous"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
+    integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
+    crossorigin="anonymous"></script>
+  <!-- jQuery Custom Scroller CDN -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
 
-<script src="../../js/global.js"></script>
+  <script src="../../js/global.js"></script>
 </head>
+
 <body>
-    
-    <div class="wrapper" id="main">
+
+  <div class="wrapper" id="main">
 
 
-        <!-- Page Content  -->
-        <div id="content">
-                 <div class="container-fluid" id="heading">
-                     
-                    <h1 id="page-header" class="text-center">
-                      Applications of Orthogonal Polynomials on the Sierpinksi Gasket
-                    </h1>  
-        </div>
+    <!-- Page Content  -->
+    <div id="content">
+      <div class="container-fluid" id="heading">
 
-        <div class="container">
-            <p>Overview:
-            Here is some math \(5^2 = 25\)
-            </p>
-        </div>
-
-        <div class="container">
-          <img class="img-fluid" src="../../images/SG.png" alt="SG">
-          <p class="text-center">Here is an image of SG</p>
-        </div>
-         
-
-
-        </div>
+        <h1 id="page-header" class="text-center">
+          Applications of Orthogonal Polynomials on the Sierpinksi Gasket
+        </h1>
       </div>
 
-  
+      <div class="container">
+        <h2>Questions</h2>
+        <ul>
+          <li>
+            <p>Can we use polynomials (orthogonal or otherwise) to accurately interpolate functions?</p>
+          </li>
+          <li>
+            <p>Can we obtain an analog of Gauss-Legendre quadrature on SG?</p>
+          </li>
+          <li>
+            <p>Can we develop an algorithm for polynomial quadrature on SG and determine error estimates for it?</p>
+          </li>
+        </ul>
+      </div>
 
-<script>
-$(document).ready(function (){ 
-    $("#sidenumerical").addClass("active");
-    $("#sideapp").addClass("active");
+      <div class="container">
+        <h2>Interpolation</h2>
+        <ul>
+          <li>
+            <p>Polynomials of degree <span class="math inline">\(n\)</span> can have more than <span
+                class="math inline">\(3n+3\)</span> zeros on SG.</p>
+          </li>
+          <li>
+            <p>We need to establish the invertibility of</p>
+            <p><span class="math display">\[M_n = \begin{bmatrix}
+                P_{1}(x_1) &amp; P_{1}(x_{2}) &amp; \dots &amp; P_{1}(x_{3n+3})\\
+                \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+                P_{3n+3}(x_{1}) &amp; P_{3n+3}(x_{2}) &amp; \dots &amp; P_{3n+3}(x_{3n+3})
+                \end{bmatrix}\]</span></p>
+          </li>
+        </ul>
+        <p>If we choose a rotationally symmetric set of points, the interpolation matrix <span
+            class="math inline">\(M_n\)</span> becomes circulant-block. This enables us to prove the invertibility of
+          <span class="math inline">\(M_2\)</span>.</p>
 
-});
-</script>
+
+      </div>
+
+      <div class="container text-center">
+        <img class="img-fluid imgModal" src="../../images/Samplings.png" alt="Vortex Sampling Method">
+        <p class="text-center">Vortex Sampling Method</p>
+      </div>
+
+      <div class="container text-center">
+        <table class="table">
+
+          <thead>
+            <tr class="header">
+              <th style="text-align: center;">\(n\)</th>
+              <th style="text-align: center;"><span class="math inline">\(|M_n|\)</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="odd">
+              <td style="text-align: center;">1</td>
+              <td style="text-align: center;">-1.744e-06</td>
+            </tr>
+            <tr class="even">
+              <td style="text-align: center;">2</td>
+              <td style="text-align: center;">1.066e-19</td>
+            </tr>
+            <tr class="odd">
+              <td style="text-align: center;">3</td>
+              <td style="text-align: center;">-4.200e-41</td>
+            </tr>
+            <tr class="even">
+              <td style="text-align: center;">4</td>
+              <td style="text-align: center;">-2.058e-69</td>
+            </tr>
+            <tr class="odd">
+              <td style="text-align: center;">5</td>
+              <td style="text-align: center;">6.788e-110</td>
+            </tr>
+            <tr class="even">
+              <td style="text-align: center;">6</td>
+              <td style="text-align: center;">-1.347e-163</td>
+            </tr>
+            <tr class="odd">
+              <td style="text-align: center;">7</td>
+              <td style="text-align: center;">5.044e-232</td>
+            </tr>
+            <tr class="even">
+              <p class="text-center">Determinants of <span class="math inline">\(M_n\)</span><span
+                  label="tab:dets"></span></p>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="container">
+        <ul>
+          <li>
+            <p>The interpolation matrix for the <span class="math inline">\(P_{jk}\)</span> polynomials on <span
+                class="math inline">\(V_1\)</span> points is invertible (by computation)</p>
+          </li>
+          <li>
+            <p>By choosing <span class="math inline">\(n+1\)</span> points on the left side of <span
+                class="math inline">\(V_n\)</span> along with their rotations, the interpolation matrix becomes
+              circulant-block. These matrices are computationally invertible up to at least <span
+                class="math inline">\(n = 50\)</span>.</p>
+          </li>
+          <li>
+            <p>The general case is unknown.</p>
+          </li>
+        </ul>
+        <p><strong class="font-weight-bold">Note:</strong> The determinants were computed with exact rational
+          artithmetic, so they are non-zero. The rapid decay in the determinants is
+          due to the fact that the monomial values decay as their degree increases. As a result, solving the
+          interpolation system
+          computationally is not useful even though it is possible.
+        </p>
+      </div>
+
+      <div class="container">
+        <h2>Quadrature</h2>
+        <ul>
+          <li>
+            <p>Gauss-Legendre quadrature on <span class="math inline">\(\mathbb{R}\)</span> requires the polynomial
+              division algorithm on <span class="math inline">\(\mathbb{R}\)</span>. However, we do not have this on SG.
+            </p>
+          </li>
+          <li>
+            <p>We have a pseudo-division algorthim on SG, but the quotient is a linear combination of powers of the
+              Green’s operator: <span class="math display">\[\mathcal{Q}_f = \frac{1}{b_m}
+                \sum\limits_{i = 0}^{n-m}c^{(i)}\mathcal{G}^{(n-m-i)}\]</span></p>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <p>We can try to use n-Harmonic spline quadrature, but this comes back to the interpolation problem since we
+              need to solve <span class="math display">\[\begin{bmatrix}
+                P_{1}(x_1) &amp; P_{1}(x_{2}) &amp; \dots &amp; P_{1}(x_{3n+3})\\
+                \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+                P_{3n+3}(x_{1}) &amp; P_{3n+3}(x_{2}) &amp; \dots &amp; P_{3n+3}(x_{3n+3})
+                \end{bmatrix}
+                \begin{bmatrix}
+                w_1\\
+                \vdots\\
+                w_{3n+3}
+                \end{bmatrix} =
+                \begin{bmatrix}
+                \int_{SG}P_{01}\\
+                \vdots\\
+                \int_{SG}P_{n3}
+                \end{bmatrix}\]</span></p>
+          </li>
+        </ul>
+      </div>
+      <div class="container">
+        <h2>N-Harmonic Extension: The Solution to Many Polynomial Problems on SG</h2>
+        <ul>
+          <li>
+            <p>Is there an algorithm to extend a function defined on <span class="math inline">\(3n+3\)</span> vertices
+              of <span class="math inline">\(V_n\)</span> n-Harmonically?</p>
+          </li>
+          <li>
+            <p>Given this algorithm, we have the following quadrature error estimate: <span
+                class="math display">\[\left|I_n^m(f) - \int_{SG}f\right|\leq
+                c_15^{-(n+1)(m-n)}\|\Delta^{(n+1)}f\|_\infty\]</span></p>
+          </li>
+        </ul>
+
+      </div>
+
+      <div class="container">
+        <h2>Outstanding Questions Regarding Polynomials on SG</h2>
+        <ol>
+          <li>
+            <p>Is <span class="math inline">\(\partial_nf_n \neq 0 \ \forall \ n\)</span>?</p>
+          </li>
+          <li>
+            <p>Is <span class="math inline">\(P_{j1} &gt; 0\)</span> except at <span class="math inline">\(q_0\)</span>?
+            </p>
+          </li>
+          <li>
+            <p>Interpolation problem: Does sampling an <span class="math inline">\(n\)</span> degree polynomial on any
+              <span class="math inline">\(3n + 3\)</span> points uniquely determine the polynomial?</p>
+          </li>
+        </ol>
+        <p>Questions 2 and 3 can be solved given an n-Harmonic Extension Algorithm.</p>
+      </div>
+
+
+    </div>
+  </div>
+
+
+
+  <script>
+    $(document).ready(function () {
+      $("#sidenumerical").addClass("active");
+      $("#sideapp").addClass("active");
+
+    });
+  </script>
 </body>
+
 </html>

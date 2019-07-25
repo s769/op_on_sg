@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>SOPs on SG | Numerical Results | Plots</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+  <link rel="manifest" href="../../favicon/site.webmanifest">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+  <!-- jQuery library -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+  <!-- Latest compiled JavaScript -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="../../css/global.css" />
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+    integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+    crossorigin="anonymous"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+    integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+    crossorigin="anonymous"></script>
+
+  <!-- jQuery CDN - Slim version (=without AJAX) -->
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <!-- Popper.JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+    integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+    crossorigin="anonymous"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
+    integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
+    crossorigin="anonymous"></script>
+  <!-- jQuery Custom Scroller CDN -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+
+
+  <script src="../../js/global.js"></script>
+  <style>
+    .gallery {
+      -webkit-column-count: 3;
+      -moz-column-count: 3;
+      column-count: 3;
+      -webkit-column-width: 33%;
+      -moz-column-width: 33%;
+      column-width: 33%;
+    }
+
+    .gallery .pics {
+      -webkit-transition: all 350ms ease;
+      transition: all 350ms ease;
+    }
+
+    .gallery .animation {
+      -webkit-transform: scale(1);
+      -ms-transform: scale(1);
+      transform: scale(1);
+    }
+
+    @media (max-width: 450px) {
+      .gallery {
+        -webkit-column-count: 1;
+        -moz-column-count: 1;
+        column-count: 1;
+        -webkit-column-width: 100%;
+        -moz-column-width: 100%;
+        column-width: 100%;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .btn.filter {
+        padding-left: 1.1rem;
+        padding-right: 1.1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="wrapper" id="main">
+
+
+    <!-- Page Content  -->
+    <div id="content">
+      <div class="container-fluid" id="heading">
+
+        <h1 id="page-header" class="text-center">
+          Plots of Sobolev Orthogonal Polynomials on the Sierpinksi Gasket
+        </h1>
+      </div>
+
+      <!-- Grid row -->
+      <div class="row">
+
+        <!-- Grid column -->
+        <div class="col-md-12 d-flex justify-content-center mb-5">
+
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-secondary active waves-effect filter" data-rel="all">
+              <input type="radio" name="options" id="option1" autocomplete="off" data-rel="all" checked> All
+            </label>
+            <label class="btn btn-secondary waves-effect filter" data-rel="1">
+              <input type="radio" name="options" id="option2" autocomplete="off" data-rel="1"> Antisymmetric
+            </label>
+            <label class="btn btn-secondary waves-effect filter" data-rel="2">
+              <input type="radio" name="options" id="option3" autocomplete="off" data-rel="2"> Symmetric
+            </label>
+          </div>
+
+        </div>
+        <!-- Grid column -->
+
+      </div>
+      <!-- Grid row -->
+
+      <!-- Grid row -->
+      <div class="gallery" id="gallery">
+
+
+
+      </div>
+      <!-- Grid row -->
+
+
+
+    </div>
+  </div>
+
+
+  <script>
+    $(document).ready(function () {
+      $("#sidenumerical").addClass("active");
+      $("#sideplot").addClass("active");
+      $(function () {
+        console.log('sus');
+        var selectedClass = "";
+        $(".filter").click(function () {
+          selectedClass = $(this).attr("data-rel");
+          $("#gallery").fadeTo(100, 0.1);
+          $("#gallery div").not("." + selectedClass).fadeOut().removeClass('animation');
+          setTimeout(function () {
+            $("." + selectedClass).fadeIn().addClass('animation');
+            $("#gallery").fadeTo(300, 1);
+          }, 300);
+        });
+      });
+      var num_anti = 23;
+      var num_sym = 19;
+      // var antisymm_plots = [];
+      // var symm_plots = [];
+      for (i = 0; i <= num_anti; i++) {
+        var anti_fn = '../../images/H1AntisymOPs0_23/SAntiSym' + i + '.png';
+        var anti_div = $('<div class="mb-3 pics animation all 1"></div>');
+        var anti_img = $('<img class="img-fluid imgModal">').attr({ src: anti_fn, alt: "Degree " + i + " Antisymmetric Sobolev Orthogonal Polynomial" });
+        $(anti_div).append(anti_img);
+
+        $("#gallery").append(anti_div);
+
+
+      }
+
+      for (i = 0; i <= num_sym; i++) {
+        var symm_fn = '../../images/H1SymmOPs0_19/Ss' + i + '.jpg';
+        var symm_div = $('<div class="mb-3 pics animation all 2"></div>');
+        var symm_img = $('<img class="img-fluid imgModal">').attr({ src: symm_fn, alt: "Degree " + i + " Symmetric Sobolev Orthogonal Polynomial" });
+        $(symm_div).append(symm_img);
+        $('#gallery').append(symm_div);
+      }
+
+      $('#gallery').on('click', 'img', function () {
+        var modal = document.getElementById("myModal");
+        var modalImg = document.getElementById("img01");
+        var captionText = document.getElementById("caption");
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+      });
+
+
+
+
+    });
+  </script>
+</body>
+
+</html>
