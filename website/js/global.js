@@ -55,9 +55,6 @@ $(document).ready(function () {
         '                <li id="siderec">' +
         '                    <a href="#resourceSubmenu" data-toggle="collapse" aria-expanded="false" >Resources</a>' +
         '                    <ul class="collapse list-unstyled" id="resourceSubmenu" data-parent="#sidebar">' +
-        '                        <li id="sidedata">' +
-        '                            <a href="/website/html/resources/data.html">Data</a>' +
-        '                        </li>' +
         '                        <li id="sidecode">' +
         '                            <a href="/website/html/resources/programs.html">Software and Programs</a>' +
         '                        </li>' +
