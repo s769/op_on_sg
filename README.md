@@ -1,6 +1,6 @@
 # Sobolev Orthogonal Polynomials on the Sierpinski Gasket
 
-This repository primarily contains python code used to construct, analyze, and visualize Sobolev Orthogonal Polynomials on the Sierpinski Gasket. This code is largely used in our SPUR project https://e.math.cornell.edu/sites/op_on_sg/html/.
+This repository primarily contains python code used to construct, analyze, and visualize Sobolev Orthogonal Polynomials on the Sierpinski Gasket. This code is largely used in our SPUR project https://e.math.cornell.edu/sites/op_on_sg/.
 
 ## Getting Started
 
