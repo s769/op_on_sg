@@ -202,7 +202,7 @@ def f_jk_addr_list(addr, j, k):
     """
     addr = np.flip(addr)
     addr = ''.join(str(int(x)) for x in addr)
-    return(f_jk(addr, j, k))
+    return f_jk(addr, j, k)
 
 
 def p_jk_addr_list(addr, j, k):
@@ -220,7 +220,7 @@ def p_jk_addr_list(addr, j, k):
     """
     addr = np.flip(addr)
     addr = ''.join(str(int(x)) for x in addr)
-    return(p_jk(addr, j, k))
+    return p_jk(addr, j, k)
 
 
 @mem

@@ -420,89 +420,102 @@ def max_h2_val_family(start0, end0, num0, start1, end1, num1, num_max, \
         print("Value with ranking", i)
         print(zs[temp_ind])
 
+    fig = plt.figure()
+    ax = plt.axes(projection='3d')
+    ax.scatter3D(xs, ys, zs)
+    plt.show()
 
-# def max_hn_val_family(n, range_list, num_points, k, level = 7):
-#     """
-#     Function that prints a list of supremum values for a certain family,
-#     given different coefficients.
 
-#     Args:
-#         n - The dimension of space H^{n} we're working with
-#         range_list - A 2*n ndarray, with the i-th column representing
-#             the lower and upper bound we search for the best value
-#         num_points - A n dim array, each entry represents the number of 
-#             points we would like to evaluate in a certain dimension
-#         k - The type of polynomial family (k=1,2,3)
-#         level - The level we would like to plot
 
-#     Returns:
-#         For each coefficient, prints out the address and value of 
-#             extremal points.
-#     """
+def max_h1_full_family(start1, end1, num1, start2, end2, num2, \
+    start3, end3, num3, num_max, k, level=7, verbose_flag=False):
+    # Generate values of the polynomial
+    T = generate_T(level, 2, frac=False)
+    P01_temp = T[0, :, 0]
+    P02_temp = T[1, :, 0]
+    P03_temp = T[2, :, 0]
+    P11_temp = T[0, :, 1]
+    P12_temp = T[1, :, 1]
+    P13_temp = T[2, :, 1]
+
+    # Generate space of coefficients we would like to grid search on
+    index_1 = np.linspace(start1, end1, num1)
+    index_2 = np.linspace(start2, end2, num2)
+    index_3 = np.linspace(start3, end3, num3)
+
+    # Storage of the values obtained at the best coefficients
+    xs = np.zeros((num1, num2, num3))
+    ys = np.zeros((num1, num2, num3))
+    zs = np.zeros((num1, num2, num3))
+    val_s = np.zeros((num1, num2, num3))
+    # pos_arr = np.zeros((num1, num2, num3))
+
+    # Main loop over all coefficients
+    for i in range(num1):
+        for j in range(num2):
+            for l in range(num3):
+                # Pick the coefficient value
+                t1 = index_1[i]
+                t2 = index_2[j]
+                t3 = index_3[l]
+
+                # Evaluate the polynomial
+                if (k == 1):
+                    poly_temp = P11_temp + t1 * P01_temp + t2 * P02_temp \
+                        + t3 * P03_temp
+                elif (k == 2):
+                    poly_temp = P12_temp + t1 * P01_temp + t2 * P02_temp \
+                        + t3 * P03_temp
+                else:
+                    poly_temp = P13_temp + t1 * P01_temp + t2 * P02_temp \
+                        + t3 * P03_temp
+                
+                # Find the max-norm of the polynomial
+                poly_temp = np.abs(poly_temp)
+                max_val = np.max(poly_temp)
+                max_pos = np.argmax(poly_temp)
+                max_add = address_from_index(level, max_pos+1)
+
+                # Store the max-norm and the address
+                xs[i, j, l] = t1
+                ys[i, j, l] = t2
+                zs[i, j, l] = t3
+                val_s[i, j, l] = max_val
+                # pos_arr[i, j] = max_pos
+
+                if verbose_flag:
+                    print()
+                    print()
+                    print('Coefficient of P01 is ', t1)
+                    print('Coefficient of P02 is ', t2)
+                    print('Coefficient of P03 is ', t3)
+                    print('Maximum value is', max_val)
+                    print('Maximum achieved at address ', max_add)
     
-#     T = generate_T(level, 3, frac=False)
-#     P01_temp = T[0, :, 0]
-#     P02_temp = T[1, :, 0]
-#     P03_temp = T[2, :, 0]
-#     P11_temp = T[0, :, 1]
-#     P12_temp = T[1, :, 1]
-#     P13_temp = T[2, :, 1]
-#     P21_temp = T[0, :, 2]
-#     P22_temp = T[1, :, 2]
-#     P23_temp = T[2, :, 2]
+    # print(val_s)
+    # Reshape the arrays to have the right shape
+    xs = xs.reshape(num1*num2*num3)
+    ys = ys.reshape(num1*num2*num3)
+    zs = zs.reshape(num1*num2*num3)
+    val_s = val_s.reshape(num1*num2*num3)
 
-#     index = np.linspace(start, end, num_points)
-
-#     for i in range(num_points):
-#         t = index[i]
-#         if (k == 1):
-#             poly_temp = t * P01_temp + P11_temp
-#         elif (k == 2):
-#             poly_temp = t * P02_temp + P12_temp
-#         else:
-#             poly_temp = t * P03_temp + P13_temp
-#         poly_temp = np.abs(poly_temp)
-#         max_val = np.max(poly_temp)
-#         max_pos = np.argmax(poly_temp)
-#         max_add = address_from_index(level, max_pos+1)
-
-#         print()
-#         print()
-#         print('Coefficient is ', t)
-#         print('Maximum value is', max_val)
-#         print('Maximum achieved at address ', max_add)
-
-
-#     num_points_total = np.prod(num_points)
-#     for i in range(num_points_total):
-#         # Fetch the index of the 
-
+    # Sort the array based on the minimum max_norm
+    index = np.argsort(val_s)
+    # print(index)
     
+    print()
+    print()
+    print()
 
-    
-#     for i in range(n):
-#         for j in range(num_points[i]):
-#             if (k == 1):
-#                 T[1,]
-
-
-
-#     for i in range(num_points):
+    # Find the best coefficients and return their values
+    for i in range(num_max):
+        temp_ind = index[i]
         
-#         t = index[i]
-#         if (k == 1):
-#             poly_temp = t * P01_temp + P11_temp
-#         elif (k == 2):
-#             poly_temp = t * P02_temp + P12_temp
-#         else:
-#             poly_temp = t * P03_temp + P13_temp
-#         poly_temp = np.abs(poly_temp)
-#         max_val = np.max(poly_temp)
-#         max_pos = np.argmax(poly_temp)
-#         max_add = address_from_index(level, max_pos+1)
-
-#         print()
-#         print()
-#         print('Coefficient is ', t)
-#         print('Maximum value is', max_val)
-#         print('Maximum achieved at address ', max_add)
+        print("Coefficient of P01 with ranking ", i)
+        print(xs[temp_ind])
+        print("Coefficient of P02 with ranking ", i)
+        print(ys[temp_ind])
+        print("Coefficient of P03 with ranking ", i)
+        print(zs[temp_ind])
+        print("Value with ranking", i)
+        print(val_s[temp_ind])
