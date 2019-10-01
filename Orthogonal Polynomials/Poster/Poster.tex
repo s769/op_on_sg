@@ -1,0 +1,294 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% a0poster Landscape Poster
+% LaTeX Template
+% Version 1.0 (22/06/13)
+%
+% The a0poster class was created by:
+% Gerlinde Kettl and Matthias Weiser (tex@kettl.de)
+% 
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[a0, landscape]{a0poster}
+
+
+\usepackage{multicol} % This is so we can have multiple columns of text side-by-side
+\columnsep=35pt % This is the amount of white space between the columns in the poster
+%\columnseprule=3pt % This is the thickness of the black line between the columns in the poster
+%\usepackage{graphicx}
+%\usepackage{pstricks,pst-grad}
+\usepackage[svgnames]{xcolor} 
+\usepackage{booktabs}
+\usepackage[absolute]{textpos}
+\renewcommand{\familydefault}{\sfdefault}
+
+\usepackage{setspace}
+\definecolor{CornellRed}{RGB}{179, 27, 27} % UBC Blue (primary)
+
+\usepackage[left=4cm,right=4cm,bottom=1cm,top=5cm]{geometry}
+\usepackage{titlesec}
+
+\usepackage{graphicx} % Required for including images
+\usepackage{pstricks,pst-grad}
+ % Location of the graphics files
+\usepackage{booktabs} % Top and bottom rules for table
+\usepackage[font=small,labelfont=bf]{caption} 
+\usepackage{amsfonts, amsmath, amsthm, amssymb} % For math fonts, symbols and environments
+\usepackage{wrapfig} % Allows wrapping text around tables and figures
+\usepackage{natbib}
+\newcommand{\inner}[2]{\left \langle #1, #2\right \rangle}
+\usepackage{tikz}
+
+
+\usepackage{xcolor}
+
+\begin{document}
+
+		
+\begin{minipage}[t]{\linewidth}
+    \begin{center}
+    \linespread{1.5}
+    \color{CornellRed} \Huge \textbf{Chebyshev and Sobolev Orthogonal Polynomials on the Sierpinski Gasket}
+        
+                \color{Black}
+                \LARGE  Max Jiang, Tian Lan, Shashank Sule, Sreeram Venkat, and Xiaoduo Wang
+                
+                 % Author(s)
+                
+                \LARGE  Advisors: Robert Strichartz and Kasso Okoudjou
+                
+                %\LARGE Cornell SPUR 2019: Analysis on Fractals% University/organization
+                
+                \end{center}
+                \end{minipage}
+
+{%
+\begin{textblock*}{12in}(4cm,15cm)%
+    \begin{minipage}{12in} 
+    \begin{center}
+            {\LARGE \textcolor{CornellRed}{\textbf{Introduction}}}
+        \end{center}
+        \vspace{1cm}
+        We define a Sobolev inner product on the Sierpinski Gasket and discuss the properties of the corresponding orthogonal polynomials. Furthermore, we define the Chebyshev polynomials on SG and find the first 6 Chebyshev polynomials.
+        \vspace{1cm}
+        \begin{center}
+            {\LARGE \textcolor{CornellRed}{\textbf{Preliminaries}}}
+        \end{center}
+        \vspace{1cm}
+        \begin{itemize}
+            \item Let $V_0 = \{q_0, q_1, q_2\} \in \mathbb{R}^2$ and $F_i(x) = \frac{1}{2}(x+q_i)$ for $i=0,1,2$.
+            $$SG = \overline{\bigcup_{m=1}^{\infty}\bigcup_{|w|=m}F_w(V_0)}$$
+            Here $|w| = m \iff w \in \{0,1,2\}^{m}$ and $F_w = F_{i_m}\circ \cdots \circ F_{i_1}$ where $w = i_m\ldots i_1$
+            \item We work on the finite graph approximation $V_m = \bigcup_{|w|=m}F_{w}(V_0)$
+            \begin{center}
+            \includegraphics[width=0.45\linewidth]{Final_presentation/images/V4.png}
+            \captionof{figure}{\textcolor{CornellRed}{$V_4$}}
+            \label{fig:V4}    
+            \end{center}
+            \item Let $f: SG \mapsto \mathbb{R}$. Then $f$ is a $j$-degree polynomial iff\\
+            $\Delta^{j+1}f = 0$ and $\Delta^{j}f\neq 0$, i.e $f$ is $j$-harmonic but not $j-1$-harmonic. 
+            \item The space of polynomials with degree $\le j$ is denoted $\mathcal{H}_{j}$
+            \item We use the following basis $\{P_{jk}\}$ for $\mathcal{H}_m$ where $0 \leq j \leq m$ and $k=1,2,3$:
+            $$\Delta^nP_{jk}(q_0) = \delta_{nj}\delta_{k1}$$
+            $$\Delta^n\partial_nP_{jk}(q_0) = \delta_{nj}\delta_{k2}$$
+            $$\Delta^n\partial_TP_{jk}(q_0) = \delta_{nj}\delta_{k3}$$
+            This is known as the \textbf{monomial basis}.
+            \item Let $f$ and $g$ be polynomials on $SG$. Then the \textbf{Generalized Sobolev Inner Product} is defined as follows: 
+            
+            $$\langle f,g\rangle_{H^m}= \sum\limits_{l = 0}^m \lambda_l\int_{SG}\Delta ^lf\Delta ^lg\,d\mu+\sum\limits_{l=0}^{m-1}\beta_l\,\varepsilon(\Delta ^l f,\Delta ^l g)+\nonumber$$
+            $$\sum\limits_{l=0}^{m-1}[\Delta  ^lf(q_0)\,\Delta  ^lf(q_1)\,\Delta  ^lf(q_2)] M_l [\Delta  ^lg(q_0)\,\Delta  ^lg(q_1)\,\Delta  ^lg(q_2)]^T$$
+            
+            Here $\lambda_l, \beta_l >0$ and $M$ is a $3\times3$ symmetric positive definite matrix. For most of our results we use the $H^1$ inner product where $m=1$ and $M = 0$. 
+            \item Fix $k=1,2$ or $3$ and let $M_{nk} = \{f \mid f = \sum_{j=0}^{n}a_jP_{jk}, a_n=1\}$. Then the $\textbf{nth Chebyshev polynomial}$, $T_{nk}$ is defined to be the polynomial $g$ such that 
+            $$ g := \min_{f \in M_{nk}}||f||_{\infty}$$
+        \end{itemize}
+  \end{minipage}%
+  \end{textblock*}%
+}
+
+{%
+\begin{textblock*}{25in}(35.48cm,14cm)%
+    \begin{minipage}{21in}
+      \begin{center}
+        {\LARGE \textcolor{CornellRed}{\textbf{Experimental Results and Applications}}}
+      \end{center}
+        \includegraphics[width=0.33\linewidth]{images/H1AntisymOPs0_23/SAntiSym12.png}
+        \includegraphics[width=0.33\linewidth]{images/H1SymmOPs0_19/Ss5.jpg}
+        \includegraphics[width=0.33\linewidth]{images/TotalZeroes.png}
+        \captionof{figure}{Degree 12 Anti-symmetric Sobolev polynomial, Degree 5 Symmetric Sobolev polynomial, Comparison between zeroes of Legendre and Sobolev polynomials on the edges}
+        \includegraphics[width=0.33\linewidth]{Final_presentation/images/chebyshev_p11_0_0833.png}
+        \includegraphics[width=0.33\linewidth]{Final_presentation/images/chebyshev_p12_0_0619339.png}
+        \includegraphics[width=0.33\linewidth]{Final_presentation/images/chebyshev_p13_0_02750235.png}
+         \captionof{figure}{Left to right: First Chebyshev polynomials corresponding to $k=1,2,3$}
+    \end{minipage}
+  \end{textblock*}%
+}
+
+{%
+\begin{textblock*}{25in}(35.48cm,48cm)%
+    \begin{minipage}{21in}
+      \begin{center}
+        {\LARGE \textcolor{CornellRed}{\textbf{Theoretical results}}}
+      \end{center}
+    \begin{multicols}{2}
+    \begin{center}
+        {\Large \textcolor{CornellRed}{\textbf{Recurrence relations}}}
+      \end{center}
+    \begin{theorem*}\label{th:gen_rec}
+    Suppose $k=2$ or $3$. For the Sobolev-$m$ inner product \eqref{eq:sobk}, we have the following generalized recursion relation for $n\ge -1$
+    $$S_{n+m+1} - \mathcal{F}_{n+m+1} - \sum\limits_{l = 0}^{2m-1}a_{n, l}S_{n+m-l} = 0$$
+    where
+    $$a_{n, l} = -\frac{\inner{\mathcal{F}_{n+m+1}}{S_{n+m-l}}_{H^m}}{\inner{S_{n+m-l}}{S_{n+m-l}}_{H^m}}, \quad \mathcal{F}_{n+m+1} = \mathcal{G}^mp_{n+1}$$
+      $$ \mathcal{G}(f)(x) := -\int_{SG}G(x,y)f(y)dy$$
+    and $S_j:=0$ if $j<0$.\end{theorem*}
+    \begin{theorem*}\label{Recurrence Relation with one assumption $(k=1)$}
+    Consider the $H^1$-inner product with $k=1$ and let $\{S_n\}$ and $\{p_n\}$ be the corresonding monic Sobolev orthogonal Legendre polynomials respectively. Additionally, let $S_{-1}:=0$, $f_{n+2}(x) = -\int_{SG}G(x,y)p_{n+1}(y)dy$ and suppose that $\partial_n f_{n+2}(q_0)\neq 0$. Let $n\geq-1$. The Sobolev orthogonal polynomials satisfy the following recurrence relation:
+         $$S_{n+3}-a_nS_{n+2} - b_nS_{n+1}-c_nS_n = f_{n+3}+d_nf_{n+2}$$
+        The coefficients are given as follows:
+        $$ a_n=-\frac{\inner{f_{n+3}+d_nf_{n+2}}{S_{n+2}}_H}{\|S_{n+2}\|_H^2}$$
+        $$b_n= -\frac{\inner{f_{n+3}+d_nf_{n+2}}{S_{n+1}}_H}{\|S_{n+1}\|_H^2}$$
+        $$ d_n=-\frac{\partial_n f_{n+3}(q_0)}{\partial_nf_{n+2}(q_0)},\:\:c_n=-d_n\frac{\|p_{n+1}\|_{L^2}^2}{\|S_n\|_H^2}\label{d_n and c_n in k=1 recurrence}$$
+    \end{theorem*}
+    \vfill\null
+    \columnbreak
+    \begin{center}
+        {\Large \textcolor{CornellRed}{\textbf{Convergence and Estimates}}}
+    \end{center}
+    \begin{corollary} 
+    Suppose $k=2$ or $3$, and there exists $M>0$ such that $\lambda_l\le M$ for any $l<m$. Then there exists positive constants $C_1=C_1(n,\mu)$, $C_2=C_2(n,\mu,M,m)$ such that for any $n\ge 0$, $$C_2 \ge\sum\limits_{l = 0}^{m-1} \lambda_l\int_{SG}(\Delta ^l S_n)^2\,d\mu\ge C_1$$ $$
+      C_2+\lambda_m\|p_{n-m}\|_{L^2}^2\ge \|S_n\|_{H^m}^2\ge C_1+
+      \lambda_m \|p_{n-m}\|_{L^2}^2$$
+      Consequently, for any $n\ge 2m+1$, we have$$\|S_n-\mathcal{F}_n\|_{L^2}\le
+      C(n,M,m,\mu)\lambda_m^{-1}$$and
+      $\lim\limits_{\lambda_m\rightarrow\infty}\|\Delta^i S_n-\mathcal{G}^{m-i}p_{n-m}\|_{L^\infty}\rightarrow 0$ for any $0\le i\le m$.
+    \end{corollary}
+    \begin{corollary}
+      Suppose $m=1$ and $k=2$ or $3$. Then for any $n\ge3$, $$\|S_n(\lambda)-f_n\|_{L^2}\le 2\lambda^{-1}\|G\|_{L^2}^3\|p_{n-1}\|_{L^2}$$ Moreover, $S_n(x;\lambda)$ converges to $f_n$ uniformly in $x$ as $\lambda\rightarrow\infty$. Consequently $\Delta S_n\rightarrow p_{n-1}$ uniformly as $\lambda\rightarrow\infty$. Also, 
+    \begin{align*}
+    \lambda(S_n(\lambda)-f_n)\rightarrow-\frac{\inner{f_n}{f_{n-1}}_{L^2}}{\|p_{n-2}\|_{L^2}^2}f_{n-1}-\frac{\|p_{n-1}\|_{L^2}^2}{\|p_{n-3}\|_{L^2}^2}f_{n-2}
+    \end{align*}
+    uniformly in $x$ as $\lambda\rightarrow\infty$.
+    \end{corollary}
+    \end{multicols}
+    \end{minipage}
+  \end{textblock*}%
+}
+
+% {%
+% \begin{textblock*}{10in}(90cm,15cm)%
+%     \begin{minipage}{11in} 
+%     \begin{center}
+%             {\LARGE \textcolor{CornellRed}{\textbf{Introduction}}}
+%         \end{center}
+%         \vspace{1cm}
+%         We define a Sobolev inner product on the Sierpinski Gasket and discuss the properties of the corresponding orthogonal polynomials. Furthermore, we define the Chebyshev polynomials on SG and find the first 6 Chebyshev polynomials.
+%         \vspace{1cm}
+%         \begin{center}
+%             {\LARGE \textcolor{CornellRed}{\textbf{Preliminaries}}}
+%         \end{center}
+%         \vspace{1cm}
+%         \begin{itemize}
+%             \item Let $V_0 = \{q_0, q_1, q_2\} \in \mathbb{R}^2$ and $F_i(x) = \frac{1}{2}(x+q_i)$ for $i=0,1,2$.
+%             $$SG = \overline{\bigcup_{m=1}^{\infty}\bigcup_{|w|=m}F_w(V_0)}$$
+%             Here $|w| = m \iff w \in \{0,1,2\}^{m}$ and $F_w = F_{i_m}\circ \cdots \circ F_{i_1}$ where $w = i_m\ldots i_1$
+%             \item We work on the finite graph approximation $V_m = \bigcup_{|w|=m}F_{w}(V_0)$
+%             \begin{center}
+%             \includegraphics[width=0.45\linewidth]{Final_presentation/images/V4.png}
+%             \captionof{figure}{\textcolor{CornellRed}{$V_4$}}
+%             \label{fig:V4}    
+%             \end{center}
+%             \item Let $f: SG \mapsto \mathbb{R}$. Then $f$ is a $j$-degree polynomial iff\\
+%             $\Delta^{j+1}f = 0$ and $\Delta^{j}f\neq 0$, i.e $f$ is $j$-harmonic but not $j-1$-harmonic. 
+%             \item The space of polynomials with degree $\le j$ is denoted $\mathcal{H}_{j}$
+%             \item We use the following basis $\{P_{jk}\}$ for $\mathcal{H}_m$ where $0 \leq j \leq m$ and $k=1,2,3$:
+%             $$\Delta^nP_{jk}(q_0) = \delta_{nj}\delta_{k1}$$
+%             $$\Delta^n\partial_nP_{jk}(q_0) = \delta_{nj}\delta_{k2}$$
+%             $$\Delta^n\partial_TP_{jk}(q_0) = \delta_{nj}\delta_{k3}$$
+%             This is known as the \textbf{monomial basis}.
+%             \item Let $f$ and $g$ be polynomials on $SG$. Then the \textbf{Generalized Sobolev Inner Product} is defined as follows: 
+            
+%             $$\langle f,g\rangle_{H^m}= \sum\limits_{l = 0}^m \lambda_l\int_{SG}\Delta ^lf\Delta ^lg\,d\mu+\sum\limits_{l=0}^{m-1}\beta_l\,\varepsilon(\Delta ^l f,\Delta ^l g)+\nonumber$$
+%             $$\sum\limits_{l=0}^{m-1}[\Delta  ^lf(q_0)\,\Delta  ^lf(q_1)\,\Delta  ^lf(q_2)] M_l [\Delta  ^lg(q_0)\,\Delta  ^lg(q_1)\,\Delta  ^lg(q_2)]^T$$
+            
+%             Here $\lambda_l, \beta_l >0$ and $M$ is a $3\times3$ symmetric positive definite matrix. For most of our results we use the $H^1$ inner product where $m=1$ and $M = 0$. 
+%             \item Fix $k=1,2$ or $3$ and let $M_{nk} = \{f \mid f = \sum_{j=0}^{n}a_jP_{jk}, a_n=1\}$. Then the $\textbf{nth Chebyshev polynomial}$, $T_{nk}$ is defined to be the polynomial $g$ such that 
+%             $$ g := \min_{f \in M_{nk}}||f||_{\infty}$$
+%         \end{itemize}
+%   \end{minipage}%
+%   \end{textblock*}%
+% }
+
+
+% {
+% \begin{textblock*}{16in}{24.32cm,14cm}
+%  \begin{minipage}{16in}
+%   \begin{center}
+%     {\LARGE \textcolor{CornellRed}{\textbf{Theoretical results}}}
+%   \end{center}
+% \begin{multicols}{2}
+% \begin{center}
+%     {\Large \textcolor{CornellRed}{\textbf{Recurrence relations}}}
+%   \end{center}
+% \begin{theorem*}\label{th:gen_rec}
+% Suppose $k=2$ or $3$. For the Sobolev-$m$ inner product \eqref{eq:sobk}, we have the following generalized recursion relation for $n\ge -1$
+% $$S_{n+m+1} - \mathcal{F}_{n+m+1} - \sum\limits_{l = 0}^{2m-1}a_{n, l}S_{n+m-l} = 0$$
+% where
+% $$a_{n, l} = -\frac{\inner{\mathcal{F}_{n+m+1}}{S_{n+m-l}}_{H^m}}{\inner{S_{n+m-l}}{S_{n+m-l}}_{H^m}}, \quad \mathcal{F}_{n+m+1} = \mathcal{G}^mp_{n+1}$$
+%   $$ \mathcal{G}(f)(x) := -\int_{SG}G(x,y)f(y)dy$$
+% and $S_j:=0$ if $j<0$.\end{theorem*}
+% \begin{theorem*}\label{Recurrence Relation with one assumption $(k=1)$}
+% Consider the $H^1$-inner product. Let $\{S_n\}$ be the monic Sobolev orthogonal polynomials and $\{p_n\}$ the monic Legendre polynomials generated from the $k = 1$ family of monomials. Let $S_{-1}:=0$, $f_{n+2}(x) = -\int_{SG}G(x,y)p_{n+1}(y)dy$ and suppose that $\partial_n f_{n+2}(q_0)\neq 0$, then we have the following statements hold: 
+
+% \begin{enumerate}
+%     \item Let $n\geq-1$. The Sobolev orthogonal polynomials satisfy the following recurrence relation:
+%      $$S_{n+3}-a_nS_{n+2} - b_nS_{n+1}-c_nS_n = f_{n+3}+d_nf_{n+2}$$
+%     The coefficients are given as follows:
+%     $$ a_n=-\frac{\inner{f_{n+3}+d_nf_{n+2}}{S_{n+2}}_H}{\|S_{n+2}\|_H^2},\:\:b_n= -\frac{\inner{f_{n+3}+d_nf_{n+2}}{S_{n+1}}_H}{\|S_{n+1}\|_H^2} \label{a_n and b_n in k=1 recurrence} $$
+%     $$ d_n=-\frac{\partial_n f_{n+3}(q_0)}{\partial_nf_{n+2}(q_0)},\:\:c_n=-d_n\frac{\|p_{n+1}\|_{L^2}^2}{\|S_n\|_H^2}\label{d_n and c_n in k=1 recurrence}$$
+%     \item If $n\ge1$, $a_n\rightarrow -d_n$, $|b_n|=O(\lambda^{-1})$, $|c_n|=\Theta(\lambda^{-1})$ with $\lambda c_n\rightarrow -d_n\frac{\|p_{n+1}\|_{L^2}^2}{\|p_{n-1}\|_{L^2}^2}$, if we fix $n$ and let $\lambda$ tend to $\infty$.
+% \end{enumerate}
+% \end{theorem*}
+% \vfill\null
+% \columnbreak
+% \begin{center}
+%     {\Large \textcolor{CornellRed}{\textbf{Convergence and Estimates}}}
+% \end{center}
+% \begin{corollary} \label{cor:k=2,3 bounds}Suppose $k=2$ or $3$, and there exists $M>0$ such that $\lambda_l\le M$ for any $l<m$. Then there exists positive constants $C_1=C_1(n,\mu)$, $C_2=C_2(n,\mu,M,m)$ such that for any $n\ge 0$, $$C_2 \ge\sum\limits_{l = 0}^{m-1} \lambda_l\int_{SG}(\Delta ^l S_n)^2\,d\mu\ge C_1$$ $$
+%   C_2+\lambda_m\|p_{n-m}\|_{L^2}^2\ge \|S_n\|_{H^m}^2\ge C_1+
+%   \lambda_m \|p_{n-m}\|_{L^2}^2$$
+%   Consequently, for any $n\ge 2m+1$, we have$$\|S_n-\mathcal{F}_n\|_{L^2}\le
+%   C(n,M,m,\mu)\lambda_m^{-1}$$and
+%   $\lim\limits_{\lambda_m\rightarrow\infty}\|\Delta^i S_n-\mathcal{G}^{m-i}p_{n-m}\|_{L^\infty}\rightarrow 0$ for any $0\le i\le m$.
+% \end{corollary}
+% \begin{corollary}
+% Suppose $m=1$ and $k=2$ or $3$. Then for $n \ge 1$, we have 
+% \begin{align*}
+%     \|\Delta S_n\|_{L^2}^2&\le \lambda^{-1}\|G\|_{L^2}^2\|p_{n-1}\|_{L^2}^2+\|p_{n-1}\|_{L^2}^2\\
+% \|S_n\|_{L^{\infty}}&\le C(1+\lambda^{-\frac12})\|p_{n-1}\|_{L^2}
+% \end{align*}
+% for some constant $C$.
+% \end{corollary}
+% \begin{corollary}
+%   Suppose $m=1$ and $k=2$ or $3$. Then for any $n\ge3$, $$\|S_n(\lambda)-f_n\|_{L^2}\le 2\lambda^{-1}\|G\|_{L^2}^3\|p_{n-1}\|_{L^2}$$ Moreover, $S_n(x;\lambda)$ converges to $f_n$ uniformly in $x$ as $\lambda\rightarrow\infty$. Consequently $\Delta S_n\rightarrow p_{n-1}$ uniformly as $\lambda\rightarrow\infty$. Also, 
+% \begin{align*}
+% \lambda(S_n(\lambda)-f_n)\rightarrow-\frac{\inner{f_n}{f_{n-1}}_{L^2}}{\|p_{n-2}\|_{L^2}^2}f_{n-1}-\frac{\|p_{n-1}\|_{L^2}^2}{\|p_{n-3}\|_{L^2}^2}f_{n-2}
+% \end{align*}
+% uniformly in $x$ as $\lambda\rightarrow\infty$.
+% \end{corollary}
+% \end{multicols}
+% \end{minipage}
+% \end{textblock*}
+% }
+
+   
+
+\end{document}

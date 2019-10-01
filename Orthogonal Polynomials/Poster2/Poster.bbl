@@ -1,0 +1,35 @@
+\begin{thebibliography}{1}
+
+\bibitem{D}
+Kyallee Dalrymple, Robert~S. Strichartz, and Jade~P. Vinson.
+\newblock Fractal differential equations on the sierpinski gasket.
+\newblock {\em Journal of Fourier Analysis and Applications}, 5:203--284, 1999.
+
+\bibitem{MX}
+Francisco Marcellan and Yuan Xu.
+\newblock On sobolev orthogonal polynomials.
+\newblock {\em Expositiones Mathematicae}, 33(3):308 -- 352, 2015.
+
+\bibitem{NSTY}
+Jonathan Needleman, Robert~S Strichartz, Alexander Teplyaev, and Po-Lam Yung.
+\newblock Calculus on the sierpinski gasket i: polynomials, exponentials and
+  power series.
+\newblock {\em Journal of Functional Analysis}, 215(2):290 -- 340, 2004.
+
+\bibitem{OST}
+Kasso~A. Okoudjou, Robert~S. Strichartz, and Elizabeth~K. Tuley.
+\newblock Orthogonal polynomials on the sierpinski gasket.
+\newblock {\em Constructive Approximation}, 37(3):311--340, Jun 2013.
+
+\bibitem{S}
+Robert~S. Strichartz.
+\newblock {\em Differential Equations on Fractals: A Tutorial}.
+\newblock Princeton University Press, 2006.
+
+\bibitem{SU}
+ROBERT~S. STRICHARTZ and MICHAEL USHER.
+\newblock Splines on fractals.
+\newblock {\em Mathematical Proceedings of the Cambridge Philosophical
+  Society}, 129(2):331–360, 2000.
+
+\end{thebibliography}

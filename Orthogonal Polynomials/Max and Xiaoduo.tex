@@ -1,0 +1,312 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb, graphicx, float, mathtools, epsfig, caption, subcaption, listings, color, booktabs, tcolorbox}
+\usepackage{amsmath,amscd, amsthm, mathrsfs, amssymb, esint}
+\usepackage[margin=1in]{geometry}
+\usepackage[showboxes,overlay]{textpos}
+\usepackage{mathtools}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\usepackage{xcolor}
+\usepackage{verbatim}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage{float}
+%\usepackage{times}
+\theoremstyle{plain}
+   %\newtheorem{theorem}{Theorem}
+\usepackage{biblatex}
+\addbibresource{ReferencesForPaper.bib}
+
+\theoremstyle{definition}
+    \newtheorem{proposition}{Proposition}
+   \newtheorem{axiom}{Axiom}
+   \newtheorem{result}{Result}
+   \newtheorem{lemma}{Lemma}
+   \newtheorem{corollary}{Corollary}
+   \newtheorem{conjecture}{Conjecture}
+   \newtheorem{problem}{Problem}
+   \newtheorem{claim}{Claim}
+   \newtheorem{definition}{Definition}
+   \newtheorem{technique}{Technique}
+   \newtheorem{remark}{Remark}
+\newtheorem{example}{Example}
+\newenvironment{solution}
+  {\begin{proof}[Solution]}
+  {\end{proof}}
+\definecolor{green}{RGB}{34, 139, 34}
+ 
+%\pagenumbering{gobble}
+ 
+\theoremstyle{remark}
+\newcommand*{\QEDB}{\hfill\ensuremath{\square}}
+%\newtheorem{remark}{Remark}[section]
+%\eqref\let\oldref
+%\renewcommand{\eqref}[1]{(\oldref{#1})}
+\renewcommand{\ss}{\mathbf{s}}
+\newcommand{\BB}{\mathcal{B}}
+\newcommand{\xx}{\mathbf{x}}
+\newcommand{\LL}{\mathcal{L}}
+\newcommand{\II}{\mathcal{I}}
+\newcommand{\MM}{\mathcal{M}}
+\newcommand{\yy}{\mathbf{y}}
+\newcommand{\zz}{\mathbf{z}}
+\newcommand{\vv}{\mathbf{v}}
+\newcommand{\ww}{\mathbf{w}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\FF}{\mathcal{F}}
+\newcommand{\PP}{\mathcal{P}}
+\newcommand{\QQQ}{\mathcal{Q}}
+\newcommand{\GG}{\mathcal{G}}
+\newcommand{\PO}{\mathbb{P}}
+\newcommand{\eps}{\epsilon}
+\newcommand{\HH}{\mathcal{H}}
+\newcommand{\quo}{\bign /}
+\newcommand{\EE}{\mathcal{E}}
+\newcommand{\HHH}{\overline{\mathcal{H}}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\NNN}{\mathcal{N}}
+\newcommand{\CM}{\mathbb{C}_{ {MA}}}
+\newcommand{\CMS}{\mathbb{C}_{ {MAS}}}
+\newcommand{\sym}{\mathfrak{S}}
+\newcommand{\om}{\omega}
+\newcommand{\mini}[2]{\text{min}\{#1,#2\}}
+\newcommand{\vectorthree}[3]{\begin{bmatrix} #1\\#2\\#3 \end{bmatrix}}
+\newcommand{\vectortwo}[2]{\begin{bmatrix} #1\\#2 \end{bmatrix}}
+\let\Vec\mathbf
+\newcommand{\Cross}[2]{\Vec{#1}\times\Vec{#2}}
+\newcommand{\DPartial}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\Metric}[2]{||#1 - #2||}
+\newcommand{\Proj}[2]{\text{Proj}_{\Vec{#1}}(\Vec{#2})}
+\newcommand{\Grad}[1]{\nabla #1}
+\newcommand{\DDot}[2]{\Vec{#1}\cdot\Vec{#2}}
+\newcommand{\Curl}[1]{\text{curl}\,\textbf{#1}}
+\newcommand{\Div}[1]{\text{Div}\,\textbf{#1}}
+\newcommand{\ps}{\text{ps}_q^1}
+\renewcommand{\mod}{\mathop{\rm \ mod}}
+\renewcommand{\Im}{{\rm Im}}
+\renewcommand{\bar}{\overline}
+%\renewcommand{\Re}{{\rm Re}}
+\newcommand{\im}{\text{im }}
+\renewcommand{\baselinestretch}{1.5}
+\usepackage[T1]{fontenc}
+\usepackage{bigfoot} % to allow verbatim in footnote
+\usepackage[numbered,framed]{matlab-prettifier}
+\tcbuselibrary{theorems}
+\newtcbtheorem{theorem}{Theorem}{colback=black!5,colframe=black!35!black,fonttitle=\bfseries}{th}
+
+
+
+
+\lstset{
+  style              = Matlab-editor,
+  basicstyle         = \mlttfamily,
+  escapechar         = ",
+  mlshowsectionrules = true,
+}
+
+
+\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
+\definecolor{mylilas}{RGB}{170,55,241}
+
+
+\newcommand\cl[1]{\overline{#1}}
+\newcommand\bd[1]{\partial #1}
+\newcommand{\ir}{\textrm{int}}
+ 
+\newcommand{\N}{\mathbb{N}} %the set of real numbers
+\newcommand{\Z}{\mathbb{Z}} %the set of integers
+\newcommand{\Q}{\mathbb{Q}} %the set of rational numbers 
+\newcommand{\R}{\mathbb{R}} %the set of real numbers
+\newcommand{\E}{\mathcal{E}}
+\newcommand\p[1]{P\left\{#1\right\}}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\newcommand\Cov{\textrm{Cov}}
+\newcommand\Var{\textrm{Var}}
+\newcommand\ip[2]{\langle#1, #2\rangle}
+
+\renewcommand{\vec}[1]{{\mathchoice
+                     {\mbox{\boldmath$\displaystyle{#1}$}}
+                     {\mbox{\boldmath$\textstyle{#1}$}}
+                     {\mbox{\boldmath$\scriptstyle{#1}$}}
+                     {\mbox{\boldmath$\scriptscriptstyle{#1}$}}}}
+\newcommand{\norm}[1]{\left\| {#1} \right\|_{\scriptscriptstyle 2}}
+\newcommand{\mat}[1]{\mathbf{{#1}}}
+\newcommand{\grad}{\nabla}
+\newcommand{\hessian}{\nabla^2}
+\newcommand{\inner}[2]{\left \langle #1, #2\right \rangle}
+\newcommand{\lap}{\Delta}
+\newcommand{\Sp}{\mathcal{S}}
+
+%\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\topmargin-.5in
+\textwidth6.6in
+\textheight9in
+\oddsidemargin0in
+\def\ds{\displaystyle}
+\def\d{\partial}
+\def\bH{{\bf H}}
+\def\bM{{\bf M}}
+\def\bB{{\bf B}}
+\def\bm{{\bf m}}
+\def\bS{{\bf S}}
+\def\ve{{\varepsilon}}
+%\def\fs{\scriptsize}
+\def\fs{\footnotesize}
+\def\reals{\mathbb{R}}
+\def\complex{\mathbb{C}}
+\def\scriptO{{{\it O}\kern -.42em {\it `}\kern + .20em}}
+\setlength\parindent{0pt}
+
+\begin{document}
+\title{Sobolev Orthogonal Polynomials on SG}%replace X with the appropriate due date
+\author{} %replace with your name 
+ 
+\maketitle
+We gather some notations here that are used in literature, and also in our definition.
+
+We define $\alpha_j, \beta_j, \gamma_j, \eta_j$ such that 
+$$\alpha_j = P_{j1}(q_1), \quad \beta_j = P_{j2}(q_1), \quad \gamma_j = P_{j3}(q_1), \quad \eta_j = \partial_nP_{j1}(q_1)$$
+
+We also have that $\partial_nP_{j2}(q_1) = -\alpha_j,\ j \geq 1$ and $\partial_nP_{j3}(q_1) = 3\eta_{j+1},\ j \geq 0$. 
+
+The recurrence relations for the constants are as follows \cite{NSTY}
+
+\begin{gather}
+    \begin{cases}
+    \alpha_j = \frac{4}{5^j - 5}\sum\limits_{l=1}^{j-1}\alpha_{(j-l)}\alpha_l, & j \geq 2\\
+    \beta_j = \frac{2}{15(5^j - 1)}\sum\limits_{l=0}^{j-1}(3\cdot 5^{j-l} - 5^{l+1} + 6)\alpha_{(j-l)}\beta_l, & j \geq 1\\
+    \gamma_j = 3\alpha_{j+1}, & j \geq 0\\
+    \eta_j = \frac{5^j +1}{2}\alpha_j + 2\sum\limits_{l=0}^{j-1}\eta_l\beta_{(j-l)}, & j \geq 1
+    \end{cases}
+\end{gather}
+with initial values $\alpha_0 = 1,\ \alpha_1 = \frac16, \ \beta_0 = -\frac12, \ \eta_0 = 0, \ \partial_nP_{02}(q_1) = -\frac12$.
+
+\newpage
+
+\textbf{List of Inner Products (Type 1):}
+
+\textbf{Easy version of Sobolov Inner Product with only 1st Laplacian:}
+
+\begin{gather}
+\inner{P_{ji}}{P_{ki'}}_S = \int_{SG} P_{ji}P_{ki'} d \mu  + \int_{SG} \lap P_{ji}\lap P_{ki'} d \mu\\
+= \int_{SG} P_{ji}P_{ki'} d \mu  + \int_{SG} P_{(j-1)i} P_{(k-1)i'} d \mu
+\end{gather}
+
+Computation of specific inner products ($\alpha_i'=\frac12$ if $i=0$; otherwise $\alpha_i'=\alpha_i$):
+
+\begin{gather}
+    % Begin 1st equation
+    \inner{P_{j1}}{P_{k1}}_S = 2\sum\limits_{l=j-m_{*}}^{j}\left(\alpha_{j-l}\eta_{k+l+1}-\alpha_{k+l+1}\eta_{j-l}\right) + 2\sum\limits_{l=j-m_{*}}^{j-1}\left(\alpha_{j-l-1}\eta_{k+l}-\alpha_{k+l}\eta_{j-l-1}\right) \\
+    % Begin 2nd equation
+    \inner{P_{j2}}{P_{k2}}_S = -2\sum\limits_{l=j-m_{*}}^{j}\left(\beta_{j-l}\alpha_{k+l+1}-\beta_{k+l+1}\alpha_{j-l}'\right) - 2\sum\limits_{l=j-m_{*}}^{j-1}\left(\beta_{j-l-1}\alpha_{k+l}-\beta_{k+l}\alpha_{j-l-1}'\right) \\
+    % Begin 3rd equation
+    \inner{P_{j3}}{P_{k3}}_S = 18\sum\limits_{l=j-m_{*}}^{j}\left(\alpha_{j-l+1}\eta_{k+l+2}-\alpha_{k+l+2}\eta_{j-l+1}\right)+18 \sum\limits_{l=j-m_{*}}^{j-1}\left(\alpha_{j-l}\eta_{k+l+1}-\alpha_{k+l+1}\eta_{j-l}\right) \\
+    % Begin 4th equation
+    \inner{P_{j1}}{P_{k2}}_S = -2\sum\limits_{l=j-m_{*}}^{j}\left(\alpha_{j-l}\alpha_{k+l+1}+\beta_{k+l+1}\eta_{j-l}\right)-2
+    -2\sum\limits_{l=j-m_{*}}^{j-1}\left(\alpha_{j-l-1}\alpha_{k+l}+\beta_{k+l}\eta_{j-l-1}\right)\\
+    \inner{P_{j1}}{P_{k3}}_{S}=\inner{P_{j2}}{P_{k3}}_{S}=0\\
+    \inner{P_{j3}^{(n)}}{P_{k3}^{(n)}}_{S}=\inner{P_{j3}^{(0)}}{P_{k3}^{(0)}}_{S}\\
+    \inner{P_{j3}^{(n)}}{P_{k3}^{(n')}}_{S}=-\frac{1}{2}\inner{P_{j3}^{(0)}}{P_{k3}^{(0)}}_{S} (n\neq n') \\
+    \inner{P_{0i}}{P_{ki'}}_{S}=\inner{P_{0i}}{P_{ki'}}, \inner{P_{ji}}{P_{0i'}}_{S}=\inner{P_{ji}}{P_{0i'}}
+\end{gather}
+Then for a fixed k = 1,2 or 3, we obtain $\{p_{j}\}_{j=0}^\infty$ and $\{Q_{j}\}_{j=0}^\infty$ by applying Gram-Schmidt process to $\{P_{jk}\}_{j=0}^\infty$, i.e. $p_j=P_{jk}-\sum\limits_{l=1}^{j-1}d_l^2\inner{P_{jk}}{p_l}p_l$, $d_j:=||p_j||^{-1}$ and $Q_j=d_jp_j$ for any $j \geq 0$. \\
+For any $0 < r <\infty$, there exists constants $c_1, c_r$ such that 
+\begin{gather}
+   ||p_j||= d_j^{-1}\leq||P_{jk}||\le c_1((j-1)!)^{-\frac{log5}{log2}}+c_rr^{-j}
+\end{gather}
+for all $j \geq 0$, which in particular implies that $\lim_{j\to \infty}||p_j||=0$.
+\newpage
+
+\textbf{Generalized version of Sobolov Inner Product with up to m-th Laplacian:}
+
+\begin{gather}
+    \inner{P_{ji}}{P_{ki'}}_S = \int_{SG} P_{ji}P_{ki'} d \mu  + \sum\limits_{r=1}^{m}\lambda_{r}\int_{SG} \lap^{r} P_{ji}\lap^{r} P_{ki'} d \mu\\
+    = \int_{SG} P_{ji}P_{ki'} d \mu  +\sum\limits_{r=1}^{m} \lambda_{r}\int_{SG} P_{(j-r)i} P_{(k-r)i'} d \mu 
+    = \sum\limits_{r=0}^{m} \lambda_{r}\int_{SG} P_{(j-r)i} P_{(k-r)i'} d \mu
+\end{gather}
+
+Computation of specific inner products:
+
+\begin{gather}
+    % Begin 1st equation
+    \inner{P_{j1}}{P_{k1}} = 2\sum\limits_{r=0}^{m}\lambda_{r}\sum\limits_{l=j-m_{*}}^{j}\left(\alpha_{j-l-r}\eta_{k+l+1-r}-\alpha_{k+l+1-r}\eta_{j-l-r}\right)\\
+    % Begin 2nd equation
+    \inner{P_{j2}}{P_{k2}}_S = -2\sum\limits_{r=0}^{m}\lambda_{r}\sum\limits_{l=j-m_{*}}^{j}\left(\beta_{j-l-r}\alpha_{k+l+1-r}-\beta_{k+l+1-r}\alpha_{j-l-r}'\right)\\
+    % Begin 3rd equation
+    \inner{P_{j3}}{P_{k3}}_S = 18\sum\limits_{r=0}^{m}\lambda_{r}\sum\limits_{l=j-m_{*}}^{j}\left(\alpha_{j-l+1-r}\eta_{k+l+2-r}-\alpha_{k+l+2-r}\eta_{j-l+1-r}\right)\\
+    % Begin 4th equation
+    \inner{P_{j1}}{P_{k2}}_S = -2\sum\limits_{r=0}^{m}\lambda_{r}\sum\limits_{l=j-m_{*}}^{j}\left(\alpha_{j-l-r}\alpha_{k+l+1-r}+\beta_{k+l+1-r}\eta_{j-l-r}\right)\\
+    \inner{P_{j1}}{P_{k3}}_{S}=\inner{P_{j2}}{P_{k3}}_{S}=0\\
+    \inner{P_{j3}^{(n)}}{P_{k3}^{(n)}}_{S}=\inner{P_{j3}^{(0)}}{P_{k3}^{(0)}}_{S}\\
+    \inner{P_{j3}^{(n)}}{P_{k3}^{(n')}}_{S}=-\frac{1}{2}\inner{P_{j3}^{(0)}}{P_{k3}^{(0)}}_{S}\\
+    \inner{P_{0i}}{P_{ki'}}_{S}=\inner{P_{0i}}{P_{ki'}}, \inner{P_{ji}}{P_{0i'}}_{S}=\inner{P_{ji}}{P_{0i'}}
+\end{gather}
+
+\textbf{Remark:}
+$j\geq m$, $k\geq m$, or $m=\min\{j, k\}$ because $\lap^{r}P_{ji}=0$ if $r>j$.
+
+\newpage
+
+\textbf{List of Inner Products (Type 2):} 
+\begin{gather}
+\inner{P_{ji}}{P_{ki'}}_H = \int_{SG} P_{ji}P_{ki'} d \mu  + \E(P_{ji}, P_{ki'})\\
+= \int_{SG} P_{ji}P_{ki'} d\mu - \int_{SG} (\lap P_{ji}) P_{ki'} d\mu + \sum_{n = 0}^2 P_{ki'}(q_n)\partial_nP_{ji}(q_n)\\
+= \int_{SG} P_{ji}P_{ki'} d\mu - \int_{SG} P_{(j-1),i} P_{ki'} d\mu + \sum_{n = 0}^2 P_{ki'}(q_n)\partial_nP_{ji}(q_n)\\
+= \inner{P_{ji}}{P_{ki'}} - \inner{P_{(j-1),i}}{P_{ki'}} + \sum_{n = 0}^2 P_{ki'}(q_n)\partial_nP_{ji}(q_n)
+\end{gather}
+
+Note that the sum is given by the following for the monomial basis:
+
+\begin{gather*}
+    \sum_{n = 0}^2 P_{k1}(q_n)\partial_nP_{j1}(q_n) = 2\alpha_k\eta_j\\
+    \sum_{n = 0}^2 P_{k2}(q_n)\partial_nP_{j2}(q_n) = -2\beta_k\alpha_j\\
+    \sum_{n = 0}^2 P_{k3}(q_n)\partial_nP_{j3}(q_n) = 6\gamma_k\eta_k\\
+    \sum_{n = 0}^2 P_{k2}(q_n)\partial_nP_{j1}(q_n) = 2\beta_k\eta_j\\
+    \sum_{n = 0}^2 P_{k3}(q_n)\partial_nP_{j1}(q_n) = 0\\
+    \sum_{n = 0}^2 P_{k3}(q_n)\partial_nP_{j2}(q_n) = 0\\
+\end{gather*}
+
+using symmetry arguments and observing that the monomials vanish at $q_0$.
+
+
+The inner products between the monomials are then given by
+
+\begin{align}
+    \begin{cases}
+    \inner{P_{j1}}{P_{k1}}_H =  &2\alpha_k\eta_j + 2\sum\limits_{l=j-m_*}^j \alpha_{(j-l)}\eta_{(k+l+1)} - \alpha_{(k+l+1)}\eta_{(j-l)} \\[20pt]&- 2\sum\limits_{l=j-m_*-1}^{j-1} \alpha_{(j-l-1)}\eta_{(k+l+1)} - \alpha_{(k+l+1)}\eta_{(j-l-1)} \\[20pt]
+    \inner{P_{j2}}{P_{k2}}_H = &+ 2\beta_k\alpha_j -2\sum\limits_{l=j-m_*}^j \beta_{(j-l)}\alpha_{(k+l+1)} - \beta_{(k+l+1)}\alpha_{(j-l)} \\[20pt]&- 2\sum\limits_{l=j-m_*-1}^{j-1} \beta_{(j-l-1)}\alpha_{(k+l+1)} - \beta_{(k+l+1)}\alpha_{(j-l-1)} \\[20pt]
+    \inner{P_{j3}}{P_{k3}}_H =  &6\gamma_k\eta_k + 18\sum\limits_{l=j-m_*}^j \alpha_{(j-l+1)}\eta_{(k+l+2)} - \alpha_{(k+l+2)}\eta_{(j-l+1)} \\[20pt]&- 18\sum\limits_{l=j-m_*-1}^{j-1} \alpha_{(j-l)}\eta_{(k+l+2)} - \alpha_{(k+l+2)}\eta_{(j-l)} \\[20pt]
+    \inner{P_{j1}}{P_{k2}}_H = &2\beta_k\eta_k -2\sum\limits_{l=0}^j \alpha_{(j-l)}\alpha_{(k+l+1)} + \beta_{(k+l+1)}\eta_{(j-l)} \\[20pt]&+2 \sum\limits_{l=0}^{j-1} \alpha_{(j-l-1)}\alpha_{(k+l+1)} + \beta_{(k+l+1)}\eta_{(j-l-1)} \\[20pt]
+    \inner{P_{j1}}{P_{k3}}_H = 0\\
+    \inner{P_{j2}}{P_{k3}}_H = 0
+    \end{cases}
+\end{align}
+(Note that if $j = 0$, the second summation is to be taken as 0).
+
+where $m_* = \min(j,k)$ and $\alpha_j, \beta_j, \gamma_j, \eta_j$ are such that 
+$$\alpha_j = P_{j1}(q_1), \quad \beta_j = P_{j2}(q_1), \quad \gamma_j = P_{j3}(q1), \quad \eta_j = \partial_nP_{j1}(q_1)$$
+
+We also have that $\partial_nP_{j2}(q_1) = -\alpha_j,\ j \geq 0$ and $\partial_nP_{j3}(q_1) = 3\eta_{j+1},\ j \geq 1$. The recurrence relations for the constants are as follows \cite{NSTY}
+
+\begin{gather}
+    \begin{cases}
+    \alpha_j = \frac{4}{5^j - 5}\sum\limits_{l=1}^{j-1}\alpha_{(j-l)}\alpha_l, & j \geq 2\\
+    \beta_j = \frac{2}{15(5^j - 1)}\sum\limits_{l=0}^{j-1}(3\cdot 5^{j-l} - 5^{l+1} + 6)\alpha_{(j-l)}\beta_l, & j \geq 1\\
+    \gamma_j = 3\alpha_{j+1}, & j \geq 1\\
+    \eta_j = \frac{5^j +1}{2}\alpha_j + 2\sum\limits_{l=0}^{j-1}\eta_l\beta_{(j-1)}, & j \geq 1
+    \end{cases}
+\end{gather}
+with initial values $\alpha_0 = 1,\ \alpha_1 = \frac16, \ \beta_0 = -\frac12, \ \eta_0 = 0, \ \partial_nP_{02}(q_1) = \frac12$.
+\end{document}
