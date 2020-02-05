@@ -41,9 +41,9 @@ def make_vortex(max_level):
         addr2.append(ad2) 
     return addr0 + addr1 + addr2
 
-def quad_mat(j):
+def vandermonde(j):
     '''
-        This function creates the interpolation matrix used for determining
+        This function creates the interpolation "Vandermonde" matrix used for determining
         quadrature weights using up to j-harmonic splines.
 
         Args:
@@ -92,11 +92,13 @@ def get_weights(j):
         Args:
             j: maximum degree of polynomial used for quadrature
 
+
         Returns:
             np.array of quadrature weights for the basis {P_01, P_02, P_03, ..., P_j2, P_j3}
+            
 
     '''
-    return np.linalg.solve(quad_mat(j), ints_vec(j))
+    return np.linalg.solve(vandermonde(j), ints_vec(j))
 
 #print(np.linalg.inv(quad_mat(5)))
 #print(make_vortex(3))
@@ -109,7 +111,7 @@ def quad_int(func, j):
 
         Args:
             func: function whose input is the address of a point on SG 
-            (according to the convention in monomials.py)
+            (according to the convention in monomials.py) 
             j: maximum degree of polynomial used for quadrature
 
         Returns:
@@ -190,4 +192,8 @@ def block_to_regular(mat):
             res[i, j] = mat[i, j]
     return res
 
+# myfunc = lambda addr: p_jk(addr, 4,2)
 
+# print(quad_int(myfunc, 3))
+# print(quad_int(myfunc, 4))
+# print(quad_int(myfunc, 5))
