@@ -97,6 +97,7 @@ from ops_main import generate_op_GS
 #         counter = counter + 1
 
 # print((counter/999))
+<<<<<<< HEAD
 
 
 
@@ -107,3 +108,10 @@ scipy.io.savemat('../data/sob2_deg5.mat', dict(coefs=sob2_deg5))
 scipy.io.savemat('../data/sob3_deg5.mat', dict(coefs=sob3_deg5))
 np.savez('../data/sob2_deg5', coefs=sob2_deg5)
 np.savez('../data/sob3_deg5', coefs=sob3_deg5)
+=======
+a = 1 
+for i in range(2,31):
+    a = ((i+1)/(i-1))*a
+    print(a)
+
+>>>>>>> fdd15e97890ecfd641d7033370fee2b01234c077

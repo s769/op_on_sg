@@ -1,6 +1,6 @@
 function SGplotsOverview(T)
 
-Num=19;
+Num=3;
 
 %This reads in the values of the polynomials Pj for j=0,...,19
 %T is a large matrix with the values of the polynomials up to level m=7
@@ -10,8 +10,8 @@ Num=19;
 
 %To plot the antisymmetric OP, do the following:
 %Num is the number of OP plotted
-%orthoplotspk(T,Num);
-%figure
+orthoplotspk(T,Num);
+
 
 % %To plot the symmetric OP, do the following:
 % %Num is the number of OP plotted
@@ -46,7 +46,7 @@ Num=19;
 
 %Here I call interlacing function 
 
-for i = 1:Num 
-   
-    interlacing(i,7,T)
-end
+% for i = 1:Num 
+%    
+%     interlacing(i,7,T)
+% end
