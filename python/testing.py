@@ -100,10 +100,25 @@ from ops_main import generate_op_GS
 
 
 
-sob4_deg20 = generate_op_GS(20,3,False,np.array([1,1,1,1]),False)
-sob5_deg20 = generate_op_GS(20,3,False,np.array([1,1,1,1,1]),False)
+# sob4_deg20 = generate_op_GS(20,3,False,np.array([1,1,1,1]),False)
+# sob5_deg20 = generate_op_GS(20,3,False,np.array([1,1,1,1,1]),False)
 
-scipy.io.savemat('../data/sob4_deg20.mat', dict(coefs=sob4_deg20))
-scipy.io.savemat('../data/sob5_deg20.mat', dict(coefs=sob5_deg20))
-np.savez('../data/sob4_deg20', coefs=sob4_deg20)
-np.savez('../data/sob5_deg20', coefs=sob5_deg20)
+# scipy.io.savemat('../data/sob4_deg20.mat', dict(coefs=sob4_deg20))
+# scipy.io.savemat('../data/sob5_deg20.mat', dict(coefs=sob5_deg20))
+# np.savez('../data/sob4_deg20', coefs=sob4_deg20)
+# np.savez('../data/sob5_deg20', coefs=sob5_deg20)
+
+sob_lambda10 = generate_op_GS(20,3,False,np.array([10]),False)
+sob_lambda100 = generate_op_GS(20,3,False,np.array([100]),False)
+sob_lambda1000 = generate_op_GS(20,3,False,np.array([1000]),False)
+sob_lambda10000 = generate_op_GS(20,3,False,np.array([10000]),False)
+
+scipy.io.savemat('../data/sob_lambda10.mat', dict(coefs=sob_lambda10))
+scipy.io.savemat('../data/sob_lambda100.mat', dict(coefs=sob_lambda100))
+scipy.io.savemat('../data/sob_lambda1000.mat', dict(coefs=sob_lambda1000))
+scipy.io.savemat('../data/sob_lambda10000.mat', dict(coefs=sob_lambda10000))
+
+np.savez('../data/sob_lambda10', coefs=sob_lambda10)
+np.savez('../data/sob_lambda100', coefs=sob_lambda100)
+np.savez('../data/sob_lambda1000', coefs=sob_lambda1000)
+np.savez('../data/sob_lambda10000', coefs=sob_lambda10000)
