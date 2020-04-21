@@ -97,21 +97,13 @@ from ops_main import generate_op_GS
 #         counter = counter + 1
 
 # print((counter/999))
-<<<<<<< HEAD
 
 
 
-sob2_deg5 = generate_op_GS(5,3,False,np.array([1,1]),False)
-sob3_deg5 = generate_op_GS(5,3,False,np.array([1,1,1]),False)
+sob4_deg20 = generate_op_GS(20,3,False,np.array([1,1,1,1]),False)
+sob5_deg20 = generate_op_GS(20,3,False,np.array([1,1,1,1,1]),False)
 
-scipy.io.savemat('../data/sob2_deg5.mat', dict(coefs=sob2_deg5))
-scipy.io.savemat('../data/sob3_deg5.mat', dict(coefs=sob3_deg5))
-np.savez('../data/sob2_deg5', coefs=sob2_deg5)
-np.savez('../data/sob3_deg5', coefs=sob3_deg5)
-=======
-a = 1 
-for i in range(2,31):
-    a = ((i+1)/(i-1))*a
-    print(a)
-
->>>>>>> fdd15e97890ecfd641d7033370fee2b01234c077
+scipy.io.savemat('../data/sob4_deg20.mat', dict(coefs=sob4_deg20))
+scipy.io.savemat('../data/sob5_deg20.mat', dict(coefs=sob5_deg20))
+np.savez('../data/sob4_deg20', coefs=sob4_deg20)
+np.savez('../data/sob5_deg20', coefs=sob5_deg20)
