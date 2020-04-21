@@ -8,6 +8,7 @@ import scipy.io
 from plotting import plot_monomial, plot_op
 from util import rotate_address, alternate_address
 from symmetric import generate_symm_ops
+from ops_main import generate_op_GS
 # j = 50
 # ar, br, pr, qr = big_recursion(j)
 # a = np.array([float(x) for x in ar])
@@ -59,40 +60,50 @@ from symmetric import generate_symm_ops
 #plot_op(3, 3, T=('../data/Tsymm20.npz', 'ST'), coefs=('../data/symops20.npz', 'ops'), symm=True)
 
 #plot_monomial(3, 3, T=('../data/Tsymm20.npz', 'ST'), symm=True)
-def converttostr(arr):
-    string = ""
-    for j in range(len(arr)):
-        string = string + str(arr[j])
-    return string 
+# def converttostr(arr):
+#     string = ""
+#     for j in range(len(arr)):
+#         string = string + str(arr[j])
+#     return string 
 
-def makerandompoints(level, degree):
+# def makerandompoints(level, degree):
     
-    addr = [""]
-    for i in range(3*(degree+1)):
-        while True:
-            flag = False
-            address = np.random.randint(3,size=level+1)
-            altaddress = alternate_address(level,address)
-            for k in range(len(addr)):
-                if converttostr(address) == addr[k] or converttostr(altaddress) == addr[k]:
-                    flag = True
-            if flag == False:
-                break
-        addr.append(converttostr(address))
-    addr = addr[1:len(addr)]
-    return addr
+#     addr = [""]
+#     for i in range(3*(degree+1)):
+#         while True:
+#             flag = False
+#             address = np.random.randint(3,size=level+1)
+#             altaddress = alternate_address(level,address)
+#             for k in range(len(addr)):
+#                 if converttostr(address) == addr[k] or converttostr(altaddress) == addr[k]:
+#                     flag = True
+#             if flag == False:
+#                 break
+#         addr.append(converttostr(address))
+#     addr = addr[1:len(addr)]
+#     return addr
 
-def makerandommatrix(level, degree):
-    IMatrix = sp.zeros(3*(degree + 1))
-    addresses = makerandompoints(level, degree)
-    for i in range(3*degree + 3):
-        for j in range(3*degree + 3):
-            IMatrix[i,j] = p_jk(addresses[i], j//3 , (j%3)+1)
-    return IMatrix.det()
+# def makerandommatrix(level, degree):
+#     IMatrix = sp.zeros(3*(degree + 1))
+#     addresses = makerandompoints(level, degree)
+#     for i in range(3*degree + 3):
+#         for j in range(3*degree + 3):
+#             IMatrix[i,j] = p_jk(addresses[i], j//3 , (j%3)+1)
+#     return IMatrix.det()
 
-counter = 0 
-for i in range(999):
-    if makerandommatrix(2,2) == 0:
-        counter = counter + 1
+# counter = 0 
+# for i in range(999):
+#     if makerandommatrix(2,2) == 0:
+#         counter = counter + 1
 
-print((counter/999))
+# print((counter/999))
+
+
+
+sob2_deg5 = generate_op_GS(5,3,False,np.array([1,1]),False)
+sob3_deg5 = generate_op_GS(5,3,False,np.array([1,1,1]),False)
+
+scipy.io.savemat('../data/sob2_deg5.mat', dict(coefs=sob2_deg5))
+scipy.io.savemat('../data/sob3_deg5.mat', dict(coefs=sob3_deg5))
+np.savez('../data/sob2_deg5', coefs=sob2_deg5)
+np.savez('../data/sob3_deg5', coefs=sob3_deg5)
