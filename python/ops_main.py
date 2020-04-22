@@ -15,7 +15,7 @@ This is the main file used for computing the orthogonal polynomial coefficients.
 '''
 
 
-def generate_op_GS(n, k, normalized=True, lam=np.array([1]), frac=True):
+def generate_op_GS(n, k, normalized=False, lam=np.array([1]), frac=True):
     '''
     Generates orthogonal polynomials with respect to a generalized Sobolev 
         inner product. The Gram-Schmidt algorithm is implemented here.
@@ -84,7 +84,7 @@ def generate_op_GS(n, k, normalized=True, lam=np.array([1]), frac=True):
 
 
 
-def leg_ops_recursion(j, k, normalized=True, frac=True):
+def leg_ops_recursion(j, k, normalized=False, frac=True, return_f=False):
     '''
         This function uses the three term recursion from the Kasso Tuley paper to generate the first j
         Legendre orthogonal polynomials.
@@ -97,6 +97,7 @@ def leg_ops_recursion(j, k, normalized=True, frac=True):
                 should be normalized or monic.
             frac: Boolean representing whether the coefficients should remain as fractions or should be
                 converted to floating point numbers at the end of all calculations
+            return_f: Boolean representing whether the f polynomials should also be returned
 
         Returns:
             np.array of coefficients of the Legendre orthogonal polynomials with 
@@ -104,14 +105,17 @@ def leg_ops_recursion(j, k, normalized=True, frac=True):
                 this array is a polynomial, and there are j+1 rows and j+1 
                 columns. If normalized is True, the polynomials will be normalized. 
                 Otherwise, the polynomials will be monic. If normalized is True, frac must be False
-                to obtain normalized coefficients.
+                to obtain normalized coefficients. If return_f is True, a tuple containing the Legendre 
+                coefficients and the f polynomial coefficients is returned.
     '''
 
     if k == 1:
-        print('This method is currently only available for k = 2 or 3.')
-        return
-    # this is so the indices match
+        print('This method is currently only proven for k = 2 or 3.')
         
+    # this is so the indices match
+
+    if return_f: f_mat = np.empty((j+1, j+1), dtype=object)
+
     o_basis_mat = np.empty((j+1, j+1), dtype=object)
     print('Using Gram-Schmidt to get the initial Legendre polynomials for recursion')
     with HiddenPrints():
@@ -120,7 +124,12 @@ def leg_ops_recursion(j, k, normalized=True, frac=True):
     first_mat = np.pad(first_mat, ((0,0), (0, j-1)),'constant', constant_values=(const,))
     o_basis_mat[:2] = first_mat
 
-    func_array = gamma_array if k == 3 else beta_array
+
+
+    if k == 3: func_array = gamma_array
+    if k == 2: func_array = beta_array
+    if k == 1: func_array = alpha_array
+
     print('Generating values for f_n')
     func_arr = func_array(j+2)
     print('Building Gram Matrix for inner product caluclation.')
@@ -129,10 +138,18 @@ def leg_ops_recursion(j, k, normalized=True, frac=True):
 
     print('Using recursion to generate the rest of the Legendre Poynomials')
 
+    if return_f:
+        f_mat[0] = zeros_gm(1,f_mat.shape[1])
+        func_vec = func_arr[1:2]
+        omega_vec = o_basis_mat[0, :1]
+        zeta_ind = gm.mpq(-1,func_arr[0])*func_vec.dot(omega_vec)
+        f_ind = np.insert(omega_vec, 0, zeta_ind)
+        f_mat[1] = np.pad(f_ind, (0, j-1), 'constant', constant_values=(const,))
+
     for ind in tqdm.tqdm(range(1,j), file=sys.stdout):
         func_vec = func_arr[1:ind+2]
         omega_vec = o_basis_mat[ind, :ind+1]
-        zeta_ind = -1/func_arr[0]*func_vec.dot(omega_vec)
+        zeta_ind = gm.mpq(-1,func_arr[0])*func_vec.dot(omega_vec)
         f_ind = np.insert(omega_vec, 0, zeta_ind)
         d_ind2 = gm.mpq(1, Polynomial.fast_inner(o_basis_mat[ind,:ind+1], o_basis_mat[ind,:ind+1], GM[:ind+1, :ind+1]))
         d_indm2 = gm.mpq(1, Polynomial.fast_inner(o_basis_mat[ind-1,:ind], o_basis_mat[ind-1,:ind], GM[:ind, :ind]))
@@ -142,7 +159,8 @@ def leg_ops_recursion(j, k, normalized=True, frac=True):
         new_vec = f_ind - b_ind*o_basis_mat[ind, :ind+2] - c_ind*o_basis_mat[ind-1, :ind+2]
 
         o_basis_mat[ind+1] = np.pad(new_vec, (0, j-ind-1), 'constant', constant_values=(const,))
-    
+        if return_f:
+            f_mat[ind+1] = np.pad(f_ind, (0, j-ind-1), 'constant', constant_values=(const,))
     
 
     if frac and normalized:
@@ -156,14 +174,14 @@ def leg_ops_recursion(j, k, normalized=True, frac=True):
                 norm = Polynomial.fast_inner(o_basis_mat[i], o_basis_mat[i],
                                             GM)
                 o_basis_arr[i] = o_basis_mat[i]/gm.sqrt(norm)
-            return o_basis_arr
-        return np.array(o_basis_mat, dtype=np.float64)
+            return (o_basis_arr, np.array(f_mat, dtype=np.float64)) if return_f else o_basis_arr 
+        return (np.array(o_basis_mat, dtype=np.float64), np.array(f_mat, dtype=np.float64)) if return_f else np.array(o_basis_mat, dtype=np.float64)
 
 
-    return o_basis_mat
+    return (o_basis_mat, f_mat) if return_f else o_basis_mat
 
 
-def sob_ops_recursion(j, k, normalized=True, frac=True, leg_omegas=None):
+def sob_ops_recursion(j, k, normalized=False, frac=True, leg_omegas=None):
     '''
         This function uses the three term recursion we developed to generate the first j
         Sobolev orthogonal polynomials.
@@ -188,8 +206,8 @@ def sob_ops_recursion(j, k, normalized=True, frac=True, leg_omegas=None):
                 to obtain normalized coefficients.
     '''
     if k == 1:
-        print('This method is currently only available for k = 2 or 3.')
-        return
+        print('This method is currently only proven for k = 2 or 3.')
+
     # this is so the indices match    
     o_basis_mat = np.empty((j+1, j+1), dtype=object)
     print('Using Gram-Schmidt to generate initial Sobolev Polynomials')
@@ -200,7 +218,9 @@ def sob_ops_recursion(j, k, normalized=True, frac=True, leg_omegas=None):
     o_basis_mat[:2] = first_mat
 
     
-    func_array = gamma_array if k == 3 else beta_array
+    if k == 3: func_array = gamma_array
+    if k == 2: func_array = beta_array
+    if k == 1: func_array = alpha_array
 
     print('Generating values for f_n')
     func_arr = func_array(j+2)
@@ -221,7 +241,7 @@ def sob_ops_recursion(j, k, normalized=True, frac=True, leg_omegas=None):
     for ind in tqdm.tqdm(range(1,j), file=sys.stdout):
         func_vec = func_arr[1:ind+2]
         omega_vec = leg_omegas[ind, :ind+1]
-        zeta_ind = -1/func_arr[0]*func_vec.dot(omega_vec)
+        zeta_ind = gm.mpq(-1,func_arr[0])*func_vec.dot(omega_vec)
         f_ind = np.insert(omega_vec, 0, zeta_ind)
         a_ind = Polynomial.fast_inner(f_ind, o_basis_mat[ind,:ind+2], GM[:ind+2, :ind+2])
         b_ind = Polynomial.fast_inner(f_ind, o_basis_mat[ind-1,:ind+2], GM[:ind+2, :ind+2])
@@ -250,7 +270,7 @@ def sob_ops_recursion(j, k, normalized=True, frac=True, leg_omegas=None):
     return o_basis_mat
 
 
-def generate_op(n, k, normalized=True, lam=np.array([1]), frac=True):
+def generate_op(n, k, normalized=False, lam=np.array([1]), frac=True):
     '''
         Generates orthogonal polynomials with respect to a generalized Sobolev 
         inner product. If possible, a recursion formula is used to improve efficiency.
@@ -291,5 +311,26 @@ def generate_op(n, k, normalized=True, lam=np.array([1]), frac=True):
     
     print('Using Gram-Schmidt to generate OPs')
     return generate_op_GS(n, k, normalized=normalized, lam=lam, frac=frac)   
+
+
+
+def generate_f(j, k, frac=True):
+    '''
+        Args:
+            j: maximum degree of polynomials
+            k: family of monomials to use in the construction of the f_i
+                (only k = 2,3 supported currently)
+            frac: Boolean representing whether the coefficients should remain as fractions or should be
+                converted to floating point numbers at the end of all calculations
+        Returns:
+            np.array of coefficients of the f_j polynomials with 
+                respect to the basis {P_0k, P_1k,..., P_jk}. Each row in 
+                this array is an f_i , and there are j+1 rows and j+1 
+                columns. 
+    '''
+    return leg_ops_recursion(j,k,frac=frac,return_f=True)[1]
+    
+
+
 
 

@@ -246,7 +246,7 @@ def alpha_array(max_order):
             values of alpha up to alpha_{max_order}.
     """
     alpha_arr = zeros_gm(max_order + 1, 1)
-    alpha_arr[0] = 1
+    alpha_arr[0] = gm.mpz(1)
     alpha_arr[1] = gm.mpq(1,6)
 
     for j in range(2, max_order+1):

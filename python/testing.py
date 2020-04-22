@@ -8,7 +8,7 @@ import scipy.io
 from plotting import plot_monomial, plot_op
 from util import rotate_address, alternate_address
 from symmetric import generate_symm_ops
-from ops_main import generate_op_GS
+from ops_main import generate_op_GS, generate_f
 # j = 50
 # ar, br, pr, qr = big_recursion(j)
 # a = np.array([float(x) for x in ar])
@@ -108,17 +108,15 @@ from ops_main import generate_op_GS
 # np.savez('../data/sob4_deg20', coefs=sob4_deg20)
 # np.savez('../data/sob5_deg20', coefs=sob5_deg20)
 
-sob_lambda10 = generate_op_GS(20,3,False,np.array([10]),False)
-sob_lambda100 = generate_op_GS(20,3,False,np.array([100]),False)
-sob_lambda1000 = generate_op_GS(20,3,False,np.array([1000]),False)
-sob_lambda10000 = generate_op_GS(20,3,False,np.array([10000]),False)
+f1_deg20 = generate_f(20,1,frac=False)
+f2_deg20 = generate_f(20,2,frac=False)
+f3_deg20 = generate_f(20,3,frac=False)
 
-scipy.io.savemat('../data/sob_lambda10.mat', dict(coefs=sob_lambda10))
-scipy.io.savemat('../data/sob_lambda100.mat', dict(coefs=sob_lambda100))
-scipy.io.savemat('../data/sob_lambda1000.mat', dict(coefs=sob_lambda1000))
-scipy.io.savemat('../data/sob_lambda10000.mat', dict(coefs=sob_lambda10000))
 
-np.savez('../data/sob_lambda10', coefs=sob_lambda10)
-np.savez('../data/sob_lambda100', coefs=sob_lambda100)
-np.savez('../data/sob_lambda1000', coefs=sob_lambda1000)
-np.savez('../data/sob_lambda10000', coefs=sob_lambda10000)
+scipy.io.savemat('../data/f_1deg20.mat', dict(coefs=f1_deg20))
+scipy.io.savemat('../data/f_2deg20.mat', dict(coefs=f2_deg20))
+scipy.io.savemat('../data/f_3deg20.mat', dict(coefs=f3_deg20))
+
+np.savez('../data/f_1deg20', coefs=f1_deg20)
+np.savez('../data/f_2deg20', coefs=f2_deg20)
+np.savez('../data/f_3deg20', coefs=f3_deg20)
