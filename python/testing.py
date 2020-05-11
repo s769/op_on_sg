@@ -98,15 +98,19 @@ from ops_main import generate_op_GS, generate_f
 
 # print((counter/999))
 
+sob2_deg20 = generate_op_GS(20,3,False,np.array([1,1]),False)
+sob3_deg20 = generate_op_GS(20,3,False,np.array([1,1,1]),False)
+sob4_deg20 = generate_op_GS(20,3,False,np.array([1,1,1,1]),False)
+sob5_deg20 = generate_op_GS(20,3,False,np.array([1,1,1,1,1]),False)
 
-
-# sob4_deg20 = generate_op_GS(20,3,False,np.array([1,1,1,1]),False)
-# sob5_deg20 = generate_op_GS(20,3,False,np.array([1,1,1,1,1]),False)
-
-# scipy.io.savemat('../data/sob4_deg20.mat', dict(coefs=sob4_deg20))
-# scipy.io.savemat('../data/sob5_deg20.mat', dict(coefs=sob5_deg20))
-# np.savez('../data/sob4_deg20', coefs=sob4_deg20)
-# np.savez('../data/sob5_deg20', coefs=sob5_deg20)
+scipy.io.savemat('../data/sob2_deg20.mat', dict(coefs=sob2_deg20))
+scipy.io.savemat('../data/sob3_deg20.mat', dict(coefs=sob3_deg20))
+scipy.io.savemat('../data/sob4_deg20.mat', dict(coefs=sob4_deg20))
+scipy.io.savemat('../data/sob5_deg20.mat', dict(coefs=sob5_deg20))
+np.savez('../data/sob2_deg20', coefs=sob2_deg20)
+np.savez('../data/sob3_deg20', coefs=sob3_deg20)
+np.savez('../data/sob4_deg20', coefs=sob4_deg20)
+np.savez('../data/sob5_deg20', coefs=sob5_deg20)
 
 f1_deg20 = generate_f(20,1,frac=False)
 f2_deg20 = generate_f(20,2,frac=False)
