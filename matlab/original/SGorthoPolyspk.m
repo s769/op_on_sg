@@ -13,7 +13,7 @@ q=zeros(3^(m+1),1);
 
 for k=0:deg
     
-        q = q + coeff(k+1)*T(:,k+1,3);
+        q = q + coeff(k+1)*T(:,k+1,2);
     
 end
 
