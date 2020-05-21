@@ -8,7 +8,7 @@ import scipy.io
 from plotting import plot_monomial, plot_op
 from util import rotate_address, alternate_address
 from symmetric import generate_symm_ops
-from ops_main import generate_op_GS, generate_f
+from ops_main import generate_op_GS, generate_f, sob_ops_recursion
 # j = 50
 # ar, br, pr, qr = big_recursion(j)
 # a = np.array([float(x) for x in ar])
@@ -98,29 +98,45 @@ from ops_main import generate_op_GS, generate_f
 
 # print((counter/999))
 
-sob2_deg20 = generate_op_GS(20,3,False,np.array([1,1]),False)
-sob3_deg20 = generate_op_GS(20,3,False,np.array([1,1,1]),False)
-sob4_deg20 = generate_op_GS(20,3,False,np.array([1,1,1,1]),False)
-sob5_deg20 = generate_op_GS(20,3,False,np.array([1,1,1,1,1]),False)
+# sob2_deg20 = generate_op_GS(20,3,False,np.array([1,1]),False)
+# sob3_deg20 = generate_op_GS(20,3,False,np.array([1,1,1]),False)
+# sob4_deg20 = generate_op_GS(20,3,False,np.array([1,1,1,1]),False)
+# sob5_deg20 = generate_op_GS(20,3,False,np.array([1,1,1,1,1]),False)
 
-scipy.io.savemat('../data/sob2_deg20.mat', dict(coefs=sob2_deg20))
-scipy.io.savemat('../data/sob3_deg20.mat', dict(coefs=sob3_deg20))
-scipy.io.savemat('../data/sob4_deg20.mat', dict(coefs=sob4_deg20))
-scipy.io.savemat('../data/sob5_deg20.mat', dict(coefs=sob5_deg20))
-np.savez('../data/sob2_deg20', coefs=sob2_deg20)
-np.savez('../data/sob3_deg20', coefs=sob3_deg20)
-np.savez('../data/sob4_deg20', coefs=sob4_deg20)
-np.savez('../data/sob5_deg20', coefs=sob5_deg20)
+# scipy.io.savemat('../data/sob2_deg20.mat', dict(coefs=sob2_deg20))
+# scipy.io.savemat('../data/sob3_deg20.mat', dict(coefs=sob3_deg20))
+# scipy.io.savemat('../data/sob4_deg20.mat', dict(coefs=sob4_deg20))
+# scipy.io.savemat('../data/sob5_deg20.mat', dict(coefs=sob5_deg20))
+# np.savez('../data/sob2_deg20', coefs=sob2_deg20)
+# np.savez('../data/sob3_deg20', coefs=sob3_deg20)
+# np.savez('../data/sob4_deg20', coefs=sob4_deg20)
+# np.savez('../data/sob5_deg20', coefs=sob5_deg20)
 
-f1_deg20 = generate_f(20,1,frac=False)
-f2_deg20 = generate_f(20,2,frac=False)
-f3_deg20 = generate_f(20,3,frac=False)
+# f1_deg20 = generate_f(20,1,frac=False)
+# f2_deg20 = generate_f(20,2,frac=False)
+# f3_deg20 = generate_f(20,3,frac=False)
 
 
-scipy.io.savemat('../data/f_1deg20.mat', dict(coefs=f1_deg20))
-scipy.io.savemat('../data/f_2deg20.mat', dict(coefs=f2_deg20))
-scipy.io.savemat('../data/f_3deg20.mat', dict(coefs=f3_deg20))
+# scipy.io.savemat('../data/f_1deg20.mat', dict(coefs=f1_deg20))
+# scipy.io.savemat('../data/f_2deg20.mat', dict(coefs=f2_deg20))
+# scipy.io.savemat('../data/f_3deg20.mat', dict(coefs=f3_deg20))
 
-np.savez('../data/f_1deg20', coefs=f1_deg20)
-np.savez('../data/f_2deg20', coefs=f2_deg20)
-np.savez('../data/f_3deg20', coefs=f3_deg20)
+# np.savez('../data/f_1deg20', coefs=f1_deg20)
+# np.savez('../data/f_2deg20', coefs=f2_deg20)
+# np.savez('../data/f_3deg20', coefs=f3_deg20)
+
+
+p11 = generate_op_GS(10,1)
+p12 = sob_ops_recursion(10,1)
+
+print(np.sum(np.abs(p11-p12)))
+
+# p21 = generate_op_GS(20,1)
+# p22 = sob_ops_recursion(20,1)
+
+# print(np.sum(np.abs(p21-p22)))
+
+# p31 = generate_op_GS(20,1)
+# p32 = sob_ops_recursion(20,1)
+
+# print(np.sum(np.abs(p31-p32)))

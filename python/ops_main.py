@@ -129,6 +129,7 @@ def leg_ops_recursion(j, k, normalized=False, frac=True, return_f=False):
     if k == 3: func_array = gamma_array
     if k == 2: func_array = beta_array
     if k == 1: func_array = alpha_array
+    
 
     print('Generating values for f_n')
     func_arr = func_array(j+2)
