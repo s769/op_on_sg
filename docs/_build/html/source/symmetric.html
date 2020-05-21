@@ -1,0 +1,340 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>symmetric module &mdash; OP_on_SG 5/21/2020 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="util module" href="util.html" />
+    <link rel="prev" title="recursions module" href="recursions.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> OP_on_SG
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="chebyshev.html">chebyshev module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="energy_ops.html">energy_ops module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="innerprods.html">innerprods module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monomials.html">monomials module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ops_main.html">ops_main module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">plotting module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quadrature.html">quadrature module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recursions.html">recursions module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">symmetric module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">util module</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">OP_on_SG</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>symmetric module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/symmetric.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-symmetric">
+<span id="symmetric-module"></span><h1>symmetric module<a class="headerlink" href="#module-symmetric" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="symmetric.d_pnj1">
+<code class="sig-prename descclassname">symmetric.</code><code class="sig-name descname">d_pnj1</code><span class="sig-paren">(</span><em class="sig-param">nn</em>, <em class="sig-param">j</em>, <em class="sig-param">i</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/symmetric.html#d_pnj1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#symmetric.d_pnj1" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>This function calculates the value of the normal derivative of</dt><dd><p>P_{j,1}^(n) at q_i.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nn</strong> – corresponds to the value of (n) in P_{j,1}^(n)</p></li>
+<li><p><strong>j</strong> – corresponds to the value of j in P_{j,1}^(n)</p></li>
+<li><p><strong>i</strong> – corresponds to the boundary index q_i</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Value of the normal derivative of P_{j,1}^(n) at q_i</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="symmetric.generate_symm_ops">
+<code class="sig-prename descclassname">symmetric.</code><code class="sig-name descname">generate_symm_ops</code><span class="sig-paren">(</span><em class="sig-param">n</em>, <em class="sig-param">normalized=False</em>, <em class="sig-param">lam=array([1])</em>, <em class="sig-param">frac=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/symmetric.html#generate_symm_ops"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#symmetric.generate_symm_ops" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Generates symmetric orthogonal polynomials with respect to a</dt><dd><p>generalized Sobolev inner product. The Gram-Schmidt algorithm
+is implemented here.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> – Maximum degree of orthogonal polynomial.</p></li>
+<li><p><strong>normalized</strong> – Boolean representing whether the resulting polynomials
+should be normalized or monic.</p></li>
+<li><p><strong>lam</strong> – np.array of lambda values for the generalized Sobolev inner
+product. The default value is 1 (corresponding to the regular
+Sobolev inner product). If lam = np.array([0]),
+this is the L2 inner product.</p></li>
+<li><p><strong>frac</strong> – Boolean representing whether the coefficients should remain
+as fractions or should be converted to floating point numbers
+at the end of all calculations.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>np.array of coefficients of the orthogonal polynomials with</dt><dd><p>respect to the basis {R_0, R_1, …, R_j}. Each row in
+this array is a polynomial, and there are n+1 rows and n+1
+columns.
+If normalized is True, the polynomials will be normalized.
+Otherwise, the polynomials will be monic. If normalized
+is True, frac must be False to obtain normalized coefficients.</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="symmetric.inner_pnj1pmk1">
+<code class="sig-prename descclassname">symmetric.</code><code class="sig-name descname">inner_pnj1pmk1</code><span class="sig-paren">(</span><em class="sig-param">nn</em>, <em class="sig-param">j</em>, <em class="sig-param">m</em>, <em class="sig-param">k</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/symmetric.html#inner_pnj1pmk1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#symmetric.inner_pnj1pmk1" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>This function calculates the value of the L2 inner product</dt><dd><p>&lt;P_{j,1}^(n), P_{m, 1}^(k)&gt;.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nn</strong> – corresponds to the value of (n) in P_{j,1}^(n)</p></li>
+<li><p><strong>j</strong> – corresponds to the value of j in P_{j,1}^(n)</p></li>
+<li><p><strong>m</strong> – corresponds to the value of m in P_{m, 1}^(k)</p></li>
+<li><p><strong>k</strong> – corresponds to the value of k in P_{m, 1}^(k)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Value of &lt;P_{j,1}^(n), P_{m, 1}^(k)&gt;</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="symmetric.inner_rjrk">
+<code class="sig-prename descclassname">symmetric.</code><code class="sig-name descname">inner_rjrk</code><span class="sig-paren">(</span><em class="sig-param">j</em>, <em class="sig-param">k</em>, <em class="sig-param">lam=array([1])</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/symmetric.html#inner_rjrk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#symmetric.inner_rjrk" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Computes any Sobolev inner product of &lt;R_j, R_k&gt; (the basis functions</dt><dd><p>for the symmetric polynomials).
+R_j = P_{j, 1}^(0) + P_{j, 1}^(1) + P_{j, 1}^(2)</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>k</strong> (<em>j</em><em>,</em>) – correspond to j and k in R_j, R_k
+respectively.</p></li>
+<li><p><strong>lam</strong> – np.array of lambda values for the generalized Sobolev
+inner product. The default value is 1 (corresponding to
+the regular Sobolev inner product).
+If lam = np.array([0]), this is the L2 inner product.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Sobolev inner product of &lt;R_j, R_k&gt; with given lambda</dt><dd><p>values.</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="symmetric.pnj1">
+<code class="sig-prename descclassname">symmetric.</code><code class="sig-name descname">pnj1</code><span class="sig-paren">(</span><em class="sig-param">nn</em>, <em class="sig-param">j</em>, <em class="sig-param">i</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/symmetric.html#pnj1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#symmetric.pnj1" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates the value of P_{j,1}^(n) at q_i</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nn</strong> – corresponds to the value of (n) in P_{j,1}^(n)</p></li>
+<li><p><strong>j</strong> – corresponds to the value of j in P_{j,1}^(n)</p></li>
+<li><p><strong>i</strong> – corresponds to the boundary index q_i</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Value of P_{j,1}^(n) at q_i</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="util.html" class="btn btn-neutral float-right" title="util module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="recursions.html" class="btn btn-neutral float-left" title="recursions module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Sreeram Venkat, Shashank Sule, Tian Lan, Max Jiang, Xiaoduo Wang
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

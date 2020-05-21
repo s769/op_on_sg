@@ -1,0 +1,707 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>monomials &mdash; OP_on_SG 5/21/2020 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> OP_on_SG
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../source/chebyshev.html">chebyshev module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/energy_ops.html">energy_ops module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/innerprods.html">innerprods module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/monomials.html">monomials module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/ops_main.html">ops_main module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/plotting.html">plotting module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/quadrature.html">quadrature module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/recursions.html">recursions module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/symmetric.html">symmetric module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/util.html">util module</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">OP_on_SG</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>monomials</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for monomials</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">gmpy2</span> <span class="k">as</span> <span class="nn">gm</span>
+<span class="kn">import</span> <span class="nn">tqdm</span>
+
+<span class="kn">from</span> <span class="nn">recursions</span> <span class="k">import</span> <span class="n">mem</span><span class="p">,</span> <span class="n">mem2</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">zeros_gm</span>
+<span class="kn">from</span> <span class="nn">util</span> <span class="k">import</span> <span class="n">address_from_index</span><span class="p">,</span> <span class="n">rotate_address</span><span class="p">,</span> <span class="n">index_from_address</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">This file contains the functions that will compute the values of the </span>
+<span class="sd">    easy/monomial basis on a given level of SG. The recursive functions </span>
+<span class="sd">    are memoized (see recursions.py).</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+
+<span class="nd">@mem2</span>
+<span class="k">def</span> <span class="nf">big_recursion</span><span class="p">(</span><span class="n">j</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This function computes the coefficients a_j, b_j, p_j, q_j found in </span>
+<span class="sd">        the Splines on Fractals paper.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        j: index of coefficients</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        4 x j+1 np.array of coefficients a_j, b_j, p_j, q_j from 0 to j</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Initialize space for the coefficients</span>
+    <span class="n">p_arr</span> <span class="o">=</span> <span class="n">zeros_gm</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">q_arr</span> <span class="o">=</span> <span class="n">zeros_gm</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">a_arr</span> <span class="o">=</span> <span class="n">zeros_gm</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">b_arr</span> <span class="o">=</span> <span class="n">zeros_gm</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Initialize arrays for the 0-th term</span>
+    <span class="n">a_arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">gm</span><span class="o">.</span><span class="n">mpq</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">45</span><span class="p">)</span>
+    <span class="n">b_arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">gm</span><span class="o">.</span><span class="n">mpq</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">45</span><span class="p">)</span>
+    <span class="n">p_arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">gm</span><span class="o">.</span><span class="n">mpq</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+    <span class="n">q_arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">gm</span><span class="o">.</span><span class="n">mpq</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">a_arr</span><span class="p">,</span> <span class="n">b_arr</span><span class="p">,</span> <span class="n">p_arr</span><span class="p">,</span> <span class="n">q_arr</span><span class="p">))</span>
+    
+    <span class="c1"># Main recursion</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># Implements equation (5.6) in Splines paper</span>
+        <span class="n">res3</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">res4</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">p_arr</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="n">q_arr</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">a_arr</span><span class="p">[</span><span class="n">l</span><span class="o">-</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">b_arr</span><span class="p">[</span><span class="n">l</span><span class="o">-</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">res3</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">a</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">b</span><span class="p">)</span><span class="o">*</span><span class="n">p</span> <span class="o">+</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">b</span><span class="p">)</span><span class="o">*</span><span class="n">q</span>
+            <span class="n">res4</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">a</span> <span class="o">+</span> <span class="mi">4</span><span class="o">*</span><span class="n">b</span><span class="p">)</span><span class="o">*</span><span class="n">p</span> <span class="o">+</span> <span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span><span class="o">*</span><span class="n">q</span>
+        
+        <span class="n">b</span> <span class="o">=</span> <span class="n">b_arr</span><span class="p">[</span><span class="n">l</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">p_arr</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">gm</span><span class="o">.</span><span class="n">mpq</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span><span class="o">*</span><span class="n">b</span> <span class="o">-</span> <span class="n">gm</span><span class="o">.</span><span class="n">mpq</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span><span class="o">*</span><span class="n">res3</span>
+        <span class="n">q_arr</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">gm</span><span class="o">.</span><span class="n">mpq</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span><span class="o">*</span><span class="n">b</span> <span class="o">-</span> <span class="n">gm</span><span class="o">.</span><span class="n">mpq</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span><span class="o">*</span><span class="n">res4</span>
+
+        <span class="c1"># Implements equation (5.5) in Splines paper</span>
+        <span class="n">res1</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">res2</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">vec</span> <span class="o">=</span> <span class="n">zeros_gm</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">p_arr</span><span class="p">[</span><span class="n">l</span><span class="o">-</span><span class="n">k</span><span class="p">]</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="n">q_arr</span><span class="p">[</span><span class="n">l</span><span class="o">-</span><span class="n">k</span><span class="p">]</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">a_arr</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">b_arr</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+            <span class="n">res1</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">p</span> <span class="o">+</span> <span class="n">q</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">b</span><span class="p">)</span>
+            <span class="n">res2</span> <span class="o">+=</span> <span class="p">(</span><span class="n">p</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">q</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">b</span><span class="p">)</span>
+        
+        <span class="n">vec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">gm</span><span class="o">.</span><span class="n">mpq</span><span class="p">(</span><span class="mi">2</span><span class="p">,(</span><span class="mi">3</span><span class="o">*</span><span class="p">(</span><span class="mi">5</span><span class="o">**</span><span class="n">l</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)))</span><span class="o">*</span><span class="n">res1</span>
+        <span class="n">vec</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">gm</span><span class="o">.</span><span class="n">mpq</span><span class="p">(</span><span class="mi">10</span><span class="p">,(</span><span class="mi">3</span><span class="o">*</span><span class="p">(</span><span class="mi">5</span><span class="o">**</span><span class="p">(</span><span class="n">l</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)))</span><span class="o">*</span><span class="n">res2</span>
+        <span class="n">coefs_inv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">gm</span><span class="o">.</span><span class="n">mpq</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">15</span><span class="p">),</span> <span class="n">gm</span><span class="o">.</span><span class="n">mpq</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">15</span><span class="p">)],</span> <span class="p">[</span><span class="n">gm</span><span class="o">.</span><span class="n">mpq</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">15</span><span class="p">),</span> <span class="n">gm</span><span class="o">.</span><span class="n">mpq</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">15</span><span class="p">)]])</span>
+        <span class="n">ab_arr</span> <span class="o">=</span> <span class="n">coefs_inv</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">vec</span><span class="p">)</span>
+        <span class="n">a_arr</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="n">ab_arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">b_arr</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="n">ab_arr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">a_arr</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">b_arr</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">p_arr</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">q_arr</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+
+
+<span class="nd">@mem</span>
+<span class="k">def</span> <span class="nf">f_lkFiqn</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This function computes the values of the easy basis f_lk(F_i (q_n)) </span>
+<span class="sd">        (level 1 of SG) based on the Splines on Fractals paper.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        l, k, i, n: correspond to the indices mentioned in the preceding </span>
+<span class="sd">            paragraph.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        values of the easy basis f_lk(F_i (q_n))</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Finds the values of pi and qi from the recursion</span>
+    <span class="n">arr</span> <span class="o">=</span> <span class="n">big_recursion</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="n">l</span><span class="p">])</span>
+    <span class="n">q1</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="n">l</span><span class="p">])</span>
+    
+    <span class="c1"># Find the values of easy basis from (5.2) of splines paper</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">n</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">==</span> <span class="n">k</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">l</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">k</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">n</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">gm</span><span class="o">.</span><span class="n">mpq</span><span class="p">(</span><span class="n">p1</span><span class="p">,(</span><span class="mi">5</span><span class="o">**</span><span class="n">l</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">n</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">k</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="n">n</span> <span class="ow">and</span> <span class="n">k</span> <span class="o">!=</span> <span class="n">i</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">gm</span><span class="o">.</span><span class="n">mpq</span><span class="p">(</span><span class="n">p1</span><span class="p">,(</span><span class="mi">5</span><span class="o">**</span><span class="n">l</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">gm</span><span class="o">.</span><span class="n">mpq</span><span class="p">(</span><span class="n">q1</span><span class="p">,(</span><span class="mi">5</span><span class="o">**</span><span class="n">l</span><span class="p">))</span>
+
+
+<span class="nd">@mem</span>
+<span class="k">def</span> <span class="nf">f_jk</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This function calculates the value of the easy basis f_jk at a point </span>
+<span class="sd">        on SG addressed by addr. This code is based on the Splines on </span>
+<span class="sd">        Fractals paper.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        j, k: indices mentioned in preceding paragraph.</span>
+<span class="sd">        addr: address of evaluation point F_w(q_i) given as a string of </span>
+<span class="sd">            digits whose first digit is i and whose following digits are </span>
+<span class="sd">            those in w.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        value of f_jk(F_w(q_i))</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Base case 1: f_jk(q_i)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">j</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">addr</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="n">k</span><span class="p">)</span>
+    
+    <span class="c1"># Base case 2: f_jk(F_iq_n)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">addr</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">addr</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">f_lkFiqn</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    
+    <span class="c1"># Inductive case, from (2.8) of splines paper</span>
+    <span class="n">last</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">addr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">addr</span> <span class="o">=</span> <span class="n">addr</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">outer_sum</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">inner_sum</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">inner_sum</span> <span class="o">+=</span> <span class="n">f_lkFiqn</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="n">l</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">last</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="n">f_jk</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="n">inner_sum</span> <span class="o">*=</span> <span class="p">(</span><span class="n">gm</span><span class="o">.</span><span class="n">mpq</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span><span class="o">**</span><span class="n">l</span>
+        <span class="n">outer_sum</span> <span class="o">+=</span> <span class="n">inner_sum</span>
+    <span class="k">return</span> <span class="n">outer_sum</span> 
+
+
+<span class="nd">@mem</span>
+<span class="k">def</span> <span class="nf">p_jk</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This function calculates the value of the monomial basis p_jk at a </span>
+<span class="sd">        point on SG addressed by addr. This code is based on the Splines </span>
+<span class="sd">        on Fractals paper and Calculus on SG I.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        j, k: indices mentioned in preceding paragraph.</span>
+<span class="sd">        addr: address of evaluation point F_w(q_i) given as a string of </span>
+<span class="sd">            digits whose first digit is i and whose following digits are </span>
+<span class="sd">            those in w.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        value of p_jk(F_w(q_i))</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Based on (2.14), (2.20) of the Calculus paper</span>
+    <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">f_jk</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">res</span> <span class="o">+=</span> <span class="n">alpha</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="n">l</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">f_jk</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">f_jk</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">res</span> <span class="o">+=</span> <span class="n">beta</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="n">l</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">f_jk</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">f_jk</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">res</span> <span class="o">+=</span> <span class="n">gamma</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="n">l</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">f_jk</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">f_jk</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">res</span>
+
+
+
+<div class="viewcode-block" id="f_jk_addr_list"><a class="viewcode-back" href="../source/monomials.html#monomials.f_jk_addr_list">[docs]</a><span class="k">def</span> <span class="nf">f_jk_addr_list</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Evaluate f_jk when the address provided is a list in the order</span>
+<span class="sd">    [w1, w2, ..., wm, qn] for F_{w1}...F_{wm}q_{n}.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        j, k: indices mentioned in preceding paragraph.</span>
+<span class="sd">        addr: address of evaluation point F_w(q_i) given as a list of </span>
+<span class="sd">            indices of F and q as defined above.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        value of f_jk(F_w(q_i))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">addr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+    <span class="n">addr</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">addr</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">f_jk</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="p_jk_addr_list"><a class="viewcode-back" href="../source/monomials.html#monomials.p_jk_addr_list">[docs]</a><span class="k">def</span> <span class="nf">p_jk_addr_list</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Evaluate p_jk when the address provided is a list in the order</span>
+<span class="sd">    [w1, w2, ..., wm, qn] for F_{w1}...F_{wm}q_{n}.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        j, k: indices mentioned in preceding paragraph.</span>
+<span class="sd">        addr: address of evaluation point F_w(q_i) given as a list of </span>
+<span class="sd">            indices of F and q as defined above.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        value of p_jk(F_w(q_i))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">addr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+    <span class="n">addr</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">addr</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">p_jk</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span></div>
+
+
+<span class="nd">@mem</span>
+<span class="k">def</span> <span class="nf">norm_f_jk</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This function calculates the value of the normal derivative of the </span>
+<span class="sd">        easy basis partial_{n}f_jk at a point on SG addressed by addr. </span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        j, k: indices mentioned in preceding paragraph.</span>
+<span class="sd">        addr: address of evaluation point F_w(q_n) given as a string of </span>
+<span class="sd">            digits whose first digit is i and whose following digits are </span>
+<span class="sd">            those in w.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        value of partial_{n}f_jk(F_w(q_n))</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># Finds the values of pi and qi from the recursion</span>
+    <span class="n">arr</span> <span class="o">=</span> <span class="n">big_recursion</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+    <span class="n">a1</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">b1</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="c1"># Base case: partial_{n}f_jk(q_i)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">j</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">addr</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="n">k</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mi">2</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">j</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">addr</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">!=</span> <span class="n">k</span><span class="p">):</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">j</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">addr</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="n">k</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">a1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">b1</span>
+    
+    <span class="c1"># Inductive case</span>
+    <span class="n">last</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">addr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">addr</span> <span class="o">=</span> <span class="n">addr</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">outer_sum</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">inner_sum</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">inner_sum</span> <span class="o">+=</span> <span class="n">f_lkFiqn</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="n">l</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">last</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="n">norm_f_jk</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="n">inner_sum</span> <span class="o">*=</span> <span class="p">(</span><span class="n">gm</span><span class="o">.</span><span class="n">mpq</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span><span class="o">**</span><span class="n">l</span>
+        <span class="n">outer_sum</span> <span class="o">+=</span> <span class="n">inner_sum</span>
+    <span class="n">outer_sum</span> <span class="o">*=</span> <span class="n">gm</span><span class="o">.</span><span class="n">mpq</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">outer_sum</span> 
+
+
+<span class="nd">@mem</span>
+<span class="k">def</span> <span class="nf">norm_p_jk</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This function calculates the value of the normal derivative of the </span>
+<span class="sd">        monomial basis partial_{n}p_jk at a point on SG addressed by </span>
+<span class="sd">        addr.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        j, k: indices mentioned in preceding paragraph.</span>
+<span class="sd">        addr: address of evaluation point F_w(q_n) given as a string of </span>
+<span class="sd">            digits whose first digit is i and whose following digits are </span>
+<span class="sd">            those in w.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        value of partial_{n}p_jk(F_w(q_n))</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Based on (2.14), (2.20) of the Calculus paper</span>
+
+    <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">norm_f_jk</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">res</span> <span class="o">+=</span> <span class="n">alpha</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="n">l</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">norm_f_jk</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">norm_f_jk</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">res</span> <span class="o">+=</span> <span class="n">beta</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="n">l</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">norm_f_jk</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">norm_f_jk</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">res</span> <span class="o">+=</span> <span class="n">gamma</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="n">l</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">norm_f_jk</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">norm_f_jk</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">res</span>
+
+
+<div class="viewcode-block" id="generate_W"><a class="viewcode-back" href="../source/monomials.html#monomials.generate_W">[docs]</a><span class="k">def</span> <span class="nf">generate_W</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">deg</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This function calculates the values of the easy basis f_jk up to a certain </span>
+<span class="sd">        degree at a given level of SG.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        level: level of SG required</span>
+<span class="sd">        deg: maximum degree monomial required</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        W: np.array with dimensions 3 x 3^(level+1) x deg+1.</span>
+<span class="sd">        The kth page of W has values of the easy basis f_jk (j = 0...deg) </span>
+<span class="sd">            at each of the 3^(level+1) TLR indices of points on the given level </span>
+<span class="sd">            of SG.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Computes big_recursion at the highest degree, and lower values are </span>
+    <span class="c1">#   stored for later use</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Computing Big_Recursion... this may take some time&#39;</span><span class="p">)</span>
+    <span class="n">big_recursion</span><span class="p">(</span><span class="n">deg</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Initialize the W array based on how things should be stored.</span>
+    <span class="k">if</span> <span class="n">frac</span><span class="p">:</span>
+        <span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="o">**</span><span class="p">(</span><span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">deg</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;object&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="o">**</span><span class="p">(</span><span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">deg</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    
+    <span class="c1"># Main loop to fill in the values of the W array</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="o">**</span><span class="p">(</span><span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+        <span class="c1"># This preparation is due to the different address structure </span>
+        <span class="c1">#   used in this file and in util.py</span>
+        <span class="n">addr</span> <span class="o">=</span> <span class="n">address_from_index</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">addr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+        <span class="n">addr</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">addr</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">deg</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+                <span class="n">W</span><span class="p">[</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">f_jk</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">W</span></div>
+
+
+<div class="viewcode-block" id="generate_norm_W"><a class="viewcode-back" href="../source/monomials.html#monomials.generate_norm_W">[docs]</a><span class="k">def</span> <span class="nf">generate_norm_W</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">deg</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This function calculates the values of the normal derivative of easy </span>
+<span class="sd">        basis partial_{n}f_jk up to a certain degree at a given level of SG.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        level: level of SG required</span>
+<span class="sd">        deg: maximum degree monomial required</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        norm_W: np.array with dimensions 3 x 3^(level+1) x deg+1.</span>
+<span class="sd">            The kth page of W has values of the normal derivative of the </span>
+<span class="sd">            easy basis f_jk (j = 0...deg) at each of the 3^(level+1) TLR </span>
+<span class="sd">            indices of points on the given level of SG.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Computes big_recursion at the highest degree, and lower values are </span>
+    <span class="c1">#   stored for later use</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Computing Big_Recursion... this may take some time&#39;</span><span class="p">)</span>
+    <span class="n">big_recursion</span><span class="p">(</span><span class="n">deg</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Initialize the W array based on how things should be stored.</span>
+    <span class="k">if</span> <span class="n">frac</span><span class="p">:</span>
+        <span class="n">norm_W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="o">**</span><span class="p">(</span><span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">deg</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;object&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">norm_W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="o">**</span><span class="p">(</span><span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">deg</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    
+    <span class="c1"># Main loop to fill in the values of the norm_W array</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="o">**</span><span class="p">(</span><span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+        <span class="c1"># This preparation is due to the different address structure </span>
+        <span class="c1">#   used in this file an in util.py</span>
+        <span class="n">addr</span> <span class="o">=</span> <span class="n">address_from_index</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">addr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+        <span class="n">addr</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">addr</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">deg</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+                <span class="n">norm_W</span><span class="p">[</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">norm_f_jk</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">norm_W</span></div>
+
+
+<div class="viewcode-block" id="generate_T"><a class="viewcode-back" href="../source/monomials.html#monomials.generate_T">[docs]</a><span class="k">def</span> <span class="nf">generate_T</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">deg</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This function calculates the values of the monomials up to a certain </span>
+<span class="sd">        degree at a given level of SG.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        level: level of SG required</span>
+<span class="sd">        deg: maximum degree monomial required</span>
+<span class="sd">        frac: Boolean representing whether the coefficients should </span>
+<span class="sd">            remain as fractions or should be converted to floating point </span>
+<span class="sd">            numbers at the end of all calculations.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        T: np.array with dimensions 3 x 3^(level+1) x deg+1.</span>
+<span class="sd">            The kth page of T has values of the monomials P_jk </span>
+<span class="sd">            (j = 0...deg) at each of the 3^(level+1) TLR indices of </span>
+<span class="sd">            points on the given level of SG.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># Computes big_recursion at the highest degree, and lower values </span>
+    <span class="c1">#   are stored for later use.</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Computing Big_Recursion... this may take some time&#39;</span><span class="p">)</span>
+    <span class="n">big_recursion</span><span class="p">(</span><span class="n">deg</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="c1"># Initialize the T array based on how things should be stored.</span>
+    <span class="k">if</span> <span class="n">frac</span><span class="p">:</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="o">**</span><span class="p">(</span><span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">deg</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;object&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="o">**</span><span class="p">(</span><span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">deg</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="c1"># Main loop to fill in the values of the T array</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="o">**</span><span class="p">(</span><span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+        <span class="c1"># This preparation is due to the different address structure </span>
+        <span class="c1">#   used in this file and in util.py</span>
+        <span class="n">addr</span> <span class="o">=</span> <span class="n">address_from_index</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">addr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+        <span class="n">addr</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">addr</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">deg</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+                <span class="n">T</span><span class="p">[</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">p_jk</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">T</span></div>
+
+
+<div class="viewcode-block" id="generate_norm_T"><a class="viewcode-back" href="../source/monomials.html#monomials.generate_norm_T">[docs]</a><span class="k">def</span> <span class="nf">generate_norm_T</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">deg</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This function calculates the values of the normal derivative of the </span>
+<span class="sd">        monomials up to a certain degree at a given level of SG.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        level: level of SG required</span>
+<span class="sd">        deg: maximum degree monomial required</span>
+<span class="sd">        frac: Boolean representing whether the coefficients should </span>
+<span class="sd">            remain as fractions or should be converted to floating point </span>
+<span class="sd">            numbers at the end of all calculations.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        T: np.array with dimensions 3 x 3^(level+1) x deg+1.</span>
+<span class="sd">            The kth page of T has values of the normal derivative of the </span>
+<span class="sd">            monomials partial_{n}P_jk (j = 0...deg) at each of the </span>
+<span class="sd">            3^(level+1) TLR indices of points on the given level of SG.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># Computes big_recursion at the highest degree, and lower values </span>
+    <span class="c1">#   are stored for later use.</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Computing Big_Recursion... this may take some time&#39;</span><span class="p">)</span>
+    <span class="n">big_recursion</span><span class="p">(</span><span class="n">deg</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="c1"># Initialize the T array based on how things should be stored.</span>
+    <span class="k">if</span> <span class="n">frac</span><span class="p">:</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="o">**</span><span class="p">(</span><span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">deg</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;object&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="o">**</span><span class="p">(</span><span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">deg</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="c1"># Main loop to fill in the values of the T array</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="o">**</span><span class="p">(</span><span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+        <span class="c1"># This preparation is due to the different address structure </span>
+        <span class="c1">#   used in this file an in util.py</span>
+        <span class="n">addr</span> <span class="o">=</span> <span class="n">address_from_index</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">addr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+        <span class="n">addr</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">addr</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">deg</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+                <span class="n">T</span><span class="p">[</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">norm_p_jk</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">T</span></div>
+
+
+<div class="viewcode-block" id="generate_T_symmetric"><a class="viewcode-back" href="../source/monomials.html#monomials.generate_T_symmetric">[docs]</a><span class="k">def</span> <span class="nf">generate_T_symmetric</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">deg</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        This function calculates the values of the fully symmetric monomials up to a certain </span>
+<span class="sd">        degree at a given level of SG.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        level: level of SG required</span>
+<span class="sd">        deg: maximum degree monomial required</span>
+<span class="sd">        frac: Boolean representing whether the coefficients should </span>
+<span class="sd">            remain as fractions or should be converted to floating point </span>
+<span class="sd">            numbers at the end of all calculations.</span>
+<span class="sd">        T: array of monomial values at the required level and degree or </span>
+<span class="sd">        tuple of (filename of .npz/.npy file containing this array , array name key string)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        T: np.array with dimensions 3^(level+1) x deg+1 containing</span>
+<span class="sd">            values of the monomials R_j = P_j1^(0) + P_j1^(1) + P_j1^(2)</span>
+<span class="sd">            (j = 0...deg) at each of the 3^(level+1) TLR indices of </span>
+<span class="sd">            points on the given level of SG.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">if</span> <span class="n">T</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="n">generate_T</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">deg</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="n">frac</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">)):</span>
+        <span class="n">filename</span><span class="p">,</span> <span class="n">arr</span> <span class="o">=</span> <span class="n">T</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">allow_pickle</span><span class="o">=</span><span class="n">frac</span><span class="p">)[</span><span class="n">arr</span><span class="p">]</span>
+    
+    <span class="n">dtype</span> <span class="o">=</span> <span class="nb">object</span> <span class="k">if</span> <span class="n">frac</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span>
+
+    <span class="n">ST</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ST</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">addr</span> <span class="o">=</span> <span class="n">address_from_index</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">row</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">addr1</span> <span class="o">=</span> <span class="n">rotate_address</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">addr2</span> <span class="o">=</span> <span class="n">rotate_address</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">row1</span> <span class="o">=</span> <span class="n">index_from_address</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">addr1</span><span class="p">)</span>
+        <span class="n">row2</span> <span class="o">=</span> <span class="n">index_from_address</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">addr2</span><span class="p">)</span>
+        <span class="n">ST</span><span class="p">[</span><span class="n">row</span><span class="p">]</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">row</span><span class="p">]</span> <span class="o">+</span> <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">row1</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">row2</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+
+    <span class="k">return</span> <span class="n">ST</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Sreeram Venkat, Shashank Sule, Tian Lan, Max Jiang, Xiaoduo Wang
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

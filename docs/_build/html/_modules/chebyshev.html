@@ -1,0 +1,718 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>chebyshev &mdash; OP_on_SG 5/21/2020 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> OP_on_SG
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../source/chebyshev.html">chebyshev module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/energy_ops.html">energy_ops module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/innerprods.html">innerprods module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/monomials.html">monomials module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/ops_main.html">ops_main module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/plotting.html">plotting module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/quadrature.html">quadrature module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/recursions.html">recursions module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/symmetric.html">symmetric module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/util.html">util module</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">OP_on_SG</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>chebyshev</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for chebyshev</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="k">import</span> <span class="n">Axes3D</span>
+
+<span class="kn">from</span> <span class="nn">util</span> <span class="k">import</span> <span class="n">address_from_index</span>
+<span class="kn">from</span> <span class="nn">monomials</span> <span class="k">import</span> <span class="n">generate_T</span>
+<span class="kn">from</span> <span class="nn">plotting</span> <span class="k">import</span> <span class="n">gaskplot</span><span class="p">,</span> <span class="n">plot_general</span>
+<span class="kn">from</span> <span class="nn">recursions</span> <span class="k">import</span> <span class="n">alpha</span>
+
+
+<span class="c1"># We first present functions specifically for H1</span>
+
+<span class="c1"># Method for evaluating any function in H1 and returning all values</span>
+<div class="viewcode-block" id="eval_poly_h1"><a class="viewcode-back" href="../source/chebyshev.html#chebyshev.eval_poly_h1">[docs]</a><span class="k">def</span> <span class="nf">eval_poly_h1</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">level</span> <span class="o">=</span> <span class="mi">7</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function that evaluates a polynomial in H1. We can represent any </span>
+<span class="sd">    polynomial in H1 as the following linear combination:</span>
+<span class="sd">    u = a * P_01 + b * P_02 + c * P_03 + d * P_11 + e * P_12 + f * P_13</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        a - coefficient of P_01</span>
+<span class="sd">        b - coefficient of P_02</span>
+<span class="sd">        c - coefficient of P_03</span>
+<span class="sd">        d - coefficient of P_11</span>
+<span class="sd">        e - coefficient of P_12</span>
+<span class="sd">        f - coefficient of P_13</span>
+<span class="sd">        level - The level we would like to evaluate </span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        poly_temp - a np.array of length 3^(level+1), containing the </span>
+<span class="sd">            values of the polynomial.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">generate_T</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">P01_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">P02_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">P03_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">P11_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">P12_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">P13_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">poly_temp</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">P01_temp</span> <span class="o">+</span> <span class="n">b</span> <span class="o">*</span> <span class="n">P02_temp</span> <span class="o">+</span> <span class="n">c</span> <span class="o">*</span> <span class="n">P03_temp</span> \
+        <span class="o">+</span> <span class="n">d</span> <span class="o">*</span> <span class="n">P11_temp</span> <span class="o">+</span> <span class="n">e</span> <span class="o">*</span> <span class="n">P12_temp</span> <span class="o">+</span> <span class="n">f</span> <span class="o">*</span> <span class="n">P13_temp</span>
+    <span class="k">return</span> <span class="n">poly_temp</span></div>
+
+
+<span class="c1"># Method for plotting any function in H1 given coefficients</span>
+<div class="viewcode-block" id="plot_h1"><a class="viewcode-back" href="../source/chebyshev.html#chebyshev.plot_h1">[docs]</a><span class="k">def</span> <span class="nf">plot_h1</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">level</span> <span class="o">=</span> <span class="mi">7</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function that plots a polynomial in H1. This follows from the </span>
+<span class="sd">    evaluation function above.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        a - coefficient of P_01</span>
+<span class="sd">        b - coefficient of P_02</span>
+<span class="sd">        c - coefficient of P_03</span>
+<span class="sd">        d - coefficient of P_11</span>
+<span class="sd">        e - coefficient of P_12</span>
+<span class="sd">        f - coefficient of P_13</span>
+<span class="sd">        level - The level we would like to plot</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        A plot of the polynomial</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">poly_temp</span> <span class="o">=</span> <span class="n">eval_poly_h1</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">level</span><span class="p">)</span>
+    <span class="n">plot_general</span><span class="p">(</span><span class="n">poly_temp</span><span class="p">,</span> <span class="n">level</span><span class="p">)</span></div>
+
+
+<span class="c1"># Plot a family of polynomials based on one varying coefficient</span>
+<div class="viewcode-block" id="plot_h1_family"><a class="viewcode-back" href="../source/chebyshev.html#chebyshev.plot_h1_family">[docs]</a><span class="k">def</span> <span class="nf">plot_h1_family</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">num_points</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">level</span> <span class="o">=</span> <span class="mi">7</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function that plots the polynomial of one certain family in H1, with</span>
+<span class="sd">    different coefficients of the P_0k term.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        start - starting value of evaluation</span>
+<span class="sd">        end - ending value of evaluation</span>
+<span class="sd">        num_points - number of points we would like to evaluate</span>
+<span class="sd">        k - The type of polynomial family (k=1,2,3)</span>
+<span class="sd">        level - The level we would like to plot</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        A plot of graphs of polynomials in the same picture.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">generate_T</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">P01_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">P02_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">P03_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">P11_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">P12_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">P13_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+    <span class="n">color_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;cyan&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> \
+        <span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;gray&#39;</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_points</span><span class="p">):</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">num_points</span><span class="p">)[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">poly_temp</span> <span class="o">=</span> <span class="n">t</span> <span class="o">*</span> <span class="n">P01_temp</span> <span class="o">+</span> <span class="n">P11_temp</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">k</span> <span class="o">==</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="n">poly_temp</span> <span class="o">=</span> <span class="n">t</span> <span class="o">*</span> <span class="n">P02_temp</span> <span class="o">+</span> <span class="n">P12_temp</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">poly_temp</span> <span class="o">=</span> <span class="n">t</span> <span class="o">*</span> <span class="n">P03_temp</span> <span class="o">+</span> <span class="n">P13_temp</span>
+        <span class="n">gaskplot</span><span class="p">(</span><span class="n">poly_temp</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color_list</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>    
+    <span class="k">return</span></div>
+
+
+<span class="c1"># Methods for finding value and position of multiple maximal points </span>
+<span class="c1">#   for a single function in h1</span>
+<div class="viewcode-block" id="extremal_val_h1"><a class="viewcode-back" href="../source/chebyshev.html#chebyshev.extremal_val_h1">[docs]</a><span class="k">def</span> <span class="nf">extremal_val_h1</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">num_points</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">level</span> <span class="o">=</span> <span class="mi">7</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function finds the points in a single polynomial in H^{1}, </span>
+<span class="sd">        with one of the following properties:</span>
+<span class="sd">        (1) maximal value (2) minimal value (3) largest absolute value</span>
+<span class="sd">        (4) minimum absolute value </span>
+<span class="sd">        and returns their value and address.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        a - coefficient of P_01</span>
+<span class="sd">        b - coefficient of P_02</span>
+<span class="sd">        c - coefficient of P_03</span>
+<span class="sd">        d - coefficient of P_11</span>
+<span class="sd">        e - coefficient of P_12</span>
+<span class="sd">        f - coefficient of P_13</span>
+<span class="sd">        num_points - the number of maximal/minimal points we would like</span>
+<span class="sd">            to check</span>
+<span class="sd">        flag - the kind of extremum we&#39;re trying to find. 1 represent </span>
+<span class="sd">            maximal value, 2 represent minimal value, and 3 represent</span>
+<span class="sd">            maximal of absolute value.</span>
+<span class="sd">        level - The level we would like to evaluate </span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Prints the top values of the address and value of extremal points</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">T</span> <span class="o">=</span> <span class="n">generate_T</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">P01_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">P02_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">P03_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">P11_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">P12_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">P13_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">poly_temp</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">P01_temp</span> <span class="o">+</span> <span class="n">b</span> <span class="o">*</span> <span class="n">P02_temp</span> <span class="o">+</span> <span class="n">c</span> <span class="o">*</span> <span class="n">P03_temp</span> <span class="o">+</span>\
+        <span class="n">d</span> <span class="o">*</span> <span class="n">P11_temp</span> <span class="o">+</span> <span class="n">e</span> <span class="o">*</span> <span class="n">P12_temp</span> <span class="o">+</span> <span class="n">f</span> <span class="o">*</span> <span class="n">P13_temp</span>
+
+    <span class="n">extremal_val</span><span class="p">(</span><span class="n">poly_temp</span><span class="p">,</span> <span class="n">num_points</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">level</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="max_h1_val_family"><a class="viewcode-back" href="../source/chebyshev.html#chebyshev.max_h1_val_family">[docs]</a><span class="k">def</span> <span class="nf">max_h1_val_family</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">num_points</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">level</span> <span class="o">=</span> <span class="mi">7</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function that prints a list of supremum values for a certain family,</span>
+<span class="sd">    given different coefficients.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        start - starting value of evaluation</span>
+<span class="sd">        end - ending value of evaluation</span>
+<span class="sd">        num_points - number of points we would like to evaluate</span>
+<span class="sd">        k - The type of polynomial family (k=1,2,3)</span>
+<span class="sd">        level - The level we would like to plot</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        For each coefficient, prints out the address and value of </span>
+<span class="sd">            extremal points.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">generate_T</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">P01_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">P02_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">P03_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">P11_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">P12_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">P13_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">num_points</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_points</span><span class="p">):</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">poly_temp</span> <span class="o">=</span> <span class="n">t</span> <span class="o">*</span> <span class="n">P01_temp</span> <span class="o">+</span> <span class="n">P11_temp</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">k</span> <span class="o">==</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="n">poly_temp</span> <span class="o">=</span> <span class="n">t</span> <span class="o">*</span> <span class="n">P02_temp</span> <span class="o">+</span> <span class="n">P12_temp</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">poly_temp</span> <span class="o">=</span> <span class="n">t</span> <span class="o">*</span> <span class="n">P03_temp</span> <span class="o">+</span> <span class="n">P13_temp</span>
+        <span class="n">poly_temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">poly_temp</span><span class="p">)</span>
+        <span class="n">max_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">poly_temp</span><span class="p">)</span>
+        <span class="n">max_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">poly_temp</span><span class="p">)</span>
+        <span class="n">max_add</span> <span class="o">=</span> <span class="n">address_from_index</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">max_pos</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Coefficient is &#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Maximum value is&#39;</span><span class="p">,</span> <span class="n">max_val</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Maximum achieved at address &#39;</span><span class="p">,</span> <span class="n">max_add</span><span class="p">)</span></div>
+
+
+<span class="c1"># We then provide functions for general H^{n}</span>
+
+<div class="viewcode-block" id="extremal_val"><a class="viewcode-back" href="../source/chebyshev.html#chebyshev.extremal_val">[docs]</a><span class="k">def</span> <span class="nf">extremal_val</span><span class="p">(</span><span class="n">poly_temp</span><span class="p">,</span> <span class="n">num_points</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">level</span> <span class="o">=</span> <span class="mi">7</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function finds the points in a single polynomial, </span>
+<span class="sd">        with one of the following properties:</span>
+<span class="sd">        (1) maximal value (2) minimal value (3) largest absolute value </span>
+<span class="sd">        and returns their value and address.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        poly_temp - evaluation of the polynomial to some level</span>
+<span class="sd">        num_points - the number of maximal/minimal points</span>
+<span class="sd">        flag - the kind of extremum we&#39;re trying to find. 1 represent </span>
+<span class="sd">            maximal value, 2 represent minimal value, and 3 represent</span>
+<span class="sd">            maximal of absolute value.</span>
+<span class="sd">        level - The level we would like to evaluate </span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Prints the top values of the address and value of extremal points</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># If we need to find the sup-norm, take the absolute value</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">flag</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">or</span> <span class="n">flag</span> <span class="o">==</span> <span class="mi">4</span><span class="p">):</span>
+        <span class="n">poly_temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">poly_temp</span><span class="p">)</span>
+    
+    <span class="c1"># If we need to find the maximum, we flip the sequence</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">flag</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">flag</span> <span class="o">==</span> <span class="mi">3</span><span class="p">):</span>
+        <span class="n">ind_arrange</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">poly_temp</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span> 
+        <span class="c1"># If we need to find the minimum, no need to flip</span>
+        <span class="n">ind_arrange</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">poly_temp</span><span class="p">)</span>
+
+    <span class="c1"># Find the top points</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_points</span><span class="p">):</span>
+        <span class="n">temp_add</span> <span class="o">=</span> <span class="n">address_from_index</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">ind_arrange</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Address &quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">temp_add</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Index&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">ind_arrange</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Value &quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">poly_temp</span><span class="p">[</span><span class="n">ind_arrange</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span></div>
+
+
+<span class="c1"># A function to evaluate polynomials in H^{n}</span>
+<div class="viewcode-block" id="eval_poly_hn"><a class="viewcode-back" href="../source/chebyshev.html#chebyshev.eval_poly_hn">[docs]</a><span class="k">def</span> <span class="nf">eval_poly_hn</span><span class="p">(</span><span class="n">coeff_arr</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">7</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function that evaluates the polynomial on H^{n}.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        coeff_arr - n*3 ndarray storing the coefficients of the polynomial</span>
+<span class="sd">            coeff_arr[j, 0] represent coefficient of P_{j1}</span>
+<span class="sd">            coeff_arr[j, 1] represent coefficient of P_{j2}</span>
+<span class="sd">            coeff_arr[j, 2] represent coefficient of P_{j3}</span>
+<span class="sd">        level - The level we would like to evaluate</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        An array representing the values of the polynomial</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Fetch the highest power to evaluate</span>
+    <span class="n">max_j</span> <span class="o">=</span> <span class="n">coeff_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Evaluate all the polynomials</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">generate_T</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">max_j</span><span class="o">+</span><span class="mi">2</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="n">poly_temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_j</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">poly_temp</span> <span class="o">=</span> <span class="n">poly_temp</span> <span class="o">+</span> <span class="n">coeff_arr</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">T</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:,</span> <span class="n">j</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">poly_temp</span></div>
+
+
+<span class="c1"># Method for plotting any function in Hn given coefficients</span>
+<div class="viewcode-block" id="plot_hn"><a class="viewcode-back" href="../source/chebyshev.html#chebyshev.plot_hn">[docs]</a><span class="k">def</span> <span class="nf">plot_hn</span><span class="p">(</span><span class="n">coeff_arr</span><span class="p">,</span> <span class="n">level</span> <span class="o">=</span> <span class="mi">7</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function that plots a polynomial in H1. This follows from the </span>
+<span class="sd">    evaluation function above.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        coeff_arr - n*3 ndarray storing the coefficients of the polynomial</span>
+<span class="sd">            coeff_arr[j, 0] represent coefficient of P_{j1}</span>
+<span class="sd">            coeff_arr[j, 1] represent coefficient of P_{j2}</span>
+<span class="sd">            coeff_arr[j, 2] represent coefficient of P_{j3}</span>
+<span class="sd">        level - The level we would like to plot</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        A plot of the polynomial</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">poly_temp</span> <span class="o">=</span> <span class="n">eval_poly_hn</span><span class="p">(</span><span class="n">coeff_arr</span><span class="p">,</span> <span class="n">level</span><span class="p">)</span>
+    <span class="n">plot_general</span><span class="p">(</span><span class="n">poly_temp</span><span class="p">,</span> <span class="n">level</span><span class="p">)</span></div>
+
+
+<span class="c1"># Methods for finding value and position of multiple maximal points </span>
+<span class="c1">#   for a single function in H^{n}</span>
+<div class="viewcode-block" id="extremal_val_hn"><a class="viewcode-back" href="../source/chebyshev.html#chebyshev.extremal_val_hn">[docs]</a><span class="k">def</span> <span class="nf">extremal_val_hn</span><span class="p">(</span><span class="n">coeff_arr</span><span class="p">,</span> <span class="n">num_points</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">level</span> <span class="o">=</span> <span class="mi">7</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function finds the points in a single polynomial in H^{1}, </span>
+<span class="sd">        with one of the following properties:</span>
+<span class="sd">        (1) maximal value (2) minimal value (3) largest absolute value</span>
+<span class="sd">        (4) minimum absolute value </span>
+<span class="sd">        and returns their value and address.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        coeff_arr - n*3 ndarray storing the coefficients of the polynomial</span>
+<span class="sd">            coeff_arr[j, 0] represent coefficient of P_{j1}</span>
+<span class="sd">            coeff_arr[j, 1] represent coefficient of P_{j2}</span>
+<span class="sd">            coeff_arr[j, 2] represent coefficient of P_{j3}</span>
+<span class="sd">        num_points - the number of maximal/minimal points we would like</span>
+<span class="sd">            to evaluate</span>
+<span class="sd">        flag - the kind of extremum we&#39;re trying to find. 1 represent </span>
+<span class="sd">            maximal value, 2 represent minimal value, 3 represent</span>
+<span class="sd">            maximal of absolute value, 4 represent minimal of absolute</span>
+<span class="sd">            value.</span>
+<span class="sd">        level - The level we would like to evaluate </span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Prints the top values of the address and value of extremal points</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">poly_temp</span> <span class="o">=</span> <span class="n">eval_poly_hn</span><span class="p">(</span><span class="n">coeff_arr</span><span class="p">,</span> <span class="n">level</span><span class="p">)</span>
+    <span class="n">extremal_val</span><span class="p">(</span><span class="n">poly_temp</span><span class="p">,</span> <span class="n">num_points</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">level</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="max_h2_val_family"><a class="viewcode-back" href="../source/chebyshev.html#chebyshev.max_h2_val_family">[docs]</a><span class="k">def</span> <span class="nf">max_h2_val_family</span><span class="p">(</span><span class="n">start0</span><span class="p">,</span> <span class="n">end0</span><span class="p">,</span> <span class="n">num0</span><span class="p">,</span> <span class="n">start1</span><span class="p">,</span> <span class="n">end1</span><span class="p">,</span> <span class="n">num1</span><span class="p">,</span> <span class="n">num_max</span><span class="p">,</span> \
+    <span class="n">k</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">verbose_flag</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function that prints a list of supremum values for a certain family,</span>
+<span class="sd">    given different coefficients. [This essentially acts like a grid</span>
+<span class="sd">    search of coefficients.]</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        start0 - starting value for P_0k coefficient</span>
+<span class="sd">        end0 - ending value of P_0k coefficient</span>
+<span class="sd">        num0 - number of points to evaluate for P_0k coefficient</span>
+<span class="sd">        start1 - starting value for P_1k coefficient</span>
+<span class="sd">        end1 - ending value of P_1k coefficient</span>
+<span class="sd">        num1 - number of points to evaluate for P_1k coefficient</span>
+<span class="sd">        num_max - maximum number of output coefficients with smallest </span>
+<span class="sd">            norm that we would like to see.</span>
+<span class="sd">        k - The type of polynomial family (k=1,2,3)</span>
+<span class="sd">        level - The level we would like to plot</span>
+<span class="sd">        verbose - A flag that determines if we print best stats and </span>
+<span class="sd">            address during the iterations</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        For each coefficient, prints out the address and value of </span>
+<span class="sd">            extremal points.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Generate values of the polynomial</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">generate_T</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">P01_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">P02_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">P03_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">P11_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">P12_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">P13_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">P21_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">P22_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">P23_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">2</span><span class="p">]</span>
+
+    <span class="c1"># Generate space of coefficients we would like to grid search on</span>
+    <span class="n">index_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start0</span><span class="p">,</span> <span class="n">end0</span><span class="p">,</span> <span class="n">num0</span><span class="p">)</span>
+    <span class="n">index_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start1</span><span class="p">,</span> <span class="n">end1</span><span class="p">,</span> <span class="n">num1</span><span class="p">)</span>
+
+    <span class="c1"># Storage of the values obtained at the best coefficients</span>
+    <span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num0</span><span class="p">,</span> <span class="n">num1</span><span class="p">))</span>
+    <span class="n">ys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num0</span><span class="p">,</span> <span class="n">num1</span><span class="p">))</span>
+    <span class="n">zs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num0</span><span class="p">,</span> <span class="n">num1</span><span class="p">))</span>
+    <span class="n">pos_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num0</span><span class="p">,</span> <span class="n">num1</span><span class="p">))</span>
+
+    <span class="c1"># Main loop over all coefficients</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num0</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num1</span><span class="p">):</span>
+            <span class="c1"># Pick the coefficient value</span>
+            <span class="n">t0</span> <span class="o">=</span> <span class="n">index_0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">t1</span> <span class="o">=</span> <span class="n">index_1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+
+            <span class="c1"># Evaluate the polynomial</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">poly_temp</span> <span class="o">=</span> <span class="n">t0</span> <span class="o">*</span> <span class="n">P01_temp</span> <span class="o">+</span> <span class="n">t1</span> <span class="o">*</span> <span class="n">P11_temp</span> <span class="o">+</span> <span class="n">P21_temp</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">k</span> <span class="o">==</span> <span class="mi">2</span><span class="p">):</span>
+                <span class="n">poly_temp</span> <span class="o">=</span> <span class="n">t0</span> <span class="o">*</span> <span class="n">P02_temp</span> <span class="o">+</span> <span class="n">t1</span> <span class="o">*</span> <span class="n">P12_temp</span> <span class="o">+</span> <span class="n">P22_temp</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">poly_temp</span> <span class="o">=</span> <span class="n">t0</span> <span class="o">*</span> <span class="n">P03_temp</span> <span class="o">+</span> <span class="n">t1</span> <span class="o">*</span> <span class="n">P13_temp</span> <span class="o">+</span> <span class="n">P23_temp</span>
+            
+            <span class="c1"># Find the max-norm of the polynomial</span>
+            <span class="n">poly_temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">poly_temp</span><span class="p">)</span>
+            <span class="n">max_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">poly_temp</span><span class="p">)</span>
+            <span class="n">max_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">poly_temp</span><span class="p">)</span>
+            <span class="n">max_add</span> <span class="o">=</span> <span class="n">address_from_index</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">max_pos</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+            
+            <span class="c1"># Store the max-norm and the address</span>
+            <span class="n">xs</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">t0</span>
+            <span class="n">ys</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">t1</span>
+            <span class="n">zs</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_val</span>
+            <span class="n">pos_arr</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_pos</span>
+            
+            <span class="c1"># Print max-norm and address, if requested</span>
+            <span class="k">if</span> <span class="n">verbose_flag</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">()</span>
+                <span class="nb">print</span><span class="p">()</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Coefficient of P0k is &#39;</span><span class="p">,</span> <span class="n">t0</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Coefficient of P1k is &#39;</span><span class="p">,</span> <span class="n">t1</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Maximum value is&#39;</span><span class="p">,</span> <span class="n">max_val</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Maximum achieved at address &#39;</span><span class="p">,</span> <span class="n">max_add</span><span class="p">)</span>
+    
+    <span class="c1"># Reshape the arrays to have the right shape</span>
+    <span class="n">xs</span> <span class="o">=</span> <span class="n">xs</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">num0</span><span class="o">*</span><span class="n">num1</span><span class="p">)</span>
+    <span class="n">ys</span> <span class="o">=</span> <span class="n">ys</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">num0</span><span class="o">*</span><span class="n">num1</span><span class="p">)</span>
+    <span class="n">zs</span> <span class="o">=</span> <span class="n">zs</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">num0</span><span class="o">*</span><span class="n">num1</span><span class="p">)</span>
+
+    <span class="c1"># Sort the array based on the minimum max_norm</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span>
+
+    <span class="c1"># Find the best coefficients and return their values</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_max</span><span class="p">):</span>
+        <span class="n">temp_ind</span> <span class="o">=</span> <span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Coefficient of P0k with ranking &quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="n">temp_ind</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Coefficient of P1k with ranking &quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">ys</span><span class="p">[</span><span class="n">temp_ind</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Value with ranking&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">zs</span><span class="p">[</span><span class="n">temp_ind</span><span class="p">])</span>
+
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter3D</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">zs</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="max_h1_full_family"><a class="viewcode-back" href="../source/chebyshev.html#chebyshev.max_h1_full_family">[docs]</a><span class="k">def</span> <span class="nf">max_h1_full_family</span><span class="p">(</span><span class="n">start1</span><span class="p">,</span> <span class="n">end1</span><span class="p">,</span> <span class="n">num1</span><span class="p">,</span> <span class="n">start2</span><span class="p">,</span> <span class="n">end2</span><span class="p">,</span> <span class="n">num2</span><span class="p">,</span> \
+    <span class="n">start3</span><span class="p">,</span> <span class="n">end3</span><span class="p">,</span> <span class="n">num3</span><span class="p">,</span> <span class="n">num_max</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">verbose_flag</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="c1"># Generate values of the polynomial</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">generate_T</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">P01_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">P02_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">P03_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">P11_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">P12_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">P13_temp</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># Generate space of coefficients we would like to grid search on</span>
+    <span class="n">index_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start1</span><span class="p">,</span> <span class="n">end1</span><span class="p">,</span> <span class="n">num1</span><span class="p">)</span>
+    <span class="n">index_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start2</span><span class="p">,</span> <span class="n">end2</span><span class="p">,</span> <span class="n">num2</span><span class="p">)</span>
+    <span class="n">index_3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start3</span><span class="p">,</span> <span class="n">end3</span><span class="p">,</span> <span class="n">num3</span><span class="p">)</span>
+
+    <span class="c1"># Storage of the values obtained at the best coefficients</span>
+    <span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num1</span><span class="p">,</span> <span class="n">num2</span><span class="p">,</span> <span class="n">num3</span><span class="p">))</span>
+    <span class="n">ys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num1</span><span class="p">,</span> <span class="n">num2</span><span class="p">,</span> <span class="n">num3</span><span class="p">))</span>
+    <span class="n">zs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num1</span><span class="p">,</span> <span class="n">num2</span><span class="p">,</span> <span class="n">num3</span><span class="p">))</span>
+    <span class="n">val_s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num1</span><span class="p">,</span> <span class="n">num2</span><span class="p">,</span> <span class="n">num3</span><span class="p">))</span>
+    <span class="c1"># pos_arr = np.zeros((num1, num2, num3))</span>
+
+    <span class="c1"># Main loop over all coefficients</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num2</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num3</span><span class="p">):</span>
+                <span class="c1"># Pick the coefficient value</span>
+                <span class="n">t1</span> <span class="o">=</span> <span class="n">index_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">t2</span> <span class="o">=</span> <span class="n">index_2</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                <span class="n">t3</span> <span class="o">=</span> <span class="n">index_3</span><span class="p">[</span><span class="n">l</span><span class="p">]</span>
+
+                <span class="c1"># Evaluate the polynomial</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="n">poly_temp</span> <span class="o">=</span> <span class="n">P11_temp</span> <span class="o">+</span> <span class="n">t1</span> <span class="o">*</span> <span class="n">P01_temp</span> <span class="o">+</span> <span class="n">t2</span> <span class="o">*</span> <span class="n">P02_temp</span> \
+                        <span class="o">+</span> <span class="n">t3</span> <span class="o">*</span> <span class="n">P03_temp</span>
+                <span class="k">elif</span> <span class="p">(</span><span class="n">k</span> <span class="o">==</span> <span class="mi">2</span><span class="p">):</span>
+                    <span class="n">poly_temp</span> <span class="o">=</span> <span class="n">P12_temp</span> <span class="o">+</span> <span class="n">t1</span> <span class="o">*</span> <span class="n">P01_temp</span> <span class="o">+</span> <span class="n">t2</span> <span class="o">*</span> <span class="n">P02_temp</span> \
+                        <span class="o">+</span> <span class="n">t3</span> <span class="o">*</span> <span class="n">P03_temp</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">poly_temp</span> <span class="o">=</span> <span class="n">P13_temp</span> <span class="o">+</span> <span class="n">t1</span> <span class="o">*</span> <span class="n">P01_temp</span> <span class="o">+</span> <span class="n">t2</span> <span class="o">*</span> <span class="n">P02_temp</span> \
+                        <span class="o">+</span> <span class="n">t3</span> <span class="o">*</span> <span class="n">P03_temp</span>
+                
+                <span class="c1"># Find the max-norm of the polynomial</span>
+                <span class="n">poly_temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">poly_temp</span><span class="p">)</span>
+                <span class="n">max_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">poly_temp</span><span class="p">)</span>
+                <span class="n">max_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">poly_temp</span><span class="p">)</span>
+                <span class="n">max_add</span> <span class="o">=</span> <span class="n">address_from_index</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">max_pos</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+                <span class="c1"># Store the max-norm and the address</span>
+                <span class="n">xs</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="n">t1</span>
+                <span class="n">ys</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="n">t2</span>
+                <span class="n">zs</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="n">t3</span>
+                <span class="n">val_s</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_val</span>
+                <span class="c1"># pos_arr[i, j] = max_pos</span>
+
+                <span class="k">if</span> <span class="n">verbose_flag</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">()</span>
+                    <span class="nb">print</span><span class="p">()</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Coefficient of P01 is &#39;</span><span class="p">,</span> <span class="n">t1</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Coefficient of P02 is &#39;</span><span class="p">,</span> <span class="n">t2</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Coefficient of P03 is &#39;</span><span class="p">,</span> <span class="n">t3</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Maximum value is&#39;</span><span class="p">,</span> <span class="n">max_val</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Maximum achieved at address &#39;</span><span class="p">,</span> <span class="n">max_add</span><span class="p">)</span>
+    
+    <span class="c1"># print(val_s)</span>
+    <span class="c1"># Reshape the arrays to have the right shape</span>
+    <span class="n">xs</span> <span class="o">=</span> <span class="n">xs</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">num1</span><span class="o">*</span><span class="n">num2</span><span class="o">*</span><span class="n">num3</span><span class="p">)</span>
+    <span class="n">ys</span> <span class="o">=</span> <span class="n">ys</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">num1</span><span class="o">*</span><span class="n">num2</span><span class="o">*</span><span class="n">num3</span><span class="p">)</span>
+    <span class="n">zs</span> <span class="o">=</span> <span class="n">zs</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">num1</span><span class="o">*</span><span class="n">num2</span><span class="o">*</span><span class="n">num3</span><span class="p">)</span>
+    <span class="n">val_s</span> <span class="o">=</span> <span class="n">val_s</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">num1</span><span class="o">*</span><span class="n">num2</span><span class="o">*</span><span class="n">num3</span><span class="p">)</span>
+
+    <span class="c1"># Sort the array based on the minimum max_norm</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">val_s</span><span class="p">)</span>
+    <span class="c1"># print(index)</span>
+    
+    <span class="nb">print</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">()</span>
+
+    <span class="c1"># Find the best coefficients and return their values</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_max</span><span class="p">):</span>
+        <span class="n">temp_ind</span> <span class="o">=</span> <span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Coefficient of P01 with ranking &quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="n">temp_ind</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Coefficient of P02 with ranking &quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">ys</span><span class="p">[</span><span class="n">temp_ind</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Coefficient of P03 with ranking &quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">zs</span><span class="p">[</span><span class="n">temp_ind</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Value with ranking&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">val_s</span><span class="p">[</span><span class="n">temp_ind</span><span class="p">])</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Sreeram Venkat, Shashank Sule, Tian Lan, Max Jiang, Xiaoduo Wang
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
