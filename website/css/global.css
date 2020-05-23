@@ -296,3 +296,11 @@ a.article:hover {
 #heading {
     margin-bottom:5%;
 }
+
+a:not(.sidelink){
+    color: #B31B1B;
+}
+
+a:not(.sidelink):hover{
+    color: black;
+}
