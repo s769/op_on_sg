@@ -1,0 +1,396 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>quadrature &mdash; OP_on_SG 5/21/2020 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> OP_on_SG
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../source/chebyshev.html">chebyshev module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/energy_ops.html">energy_ops module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/innerprods.html">innerprods module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/monomials.html">monomials module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/ops_main.html">ops_main module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/plotting.html">plotting module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/quadrature.html">quadrature module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/recursions.html">recursions module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/symmetric.html">symmetric module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/util.html">util module</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">OP_on_SG</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>quadrature</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for quadrature</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">recursions</span> <span class="k">import</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">ap</span>
+<span class="kn">import</span> <span class="nn">gmpy2</span> <span class="k">as</span> <span class="nn">gm</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">from</span> <span class="nn">monomials</span> <span class="k">import</span> <span class="n">p_jk</span><span class="p">,</span> <span class="n">generate_T</span><span class="p">,</span> <span class="n">f_jk</span>
+<span class="kn">from</span> <span class="nn">Polynomial</span> <span class="k">import</span> <span class="n">Polynomial</span>
+<span class="kn">import</span> <span class="nn">sympy</span> <span class="k">as</span> <span class="nn">sp</span>
+<span class="kn">from</span> <span class="nn">util</span> <span class="k">import</span> <span class="n">HiddenPrints</span><span class="p">,</span> <span class="n">bmatrix</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">tqdm</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">This file contains functions used to study higher order quadrature on SG using n-harmonic splines</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="make_vortex"><a class="viewcode-back" href="../source/quadrature.html#quadrature.make_vortex">[docs]</a><span class="k">def</span> <span class="nf">make_vortex</span><span class="p">(</span><span class="n">max_level</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        This function generates a list of addresses for the vertices chosen for</span>
+<span class="sd">        interpolation using the &quot;vortex method.&quot;</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            max_level: integer representing the level of SG used for interpolation</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            list of addresses for the vertices chosen for</span>
+<span class="sd">            interpolation using the &quot;vortex method.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">addr0</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">addr1</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">addr2</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_level</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">ad0</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span>
+        <span class="n">ad1</span> <span class="o">=</span> <span class="s1">&#39;1&#39;</span>
+        <span class="n">ad2</span> <span class="o">=</span> <span class="s1">&#39;2&#39;</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+            <span class="n">ad0</span> <span class="o">+=</span> <span class="s1">&#39;2&#39;</span>
+            <span class="n">ad1</span> <span class="o">+=</span> <span class="s1">&#39;0&#39;</span>
+            <span class="n">ad2</span> <span class="o">+=</span> <span class="s1">&#39;1&#39;</span>
+        <span class="n">addr0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ad0</span><span class="p">)</span>
+        <span class="n">addr1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ad1</span><span class="p">)</span>
+        <span class="n">addr2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ad2</span><span class="p">)</span> 
+    <span class="k">return</span> <span class="n">addr0</span> <span class="o">+</span> <span class="n">addr1</span> <span class="o">+</span> <span class="n">addr2</span></div>
+
+<div class="viewcode-block" id="vandermonde"><a class="viewcode-back" href="../source/quadrature.html#quadrature.vandermonde">[docs]</a><span class="k">def</span> <span class="nf">vandermonde</span><span class="p">(</span><span class="n">j</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        This function creates the interpolation &quot;Vandermonde&quot; matrix used for determining</span>
+<span class="sd">        quadrature weights using up to j-harmonic splines.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            j: maximum degree of harmonic spline used</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            np.array that is the interpolation matrix used for determining</span>
+<span class="sd">            quadrature weights using up to j-harmonic splines.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">addresses</span> <span class="o">=</span> <span class="n">make_vortex</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+
+    <span class="n">q_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="o">*</span><span class="n">j</span><span class="o">+</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="o">*</span><span class="n">j</span><span class="o">+</span><span class="mi">3</span><span class="p">))</span>
+    
+    <span class="k">for</span> <span class="n">ind1</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">j</span><span class="o">+</span><span class="mi">3</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">ind2</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">j</span><span class="o">+</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">jj</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">ind1</span><span class="o">/</span><span class="mi">3</span><span class="p">))</span> 
+            <span class="n">kk</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ind1</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">with</span> <span class="n">HiddenPrints</span><span class="p">():</span>
+                <span class="n">q_mat</span><span class="p">[</span><span class="n">ind1</span><span class="p">,</span> <span class="n">ind2</span><span class="p">]</span> <span class="o">=</span> <span class="n">p_jk</span><span class="p">(</span><span class="n">addresses</span><span class="p">[</span><span class="n">ind2</span><span class="p">],</span> <span class="n">jj</span><span class="p">,</span> <span class="n">kk</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">q_mat</span></div>
+
+<div class="viewcode-block" id="ints_vec"><a class="viewcode-back" href="../source/quadrature.html#quadrature.ints_vec">[docs]</a><span class="k">def</span> <span class="nf">ints_vec</span><span class="p">(</span><span class="n">j</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        This function computes the integrals of {P_01, P_02, P_03, ..., P_j2, P_j3}.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            j: maximum degree of polynomial</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            np.array of integrals of {P_01, P_02, P_03, ..., P_j2, P_j3}</span>
+
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">j</span><span class="o">+</span><span class="mi">3</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">j</span><span class="o">+</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">jj</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">ind</span><span class="o">/</span><span class="mi">3</span><span class="p">))</span> 
+        <span class="n">kk</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ind</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">res</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">Polynomial</span><span class="o">.</span><span class="n">basis_inner</span><span class="p">(</span><span class="n">jj</span><span class="p">,</span> <span class="n">kk</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="get_weights"><a class="viewcode-back" href="../source/quadrature.html#quadrature.get_weights">[docs]</a><span class="k">def</span> <span class="nf">get_weights</span><span class="p">(</span><span class="n">j</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        This function determines the quadrature weights for n-Harmonic splines quadrature</span>
+<span class="sd">        using the P_jk basis</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            j: maximum degree of polynomial used for quadrature</span>
+
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.array of quadrature weights for the basis {P_01, P_02, P_03, ..., P_j2, P_j3}</span>
+<span class="sd">            </span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">vandermonde</span><span class="p">(</span><span class="n">j</span><span class="p">),</span> <span class="n">ints_vec</span><span class="p">(</span><span class="n">j</span><span class="p">))</span></div>
+
+<span class="c1">#print(np.linalg.inv(quad_mat(5)))</span>
+<span class="c1">#print(make_vortex(3))</span>
+<span class="c1">#print(sum(get_weights(20)))</span>
+
+
+<div class="viewcode-block" id="quad_int"><a class="viewcode-back" href="../source/quadrature.html#quadrature.quad_int">[docs]</a><span class="k">def</span> <span class="nf">quad_int</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        This function calculates the quadrature integral for a given function.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            func: function whose input is the address of a point on SG </span>
+<span class="sd">            (according to the convention in monomials.py) </span>
+<span class="sd">            j: maximum degree of polynomial used for quadrature</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            approximate integral of func</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">addresses</span> <span class="o">=</span> <span class="n">make_vortex</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+    <span class="n">func_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">j</span><span class="o">+</span><span class="mi">3</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">addresses</span><span class="p">)):</span>
+        <span class="n">func_vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">addresses</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">get_weights</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">func_vals</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="make_block"><a class="viewcode-back" href="../source/quadrature.html#quadrature.make_block">[docs]</a><span class="k">def</span> <span class="nf">make_block</span><span class="p">(</span><span class="n">ind1</span><span class="p">,</span> <span class="n">ind2</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        This function is used to generate the blocks in the block-matrix form </span>
+<span class="sd">        of the generalized vortex method for interpolation.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            ind1, ind2: block matrix indices in the block form of the </span>
+<span class="sd">            generalized vortex method for interpolation</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            sp.Matrix block C_ij in the block form of the </span>
+<span class="sd">            generalized vortex method for interpolation</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># ad0, ad1, ad2 = &#39;0&#39;, &#39;1&#39;, &#39;2&#39;</span>
+    <span class="n">ad0</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">ind1</span><span class="p">):</span>
+        <span class="n">ad0</span> <span class="o">+=</span> <span class="s1">&#39;1&#39;</span>
+        <span class="c1"># ad1 += &#39;2&#39;</span>
+        <span class="c1"># ad2 += &#39;0&#39;</span>
+
+    
+    <span class="n">a</span> <span class="o">=</span> <span class="n">f_jk</span><span class="p">(</span><span class="n">ad0</span><span class="p">,</span> <span class="n">ind2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">f_jk</span><span class="p">(</span><span class="n">ad0</span><span class="p">,</span> <span class="n">ind2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">f_jk</span><span class="p">(</span><span class="n">ad0</span><span class="p">,</span> <span class="n">ind2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">],</span> <span class="p">[</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">],</span> <span class="p">[</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">]])</span></div>
+
+<div class="viewcode-block" id="make_big_mat"><a class="viewcode-back" href="../source/quadrature.html#quadrature.make_big_mat">[docs]</a><span class="k">def</span> <span class="nf">make_big_mat</span><span class="p">(</span><span class="n">j</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        This function creates the block form of the generalized vortex method for interpolation</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            j: maximum degree of polynomial used for quadrature</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            sp.Block_Matrix representing the generalized vortex method for interpolation</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">big_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">ind1</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">small_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">ind2</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">small_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">make_block</span><span class="p">(</span><span class="n">ind1</span><span class="p">,</span> <span class="n">ind2</span><span class="p">))</span>
+        <span class="n">big_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">small_list</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">sp</span><span class="o">.</span><span class="n">BlockMatrix</span><span class="p">(</span><span class="n">big_list</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="block_to_regular"><a class="viewcode-back" href="../source/quadrature.html#quadrature.block_to_regular">[docs]</a><span class="k">def</span> <span class="nf">block_to_regular</span><span class="p">(</span><span class="n">mat</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        This function converts an sp.Block_Matrix to an sp.Matrix</span>
+<span class="sd">        with the same elements</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            mat: sp.Block_Matrix to be converted</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            sp.Matrix with the same elements as mat</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">rows</span><span class="p">,</span> <span class="n">mat</span><span class="o">.</span><span class="n">cols</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">rows</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">cols</span><span class="p">):</span>
+            <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">mat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">res</span></div>
+
+<span class="c1"># myfunc = lambda addr: p_jk(addr, 4,2)</span>
+
+<span class="c1"># print(quad_int(myfunc, 3))</span>
+<span class="c1"># print(quad_int(myfunc, 4))</span>
+<span class="c1"># print(quad_int(myfunc, 5))</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Sreeram Venkat, Shashank Sule, Tian Lan, Max Jiang, Xiaoduo Wang
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,758 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>util &mdash; OP_on_SG 5/21/2020 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> OP_on_SG
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../source/chebyshev.html">chebyshev module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/energy_ops.html">energy_ops module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/innerprods.html">innerprods module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/monomials.html">monomials module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/ops_main.html">ops_main module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/plotting.html">plotting module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/Polynomial.html">Polynomial module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/quadrature.html">quadrature module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/recursions.html">recursions module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/symmetric.html">symmetric module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/util.html">util module</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">OP_on_SG</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>util</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for util</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">gmpy2</span> <span class="k">as</span> <span class="nn">gm</span>
+
+<span class="kn">from</span> <span class="nn">recursions</span> <span class="k">import</span> <span class="n">alpha_array</span><span class="p">,</span> <span class="n">gamma_array</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This file will implement general helper functions. </span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="HiddenPrints"><a class="viewcode-back" href="../source/util.html#util.HiddenPrints">[docs]</a><span class="k">class</span> <span class="nc">HiddenPrints</span><span class="p">:</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        This is a class that can be used to suppress stdout from function calls.</span>
+
+<span class="sd">        Usage:</span>
+<span class="sd">            with HiddenPrints():</span>
+<span class="sd">                &gt;&gt;do stuff without printing</span>
+<span class="sd">            </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_original_stdout</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">devnull</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+        <span class="c1"># self._original_sterr = sys.stderr</span>
+        <span class="c1"># sys.stderr = open(os.devnull, &#39;w&#39;)</span>
+
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="c1"># sys.stderr.close()</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_original_stdout</span></div>
+        <span class="c1"># sys.stderr = self._original_sterr</span>
+
+
+<div class="viewcode-block" id="bmatrix"><a class="viewcode-back" href="../source/util.html#util.bmatrix">[docs]</a><span class="k">def</span> <span class="nf">bmatrix</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts np.array into a LaTeX bmatrix</span>
+<span class="sd">        Args:</span>
+<span class="sd">            a: numpy array</span>
+<span class="sd">        Returns: </span>
+<span class="sd">            LaTeX bmatrix of a as a string</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;bmatrix can at most display two dimensions&#39;</span><span class="p">)</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;]&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+    <span class="n">rv</span> <span class="o">=</span> <span class="p">[</span><span class="sa">r</span><span class="s1">&#39;\begin</span><span class="si">{bmatrix}</span><span class="s1">&#39;</span><span class="p">]</span>
+    <span class="n">rv</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;  &#39;</span> <span class="o">+</span> <span class="s1">&#39; &amp; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">]</span>
+    <span class="n">rv</span> <span class="o">+=</span>  <span class="p">[</span><span class="sa">r</span><span class="s1">&#39;\end</span><span class="si">{bmatrix}</span><span class="s1">&#39;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">rv</span><span class="p">:</span>
+      <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="k">return</span> </div>
+
+<div class="viewcode-block" id="address_from_index"><a class="viewcode-back" href="../source/util.html#util.address_from_index">[docs]</a><span class="k">def</span> <span class="nf">address_from_index</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Computes address vector from the index.</span>
+
+<span class="sd">    Returns the address vector of a point with certain TLR index in </span>
+<span class="sd">        a graph of SG at some fixed level.</span>
+<span class="sd">    </span>
+<span class="sd">    For point F_{w1} F_{w2} ... F_{wm} q_{k} (0&lt;=wi&lt;=2, 0&lt;=k&lt;=2), we can </span>
+<span class="sd">    represent it in two ways:</span>
+<span class="sd">    1. Address Vector: [wm, ..., w1, k] (Note that this represents</span>
+<span class="sd">        picking transform F_{wm}, ..., F_{w1} in this sequence and then </span>
+<span class="sd">        finding vertex q_{k} in the final triangle. This order is weird </span>
+<span class="sd">        but will prove to be useful)</span>
+<span class="sd">    2. TLR Index: k = wm * 3^m + ... + w1 * 3 + k + 1</span>
+
+<span class="sd">    This function provides transform 2 -&gt; 1.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        level: A nonnegative integer representing the level of SG we&#39;re </span>
+<span class="sd">            working with.</span>
+<span class="sd">        index: A number in the range [1, 3^(level+1)] representing the </span>
+<span class="sd">            TLR index of some point in level m.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        address: np.array of length (level+1) representing the address </span>
+<span class="sd">            of the point specified by index in a particular level of SG.</span>
+<span class="sd">    </span>
+<span class="sd">    Example:</span>
+<span class="sd">        address_from_index(1, 4) = [1, 0]</span>
+<span class="sd">        address_from_index(2, 21) = [2, 1, 2]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Initialize the vector to store the address</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">level</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># First decide the last term of the vector</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">index</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">v</span><span class="p">[</span><span class="n">level</span><span class="p">]</span> <span class="o">=</span> <span class="n">index</span> <span class="o">%</span> <span class="mi">3</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">index</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span>
+
+    <span class="c1"># Perform transformation similar to base 10 -&gt; base 3</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">level</span><span class="p">):</span>
+        <span class="n">v</span><span class="p">[</span><span class="n">level</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">index</span> <span class="o">%</span> <span class="mi">3</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">index</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">v</span></div>
+
+
+<div class="viewcode-block" id="index_from_address"><a class="viewcode-back" href="../source/util.html#util.index_from_address">[docs]</a><span class="k">def</span> <span class="nf">index_from_address</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Computes TLR Index from Address vector.</span>
+
+<span class="sd">    Returns the TLR index of a point with certain address vector in </span>
+<span class="sd">        a graph of SG at some fixed level.</span>
+<span class="sd">    </span>
+<span class="sd">    For point F_{w1} F_{w2} ... F_{wm} q_{k} (0&lt;=wi&lt;=2, 0&lt;=k&lt;=2), we </span>
+<span class="sd">        can represent it in two ways:</span>
+<span class="sd">    1. Address Vector: [wm, ..., w1, k] (Note that this represents</span>
+<span class="sd">        picking transform F_{wm}, ..., F_{w1} in this sequence and then </span>
+<span class="sd">        finding vertex q_{l} in the final triangle)</span>
+<span class="sd">    2. TLR Index: k = wm * 3^m + ... + w1 * 3 + k + 1</span>
+
+<span class="sd">    This function provides transform 1 -&gt; 2.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        level: A nonnegative integer representing the level of SG we&#39;re </span>
+<span class="sd">            working with.</span>
+<span class="sd">        address: np.array of size (level+1) representing the address </span>
+<span class="sd">            vector of a point in some SG graph.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        index: A number in the range [1, 3^(level+1)] representing the </span>
+<span class="sd">            TLR index of some point in level m.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Initialize index with additional 1 added</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="c1"># Perform transformation similar to base 3 -&gt; base 10</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">level</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">index</span> <span class="o">+=</span> <span class="n">address</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">3</span> <span class="o">**</span> <span class="p">(</span><span class="n">level</span> <span class="o">-</span> <span class="n">i</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">index</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="q_contract"><a class="viewcode-back" href="../source/util.html#util.q_contract">[docs]</a><span class="k">def</span> <span class="nf">q_contract</span><span class="p">(</span><span class="n">orig_mat</span><span class="p">,</span> <span class="n">base_point</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Computes the image of points under some contraction.</span>
+
+<span class="sd">    Contracts all points represented in rows of v toward the base_point</span>
+<span class="sd">        with a contraction ratio of 1/2.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        orig_mat: A np.array of size (t, 2) for some integer t, with </span>
+<span class="sd">            each row representing the coordinate of a point</span>
+<span class="sd">        base_point: A np.array of length 2 representing the coordinates</span>
+<span class="sd">            of the point we&#39;re contracting toward.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        contract_mat: A np.array of size (t, 2) for some integer t, with </span>
+<span class="sd">            each row the contracted version of that in orig_mat.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Use broadcasting to find the average points</span>
+    <span class="n">contract_mat</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">orig_mat</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">base_point</span>
+    <span class="k">return</span> <span class="n">contract_mat</span></div>
+
+
+<div class="viewcode-block" id="sg_coordinates"><a class="viewcode-back" href="../source/util.html#util.sg_coordinates">[docs]</a><span class="k">def</span> <span class="nf">sg_coordinates</span><span class="p">(</span><span class="n">level</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Computes the coordinates of points for SG at some level.</span>
+
+<span class="sd">    Given base points q0 = [cos(5*pi/12) sin(5*pi/12)], q1=[0 0],</span>
+<span class="sd">        q2=[cos(pi/12) sin(pi/12)], we calculate the coordinates of all</span>
+<span class="sd">        points up to some level of the SG graph.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        level: A nonnegative integer representing the level of SG we&#39;re </span>
+<span class="sd">            working with.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        coord_mat: A matrix with dimension (3^(level+1), 2), with each</span>
+<span class="sd">            row representing coordinate of one point in V_m</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Initialize the boundary points of V_0</span>
+    <span class="n">q0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">/</span> <span class="mi">12</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">/</span> <span class="mi">12</span><span class="p">)])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">q0</span><span class="p">)</span>
+    <span class="n">q1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">q1</span><span class="p">)</span>
+    <span class="n">q2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">12</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">12</span><span class="p">)])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">q2</span><span class="p">)</span>
+
+    <span class="c1"># Stack the first three coordinates into a matrix</span>
+    <span class="n">coord_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">q0</span><span class="p">,</span> <span class="n">q1</span><span class="p">,</span> <span class="n">q2</span><span class="p">))</span>
+
+    <span class="c1"># Each iteration produces a matrix of coordinates in the next level</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">level</span><span class="p">):</span>
+        <span class="n">coord_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">q_contract</span><span class="p">(</span><span class="n">coord_mat</span><span class="p">,</span> <span class="n">q0</span><span class="p">),</span>
+            <span class="n">q_contract</span><span class="p">(</span><span class="n">coord_mat</span><span class="p">,</span> <span class="n">q1</span><span class="p">),</span> <span class="n">q_contract</span><span class="p">(</span><span class="n">coord_mat</span><span class="p">,</span> <span class="n">q2</span><span class="p">)))</span>
+
+    <span class="k">return</span> <span class="n">coord_mat</span></div>
+
+
+<div class="viewcode-block" id="alternate_address"><a class="viewcode-back" href="../source/util.html#util.alternate_address">[docs]</a><span class="k">def</span> <span class="nf">alternate_address</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Computes the alternate address of a point.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        level: A nonnegative integer representing the level of SG we&#39;re </span>
+<span class="sd">            working with.</span>
+<span class="sd">        address: np.array of size (level+1) representing the address </span>
+<span class="sd">            vector of a point in some SG graph.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        alt_address: np.array of size (level+1) representing the </span>
+<span class="sd">            alternate address of the same point in some SG graph.</span>
+<span class="sd">    </span>
+<span class="sd">    Example:</span>
+<span class="sd">        alternate_address(2, [0, 1, 2]) = [0, 2, 1] (F1F0q2 = F2F0q1)</span>
+<span class="sd">        alternate_address(2, [1, 0, 0]) = [0, 1, 1] (F0F1q1 = F1F1q0)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Make a copy of the address</span>
+    <span class="n">alt_address</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">level</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="c1"># Find the index of the last address entry that is not equal </span>
+        <span class="c1">#   to the final value</span>
+        <span class="n">last_val</span> <span class="o">=</span> <span class="n">alt_address</span><span class="p">[</span><span class="n">level</span><span class="p">]</span>
+        <span class="n">temp_index</span> <span class="o">=</span> <span class="n">level</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">last_val</span> <span class="o">==</span> <span class="n">address</span><span class="p">[</span><span class="n">temp_index</span><span class="p">]</span> <span class="ow">and</span> <span class="n">temp_index</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">temp_index</span> <span class="o">=</span> <span class="n">temp_index</span> <span class="o">-</span> <span class="mi">1</span>
+        
+        <span class="c1"># If there is such an entry, interchange it with the final value</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">alt_address</span><span class="p">[</span><span class="n">temp_index</span><span class="p">]</span>
+        <span class="n">alt_address</span><span class="p">[</span><span class="n">temp_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">alt_address</span><span class="p">[</span><span class="n">level</span><span class="p">]</span>
+        <span class="n">alt_address</span><span class="p">[</span><span class="n">level</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span>
+    
+    <span class="k">return</span> <span class="n">alt_address</span> </div>
+
+<div class="viewcode-block" id="alternate_index"><a class="viewcode-back" href="../source/util.html#util.alternate_index">[docs]</a><span class="k">def</span> <span class="nf">alternate_index</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the alternate TLR index of a point</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        level: A nonnegative integer representing the level of SG we&#39;re </span>
+<span class="sd">            working with.</span>
+<span class="sd">        index: A number in the range [1, 3^(level+1)] representing the </span>
+<span class="sd">            TLR index of some point in level m.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        alt_index: A number in the range [1, 3^(level+1)] representing </span>
+<span class="sd">            the alternate TLR index of the point in level m.</span>
+<span class="sd">   </span>
+<span class="sd">    Example:</span>
+<span class="sd">        alternate_index(1, 2) = 4</span>
+<span class="sd">        alternate_index(1, 3) = 7 </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">current_address</span> <span class="o">=</span> <span class="n">address_from_index</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>
+    <span class="n">alt_address</span> <span class="o">=</span> <span class="n">alternate_address</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">current_address</span><span class="p">)</span>
+    <span class="n">alt_index</span> <span class="o">=</span> <span class="n">index_from_address</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">alt_address</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">alt_index</span></div>
+
+<div class="viewcode-block" id="get_neighbors"><a class="viewcode-back" href="../source/util.html#util.get_neighbors">[docs]</a><span class="k">def</span> <span class="nf">get_neighbors</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the addresses of the 4 neighbors of a point</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        level: A nonnegative integer representing the level of SG we&#39;re </span>
+<span class="sd">            working with.</span>
+<span class="sd">        address: np.array of size (level+1) representing the address </span>
+<span class="sd">            vector of a point in some SG graph.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        nbhd_mat: np.array of size (4, level+1) representing the </span>
+<span class="sd">            address of the 4 neighbors of the point. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Find alternate address of the point</span>
+    <span class="n">alt_address</span> <span class="o">=</span> <span class="n">alternate_address</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
+
+    <span class="c1"># ones has all coordinates 1</span>
+    <span class="c1"># di has only the (m+1)-th term 1, others 0</span>
+    <span class="n">di</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">di</span><span class="p">[</span><span class="n">level</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="c1"># Initialize space for nbhd matrix</span>
+    <span class="n">nbhd_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="n">level</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="c1"># The only update happens on the last term, where q_i is replaced by </span>
+    <span class="c1">#   q_(i-1) and q_(i+1). Both cases reduce to mod 3 operations.</span>
+    <span class="n">nbhd_mat</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mod</span><span class="p">(</span><span class="n">address</span> <span class="o">-</span> <span class="n">di</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">nbhd_mat</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mod</span><span class="p">(</span><span class="n">address</span> <span class="o">+</span> <span class="n">di</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">nbhd_mat</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mod</span><span class="p">(</span><span class="n">alt_address</span> <span class="o">-</span> <span class="n">di</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">nbhd_mat</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mod</span><span class="p">(</span><span class="n">alt_address</span> <span class="o">+</span> <span class="n">di</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">nbhd_mat</span></div>
+
+<div class="viewcode-block" id="index_alternate_level"><a class="viewcode-back" href="../source/util.html#util.index_alternate_level">[docs]</a><span class="k">def</span> <span class="nf">index_alternate_level</span><span class="p">(</span><span class="n">current_level</span><span class="p">,</span> <span class="n">target_level</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Finds the index of a point in another level of SG</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        current_level: A nonnegative integer representing the current</span>
+<span class="sd">            level of SG we&#39;re working with.</span>
+<span class="sd">        target_level: A nonnegative integer representing the target</span>
+<span class="sd">            level of SG we&#39;re moving our point to. This should be larger</span>
+<span class="sd">            than the current level.</span>
+<span class="sd">        address: np.array of size (current_level+1) representing the </span>
+<span class="sd">            address vector of a point in some SG graph.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        target_index: A number in the range [1, 3^(target_level+1)] </span>
+<span class="sd">            representing the TLR index of the point in target_level.</span>
+<span class="sd">    </span>
+<span class="sd">    Example: </span>
+<span class="sd">        index_alternate_level(1, 1, [0, 1]) = 2</span>
+<span class="sd">        index_alternate_level(1, 2, [0, 1]) = 5</span>
+<span class="sd">        index_alternate_level(1, 3, [0, 1]) = 14</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">target_address</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">target_level</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">address</span><span class="p">[</span><span class="n">current_level</span><span class="p">]</span>
+    <span class="n">target_address</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">current_level</span><span class="p">]</span> <span class="o">=</span> <span class="n">address</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">current_level</span><span class="p">]</span>
+    <span class="n">target_index</span> <span class="o">=</span> <span class="n">index_from_address</span><span class="p">(</span><span class="n">target_level</span><span class="p">,</span> <span class="n">target_address</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">target_index</span></div>
+
+<div class="viewcode-block" id="sg_edge_index"><a class="viewcode-back" href="../source/util.html#util.sg_edge_index">[docs]</a><span class="k">def</span> <span class="nf">sg_edge_index</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">ind1</span><span class="p">,</span> <span class="n">ind2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates an array of indices on a given edge</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        level: A nonnegative integer representing the level of SG we&#39;re </span>
+<span class="sd">            working with.</span>
+<span class="sd">        ind1: a number representing the index of the first boundary </span>
+<span class="sd">            point (1, 2, or 3)</span>
+<span class="sd">        ind2: a number representing the index of the second boundary</span>
+<span class="sd">            point (1, 2, or 3, should be larger than ind1)</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        index_arr: np.array of length 2^(m+1), representing array of </span>
+<span class="sd">            indices on the edge (each point is counted twice except </span>
+<span class="sd">            for the two boundary points.)</span>
+<span class="sd">    </span>
+<span class="sd">    Example:</span>
+<span class="sd">        sg_edge_index(2, 0, 2) = [1, 3, 7, 9, 19, 21, 25, 27]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">index_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="n">level</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="n">level</span><span class="o">+</span><span class="mi">1</span><span class="p">)):</span>
+        <span class="n">temp_address</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">level</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="n">j</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">level</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">((</span><span class="n">l</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="n">temp_address</span><span class="p">[</span><span class="n">level</span> <span class="o">-</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">ind1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">temp_address</span><span class="p">[</span><span class="n">level</span> <span class="o">-</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">ind2</span>
+            <span class="n">l</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">l</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">index_arr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">index_from_address</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">temp_address</span><span class="p">)</span>
+    
+    <span class="n">index_arr</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">index_arr</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">index_arr</span></div>
+
+<div class="viewcode-block" id="rotate_address"><a class="viewcode-back" href="../source/util.html#util.rotate_address">[docs]</a><span class="k">def</span> <span class="nf">rotate_address</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">rotate_num</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Rotates the address with respect to rotational symmetries of SG</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        level: A nonnegative integer representing the level of SG we&#39;re </span>
+<span class="sd">            working with.</span>
+<span class="sd">        address: np.array of size (level+1) representing the address </span>
+<span class="sd">            vector of a point in some SG graph.</span>
+<span class="sd">        rotate_num: A number in {0, 1, 2} representing the type of </span>
+<span class="sd">            rotation we&#39;re making. 0 represent no rotation, 1 represent</span>
+<span class="sd">            counterclockwise 2*np.pi/3, 2 represent counterclockwise </span>
+<span class="sd">            4*np.pi/3.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        new_address: np.array of size (level+1) representing the address </span>
+<span class="sd">            vector of the rotated point in some SG graph.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">new_address</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">level</span><span class="p">):</span>
+        <span class="n">new_address</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">((</span><span class="n">address</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">rotate_num</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">new_address</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">address</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">new_address</span></div>
+
+
+
+<span class="c1"># The following methods concern the creation of polynomials</span>
+<span class="c1">#   P_{j1} and P_{j3}. They will be moved to the monomials.py</span>
+<span class="c1">#   file in the future.</span>
+
+<div class="viewcode-block" id="coeff_monomial_3_all"><a class="viewcode-back" href="../source/util.html#util.coeff_monomial_3_all">[docs]</a><span class="k">def</span> <span class="nf">coeff_monomial_3_all</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">max_order</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the value of monomial P_{j3} up to some level</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        level: A nonnegative integer representing the highest level of </span>
+<span class="sd">            SG we would like to calculate the monomial.</span>
+<span class="sd">        max_order: Maximal order of monomial P_{j3} that we would like </span>
+<span class="sd">            to calculate</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        monomial_mat_3: np.array + size (3^{(level+1)} * (max_order + 1)</span>
+<span class="sd">            First coordinate denote the TLR index, the second coordinate </span>
+<span class="sd">            denote order of polynomial.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># First initialize the case for boundary points</span>
+    <span class="n">q0_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">max_order</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">q1_arr</span> <span class="o">=</span> <span class="n">gamma_array</span><span class="p">(</span><span class="n">max_order</span><span class="p">)</span>
+    <span class="n">q2_arr</span> <span class="o">=</span> <span class="o">-</span><span class="n">q1_arr</span>
+
+    <span class="c1"># First stack the first matrix</span>
+    <span class="n">current_monomial_mat_3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">q0_arr</span><span class="p">,</span> <span class="n">q1_arr</span><span class="p">,</span> <span class="n">q2_arr</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">level</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># Make space for next-layer matrix</span>
+        <span class="n">temp_monomial_mat_3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span> <span class="o">**</span> <span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">max_order</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+
+        <span class="c1"># current_monomial_mat_3 (of dimension (3^j * max_order)) </span>
+        <span class="c1"># stores the current matrix</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span> <span class="o">**</span> <span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)):</span>
+            <span class="c1"># Find the address of the point</span>
+            <span class="n">temp_index</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">temp_address</span> <span class="o">=</span> <span class="n">address_from_index</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">temp_index</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">k</span> <span class="o">==</span> <span class="mi">11</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">temp_address</span><span class="p">)</span>
+            <span class="c1"># If the address is from the previous layer, we just copy</span>
+            <span class="c1"># the value. Otherwise, we calculate the value based on </span>
+            <span class="c1"># the recurrent formula.</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">temp_address</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="n">temp_address</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="c1"># Fetch the previous index of the point</span>
+                <span class="n">temp_address</span> <span class="o">=</span> <span class="n">temp_address</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">j</span><span class="p">]</span>
+                <span class="n">prev_index</span> <span class="o">=</span> <span class="n">index_from_address</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">temp_address</span><span class="p">)</span>
+                
+                <span class="c1"># Set the value to be the previous value</span>
+                <span class="n">temp_monomial_mat_3</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span>  \
+                    <span class="n">current_monomial_mat_3</span><span class="p">[</span><span class="n">prev_index</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Fetch the coordinates of the triangle around the point</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">j</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="n">temp_address_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="n">temp_address_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">temp_address_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+                        <span class="p">(</span><span class="n">temp_address</span><span class="p">[</span><span class="mi">0</span><span class="p">:(</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">)],</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">])))</span>
+                    <span class="n">temp_address_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+                        <span class="p">(</span><span class="n">temp_address</span><span class="p">[</span><span class="mi">0</span><span class="p">:(</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">)],</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">])))</span>
+
+                <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_order</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="c1"># Calculate the values recursively</span>
+                    <span class="k">if</span> <span class="p">((</span><span class="n">temp_address</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">temp_address</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> 
+                            <span class="ow">or</span> <span class="p">(</span><span class="n">temp_address</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">temp_address</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)):</span>
+                        <span class="c1"># Perform the first update</span>
+                        <span class="n">ind_temp_address_1</span> <span class="o">=</span> <span class="n">index_from_address</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> 
+                            <span class="n">temp_address_1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+                        <span class="n">temp_monomial_mat_3</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="n">l</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="o">*</span> \
+                            <span class="n">current_monomial_mat_3</span><span class="p">[</span><span class="n">ind_temp_address_1</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span>
+                    <span class="k">elif</span> <span class="p">((</span><span class="n">temp_address</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">temp_address</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> 
+                            <span class="ow">or</span> <span class="p">(</span><span class="n">temp_address</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">temp_address</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)):</span>
+                        <span class="c1"># Perform the second update</span>
+                        <span class="n">ind_temp_address_2</span> <span class="o">=</span> <span class="n">index_from_address</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> 
+                            <span class="n">temp_address_2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+                        <span class="n">temp_monomial_mat_3</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="n">l</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="o">*</span> \
+                            <span class="n">current_monomial_mat_3</span><span class="p">[</span><span class="n">ind_temp_address_2</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">k</span> <span class="o">==</span> <span class="mi">11</span><span class="p">):</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="n">temp_address_2</span><span class="p">)</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="n">ind_temp_address_2</span><span class="p">)</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="n">current_monomial_mat_3</span><span class="p">[</span><span class="n">ind_temp_address_2</span><span class="p">,</span> <span class="n">l</span><span class="p">])</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># Perform the third update</span>
+                        <span class="n">rotate_add_1</span> <span class="o">=</span> <span class="n">rotate_address</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">temp_address_2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                        <span class="n">rotate_add_2</span> <span class="o">=</span> <span class="n">rotate_address</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">temp_address_1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                        <span class="n">ind_rotate_add_1</span> <span class="o">=</span> <span class="n">index_from_address</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> 
+                            <span class="n">rotate_add_1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+                        <span class="n">ind_rotate_add_2</span> <span class="o">=</span> <span class="n">index_from_address</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> 
+                            <span class="n">rotate_add_2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+                        <span class="n">temp_monomial_mat_3</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="mi">5</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="n">l</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="o">*</span> \
+                            <span class="p">(</span><span class="n">current_monomial_mat_3</span><span class="p">[</span><span class="n">ind_rotate_add_1</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span> <span class="o">+</span> 
+                            <span class="n">current_monomial_mat_3</span><span class="p">[</span><span class="n">ind_rotate_add_2</span><span class="p">,</span> <span class="n">l</span><span class="p">])</span>
+        
+        <span class="n">current_monomial_mat_3</span> <span class="o">=</span> <span class="n">temp_monomial_mat_3</span>
+
+    <span class="k">return</span> <span class="n">current_monomial_mat_3</span></div>
+
+
+
+<span class="c1"># The following methods concern the creation of polynomials</span>
+<span class="c1">#   P_{j1} and P_{j3}. They will be moved to the monomials.py</span>
+<span class="c1">#   file in the future.</span>
+
+<div class="viewcode-block" id="coeff_monomial_1_all"><a class="viewcode-back" href="../source/util.html#util.coeff_monomial_1_all">[docs]</a><span class="k">def</span> <span class="nf">coeff_monomial_1_all</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">max_order</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the value of monomial P_{j1} up to some level</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        level: A nonnegative integer representing the highest level of </span>
+<span class="sd">            SG we would like to calculate the monomial.</span>
+<span class="sd">        max_order: Maximal order of monomial P_{j3} that we would like </span>
+<span class="sd">            to calculate</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        monomial_mat_1: np.array + size (3^{(level+1)} * (max_order + 1)</span>
+<span class="sd">            First coordinate denote the TLR index, the second coordinate </span>
+<span class="sd">            denote order of polynomial.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># TODO: Change this code to fit P_{j1}</span>
+    <span class="c1"># First initialize the case for boundary points</span>
+    <span class="n">q0_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">max_order</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">q0_arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">q1_arr</span> <span class="o">=</span> <span class="n">alpha_array</span><span class="p">(</span><span class="n">max_order</span><span class="p">)</span>
+    <span class="n">q2_arr</span> <span class="o">=</span> <span class="n">q1_arr</span>
+
+    <span class="c1"># Fetch the monomials at 3. This will be useful later.</span>
+    <span class="c1"># stored_monomial_mat_3 = coeff_monomial_3_all(level - 1, max_order)</span>
+
+    <span class="c1"># First stack the first matrix</span>
+    <span class="n">current_monomial_mat_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">q0_arr</span><span class="p">,</span> <span class="n">q1_arr</span><span class="p">,</span> <span class="n">q2_arr</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">level</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># Make space for next-layer matrix</span>
+        <span class="n">temp_monomial_mat_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span> <span class="o">**</span> <span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">max_order</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+
+        <span class="c1"># current_monomial_mat_1 (of dimension (3^j * max_order)) </span>
+        <span class="c1"># stores the current matrix</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span> <span class="o">**</span> <span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)):</span>
+            <span class="c1"># Find the address of the point</span>
+            <span class="n">temp_index</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">temp_address</span> <span class="o">=</span> <span class="n">address_from_index</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">temp_index</span><span class="p">)</span>
+
+            <span class="c1"># If the address is from the previous layer, we just copy</span>
+            <span class="c1"># the value. Otherwise, we calculate the value based on </span>
+            <span class="c1"># the recurrent formula.</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">temp_address</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="n">temp_address</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="c1"># Fetch the previous index of the point</span>
+                <span class="n">temp_address</span> <span class="o">=</span> <span class="n">temp_address</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">j</span><span class="p">]</span>
+                <span class="n">prev_index</span> <span class="o">=</span> <span class="n">index_from_address</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">temp_address</span><span class="p">)</span>
+                
+                <span class="c1"># Set the value to be the previous value</span>
+                <span class="n">temp_monomial_mat_1</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span>  \
+                    <span class="n">current_monomial_mat_1</span><span class="p">[</span><span class="n">prev_index</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Fetch the coordinates of the triangle around the point</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">j</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="n">temp_address_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="n">temp_address_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">temp_address_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+                        <span class="p">(</span><span class="n">temp_address</span><span class="p">[</span><span class="mi">0</span><span class="p">:(</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">)],</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">])))</span>
+                    <span class="n">temp_address_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+                        <span class="p">(</span><span class="n">temp_address</span><span class="p">[</span><span class="mi">0</span><span class="p">:(</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">)],</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">])))</span>
+
+                <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_order</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="c1"># Calculate the values recursively</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">temp_address</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                        <span class="n">ind_temp_address_1</span> <span class="o">=</span> <span class="n">index_from_address</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> 
+                            <span class="n">temp_address_1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+                        <span class="n">temp_monomial_mat_1</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="n">l</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="o">*</span> \
+                            <span class="n">current_monomial_mat_1</span><span class="p">[</span><span class="n">ind_temp_address_1</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span>
+                    <span class="k">elif</span> <span class="p">(</span><span class="n">temp_address</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+                        <span class="n">ind_temp_address_2</span> <span class="o">=</span> <span class="n">index_from_address</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> 
+                            <span class="n">temp_address_2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+                        <span class="n">temp_monomial_mat_1</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="n">l</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="o">*</span> \
+                            <span class="n">current_monomial_mat_1</span><span class="p">[</span><span class="n">ind_temp_address_2</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">rotate_add_1</span> <span class="o">=</span> <span class="n">rotate_address</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">temp_address_2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                        <span class="n">rotate_add_2</span> <span class="o">=</span> <span class="n">rotate_address</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">temp_address_1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                        <span class="n">ind_rotate_add_1</span> <span class="o">=</span> <span class="n">index_from_address</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> 
+                            <span class="n">rotate_add_1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+                        <span class="n">ind_rotate_add_2</span> <span class="o">=</span> <span class="n">index_from_address</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> 
+                            <span class="n">rotate_add_2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+                        <span class="n">temp_monomial_mat_1</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="mi">5</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="n">l</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="o">*</span> \
+                            <span class="p">(</span><span class="n">current_monomial_mat_1</span><span class="p">[</span><span class="n">ind_rotate_add_1</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span> <span class="o">+</span> 
+                            <span class="n">current_monomial_mat_1</span><span class="p">[</span><span class="n">ind_rotate_add_2</span><span class="p">,</span> <span class="n">l</span><span class="p">])</span>
+        
+        <span class="n">current_monomial_mat_1</span> <span class="o">=</span> <span class="n">temp_monomial_mat_1</span>
+
+    <span class="k">return</span> <span class="n">current_monomial_mat_1</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Sreeram Venkat, Shashank Sule, Tian Lan, Max Jiang, Xiaoduo Wang
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

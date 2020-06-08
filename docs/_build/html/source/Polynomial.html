@@ -1,0 +1,477 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Polynomial module &mdash; OP_on_SG 5/21/2020 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="quadrature module" href="quadrature.html" />
+    <link rel="prev" title="plotting module" href="plotting.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> OP_on_SG
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="chebyshev.html">chebyshev module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="energy_ops.html">energy_ops module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="innerprods.html">innerprods module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monomials.html">monomials module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ops_main.html">ops_main module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">plotting module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Polynomial module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quadrature.html">quadrature module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recursions.html">recursions module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="symmetric.html">symmetric module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">util module</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">OP_on_SG</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Polynomial module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/Polynomial.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-Polynomial">
+<span id="polynomial-module"></span><h1>Polynomial module<a class="headerlink" href="#module-Polynomial" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="Polynomial.Polynomial">
+<em class="property">class </em><code class="sig-prename descclassname">Polynomial.</code><code class="sig-name descname">Polynomial</code><span class="sig-paren">(</span><em class="sig-param">coefs</em>, <em class="sig-param">j</em>, <em class="sig-param">k</em>, <em class="sig-param">lam=array([1])</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Polynomial.html#Polynomial"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Polynomial.Polynomial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="Polynomial.Polynomial.GM">
+<code class="sig-name descname">GM</code><em class="property"> = {}</em><a class="headerlink" href="#Polynomial.Polynomial.GM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Polynomial.Polynomial.basis_inner">
+<em class="property">static </em><code class="sig-name descname">basis_inner</code><span class="sig-paren">(</span><em class="sig-param">j</em>, <em class="sig-param">i</em>, <em class="sig-param">k</em>, <em class="sig-param">ip</em>, <em class="sig-param">lam=array([1])</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Polynomial.html#Polynomial.basis_inner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Polynomial.Polynomial.basis_inner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes any Sobolev inner product of &lt;P_ji, P_ki’&gt;.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>i</strong><strong>, </strong><strong>k</strong><strong>, </strong><strong>ip</strong> (<em>j</em><em>,</em>) – correspond to j, i, k, i’ in P_ji, P_ki’
+respectively.</p></li>
+<li><p><strong>lam</strong> – np.array of lambda values for the generalized Sobolev
+inner product. The default value is 1 (corresponding to
+the regular Sobolev inner product).
+If lam = np.array([0]), this is the L2 inner product.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Sobolev inner product of &lt;P_ji, P_ki’&gt; with given lambda</dt><dd><p>values.</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="Polynomial.Polynomial.build_GM">
+<em class="property">static </em><code class="sig-name descname">build_GM</code><span class="sig-paren">(</span><em class="sig-param">n</em>, <em class="sig-param">lam=array([1])</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Polynomial.html#Polynomial.build_GM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Polynomial.Polynomial.build_GM" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Constructs Gram Matrix of a given size for a given generalized</dt><dd><p>Sobolev inner product. This is used to later compute inner
+products more quickly.</p>
+</dd>
+<dt>The Gram Matrix is stored in the dictionary Polynomial.GM keyed</dt><dd><p>by the string representing the values of lambda.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> – size of Gram Matrix</p></li>
+<li><p><strong>lam</strong> – np.array of lambda values for the generalized Sobolev
+inner product. The default value is 1 (corresponding to
+the regular Sobolev inner product).
+If lam = np.array([0]), this is the L2 inner product.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="Polynomial.Polynomial.build_condensed_GM">
+<em class="property">static </em><code class="sig-name descname">build_condensed_GM</code><span class="sig-paren">(</span><em class="sig-param">n</em>, <em class="sig-param">i</em>, <em class="sig-param">lam=array([1])</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Polynomial.html#Polynomial.build_condensed_GM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Polynomial.Polynomial.build_condensed_GM" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>When we work with only polynomials from a certain family</dt><dd><p>(k = 1, 2, or 3), it is more convenient to only work with
+the basis {P_0k, P_1k,…}. This function creates the
+Gram Matrix for a given generalized Sobolev inner product.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> – size of Gram Matrix required</p></li>
+<li><p><strong>i</strong> – family of polynomials (i represents k in the preceding
+paragraph)</p></li>
+<li><p><strong>lam</strong> – np.array of lambda values for the generalized Sobolev
+inner product. The default value is 1 (corresponding to
+the regular Sobolev inner product).
+If lam = np.array([0]), this is the L2 inner product.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="Polynomial.Polynomial.dnvalue">
+<code class="sig-name descname">dnvalue</code><span class="sig-paren">(</span><em class="sig-param">j</em>, <em class="sig-param">i=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Polynomial.html#Polynomial.dnvalue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Polynomial.Polynomial.dnvalue" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>This function calculates the value of the normal derivative of</dt><dd><p>a polynomial on a boundary point of SG</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>j</strong> – number of polynomials to evaluate</p></li>
+<li><p><strong>i</strong> – index of boundary point i = 0, 1, 2</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>value of the normal derivative of polynomial at q_i</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="Polynomial.Polynomial.fast_inner">
+<em class="property">static </em><code class="sig-name descname">fast_inner</code><span class="sig-paren">(</span><em class="sig-param">arr1</em>, <em class="sig-param">arr2</em>, <em class="sig-param">GM</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Polynomial.html#Polynomial.fast_inner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Polynomial.Polynomial.fast_inner" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Computes any inner product between two polynomials represented</dt><dd><p>as arrays of coefficients.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>arr2</strong> (<em>arr1</em><em>,</em>) – arrays of coefficients of polynomials in monomial
+basis.</p></li>
+<li><p><strong>GM</strong> – Gram Matrix of inner product (Note: the baisis order
+for arr1 and arr2 must match that of GM)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Sobolev inner product between the polynomials represented</dt><dd><p>by arr1, and arr2 for the inner product represented by GM.</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="Polynomial.Polynomial.get_condensed_GM">
+<em class="property">static </em><code class="sig-name descname">get_condensed_GM</code><span class="sig-paren">(</span><em class="sig-param">k</em>, <em class="sig-param">lam=array([1])</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Polynomial.html#Polynomial.get_condensed_GM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Polynomial.Polynomial.get_condensed_GM" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>This function takes the existing Gram Matrix for a given</dt><dd><p>generalized Sobolev inner product expressed with respect to
+the orginal monomial basis
+{P_01, P_02, P_03, P_11, P_12, P_13, …} and
+returns the condensed matrix expressed with respect
+to the basis {P_0k, P_1k,… }.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>k</strong> – index corresponding to ‘k’ in the preceding paragraph</p></li>
+<li><p><strong>lam</strong> – np.array of lambda values for the generalized Sobolev
+inner product. The default value is 1 (corresponding to
+the regular Sobolev inner product).
+If lam = np.array([0]), this is the L2 inner product.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Gram Matrix with of given inner product with respect</dt><dd><p>to the basis {P_0k, P_1k,… }.</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="Polynomial.Polynomial.get_condensed_coefs">
+<code class="sig-name descname">get_condensed_coefs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Polynomial.html#Polynomial.get_condensed_coefs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Polynomial.Polynomial.get_condensed_coefs" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>This function returns the array of coefficients with respect to</dt><dd><p>the condensed basis {P_0k, P_1k,… } when we work with
+polynomials from only one family (k = 1, 2, or 3).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="Polynomial.Polynomial.has_GM">
+<em class="property">static </em><code class="sig-name descname">has_GM</code><span class="sig-paren">(</span><em class="sig-param">n</em>, <em class="sig-param">lam=array([1])</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Polynomial.html#Polynomial.has_GM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Polynomial.Polynomial.has_GM" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>This function checks whether a Gram Matrix of a given size has</dt><dd><p>been built for a given inner product.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> – size of Gram Matrix required</p></li>
+<li><p><strong>lam</strong> – array of lambda values for the inner product (default
+is [1] which is the regular Sobolev inner product).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Boolean value expressing whether such a Gram Matrix has been</dt><dd><p>constructed.</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="Polynomial.Polynomial.inner">
+<code class="sig-name descname">inner</code><span class="sig-paren">(</span><em class="sig-param">other</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Polynomial.html#Polynomial.inner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Polynomial.Polynomial.inner" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Computes the inner product between 2 Polynomial objects.</dt><dd><p>If the Gram Matrix is available, this function uses
+fast_inner. Otherwise, this function uses slow_inner.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="Polynomial.Polynomial.norm">
+<code class="sig-name descname">norm</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Polynomial.html#Polynomial.norm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Polynomial.Polynomial.norm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Polynomial.Polynomial.pad">
+<em class="property">static </em><code class="sig-name descname">pad</code><span class="sig-paren">(</span><em class="sig-param">obj1</em>, <em class="sig-param">obj2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Polynomial.html#Polynomial.pad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Polynomial.Polynomial.pad" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Polynomial.Polynomial.slow_inner">
+<em class="property">static </em><code class="sig-name descname">slow_inner</code><span class="sig-paren">(</span><em class="sig-param">arr1</em>, <em class="sig-param">arr2</em>, <em class="sig-param">lam=array([1])</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Polynomial.html#Polynomial.slow_inner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Polynomial.Polynomial.slow_inner" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Computes any inner product between two polynomials represented</dt><dd><p>as arrays of coefficients.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>arr2</strong> (<em>arr1</em><em>,</em>) – arrays of coefficients of polynomials in monomial
+basis.(Note: the basis is ordered
+{P_01, P_02, P_03, P_11, P_12, P_13, …}).</p></li>
+<li><p><strong>lam</strong> – np.array of lambda values for the generalized Sobolev
+inner product. The default value is 1 (corresponding to
+the regular Sobolev inner product).
+If lam = np.array([0]), this is the L2 inner product.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Sobolev inner product between the polynomials represented</dt><dd><p>by arr1, and arr2 with the given lambda values.</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="Polynomial.Polynomial.value">
+<code class="sig-name descname">value</code><span class="sig-paren">(</span><em class="sig-param">j</em>, <em class="sig-param">i=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Polynomial.html#Polynomial.value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Polynomial.Polynomial.value" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>This function calculates the value of a polynomial on a</dt><dd><p>boundary point of SG</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>j</strong> – number of polynomials to evaluate</p></li>
+<li><p><strong>i</strong> – index of boundary point i = 0, 1, 2</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>value of the polynomial at q_i</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="quadrature.html" class="btn btn-neutral float-right" title="quadrature module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="plotting.html" class="btn btn-neutral float-left" title="plotting module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Sreeram Venkat, Shashank Sule, Tian Lan, Max Jiang, Xiaoduo Wang
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

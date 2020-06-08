@@ -1,0 +1,409 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>plotting module &mdash; OP_on_SG 5/21/2020 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="quadrature module" href="quadrature.html" />
+    <link rel="prev" title="ops_main module" href="ops_main.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> OP_on_SG
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="chebyshev.html">chebyshev module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="energy_ops.html">energy_ops module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="innerprods.html">innerprods module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monomials.html">monomials module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ops_main.html">ops_main module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">plotting module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quadrature.html">quadrature module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recursions.html">recursions module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="symmetric.html">symmetric module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">util module</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">OP_on_SG</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>plotting module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/plotting.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-plotting">
+<span id="plotting-module"></span><h1>plotting module<a class="headerlink" href="#module-plotting" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="plotting.SG">
+<code class="sig-prename descclassname">plotting.</code><code class="sig-name descname">SG</code><span class="sig-paren">(</span><em class="sig-param">m</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plotting.html#SG"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plotting.SG" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function evaluates the coordinates of all points on the gasket
+up to a certain level V_m.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>- number of levels V_m we would like to find coordinates for</strong> (<em>m</em>) – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>y - ((3^m+3)/2)*2 matrix holding coordinate values</p>
+</dd>
+</dl>
+<p>from <a class="reference external" href="http://www.math.cornell.edu/~mhall/SGprograms/SG.m">http://www.math.cornell.edu/~mhall/SGprograms/SG.m</a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="plotting.eval_op">
+<code class="sig-prename descclassname">plotting.</code><code class="sig-name descname">eval_op</code><span class="sig-paren">(</span><em class="sig-param">deg</em>, <em class="sig-param">k</em>, <em class="sig-param">level=7</em>, <em class="sig-param">T=None</em>, <em class="sig-param">frac=True</em>, <em class="sig-param">coefs=None</em>, <em class="sig-param">symm=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plotting.html#eval_op"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plotting.eval_op" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that evaluates the Sobolev Orthogonal Polynomials</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>- Degree of SOP s_{j} we would like to evaluate</strong> (<em>deg</em>) – </p></li>
+<li><p><strong>- Coefficient Matrix of the Orthogonal Polynomials</strong> (<em>T</em>) – </p></li>
+<li><p><strong>- Type of SOP</strong> (<em>k</em>) – </p></li>
+<li><p><strong>- Number of levels we want to evaluate the SOP</strong> (<em>level</em>) – </p></li>
+<li><p><strong>- array of monomial values at the required level and degree or</strong> (<em>T</em>) – tuple of (filename of .npz/.npy file containing this array , array name key string)</p></li>
+<li><p><strong>- array of coefficient values at the required degree and symmetry or</strong> (<em>coefs</em>) – tuple of (filename of .npz/.npy file containing this array , array name key string)</p></li>
+<li><p><strong>- Boolean representing whether</strong><strong> or </strong><strong>not the fully symmetric orthogonal polynomials are needed</strong> (<em>symm</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>q - Values of the SOP of type k at some level</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="plotting.fi">
+<code class="sig-prename descclassname">plotting.</code><code class="sig-name descname">fi</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">qi</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plotting.html#fi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plotting.fi" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is a contractive similarity of the plane centered
+at the point qi of dilation factor 1/2.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>- point in the plane</strong> (<em>x</em>) – </p></li>
+<li><p><strong>- point toward which to contract distances by 1/2</strong> (<em>qi</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>evaluates the similarity</p>
+</dd>
+</dl>
+<p>from <a class="reference external" href="http://www.math.cornell.edu/~mhall/SGprograms/fi.m">http://www.math.cornell.edu/~mhall/SGprograms/fi.m</a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="plotting.gaskplot">
+<code class="sig-prename descclassname">plotting.</code><code class="sig-name descname">gaskplot</code><span class="sig-paren">(</span><em class="sig-param">f</em>, <em class="sig-param">m</em>, <em class="sig-param">ax</em>, <em class="sig-param">color='b'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plotting.html#gaskplot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plotting.gaskplot" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function plots a function defined on the level m vertices of
+SG.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>- vector of size 3^</strong> (<em>f</em>) – </p></li>
+<li><p><strong>- level of the function</strong> (<em>m</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>plots figure of the graph</p>
+</dd>
+</dl>
+<p>from <a class="reference external" href="http://www.math.cornell.edu/~mhall/SGprograms/gaskplot.m">http://www.math.cornell.edu/~mhall/SGprograms/gaskplot.m</a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="plotting.getOmegas">
+<code class="sig-prename descclassname">plotting.</code><code class="sig-name descname">getOmegas</code><span class="sig-paren">(</span><em class="sig-param">deg</em>, <em class="sig-param">k</em>, <em class="sig-param">frac=True</em>, <em class="sig-param">coefs=None</em>, <em class="sig-param">symm=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plotting.html#getOmegas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plotting.getOmegas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that generates the Sobolev Orthogonal Polynomials</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>- highest degree of the Sobolev Orthogonal Polynomial</strong> (<em>deg</em>) – we would like to find</p></li>
+<li><p><strong>- Type of Sobolev Orthogonal Polynomial</strong> (<em>k</em>) – </p></li>
+<li><p><strong>- array of coefficient values at the required degree and symmetry or</strong> (<em>coefs</em>) – tuple of (filename of .npz/.npy file containing this array , array name key string)</p></li>
+<li><p><strong>- Boolean representing whether</strong><strong> or </strong><strong>not the fully symmetric orthogonal polynomials are needed</strong> (<em>symm</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>W - (deg+2)*(deg+2) matrix, representing the coefficients of</dt><dd><p>the Sobolev Orthogonal Polynomial of order 0 - deg+1</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="plotting.plot_easy_basis">
+<code class="sig-prename descclassname">plotting.</code><code class="sig-name descname">plot_easy_basis</code><span class="sig-paren">(</span><em class="sig-param">num</em>, <em class="sig-param">k</em>, <em class="sig-param">level=7</em>, <em class="sig-param">W=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plotting.html#plot_easy_basis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plotting.plot_easy_basis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the Easy Basis</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>- Number of monomials we would like to plot</strong> (<em>num</em>) – </p></li>
+<li><p><strong>- Type of Monomial</strong> (<em>k</em>) – </p></li>
+<li><p><strong>- The level we would like to plot each monomial</strong> (<em>level</em>) – </p></li>
+<li><p><strong>- array of easy basis values at the required level and degree or</strong> (<em>W</em>) – tuple of (filename of .npz/.npy file containing this array , array name key string)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>figures of the SOP of type k, from P_{num-1, k} down to P_{0, k}.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="plotting.plot_general">
+<code class="sig-prename descclassname">plotting.</code><code class="sig-name descname">plot_general</code><span class="sig-paren">(</span><em class="sig-param">T</em>, <em class="sig-param">level=7</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plotting.html#plot_general"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plotting.plot_general" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a general function given input</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>- Number of monomials we would like to plot</strong> (<em>num</em>) – </p></li>
+<li><p><strong>- Type of Monomial</strong> (<em>k</em>) – </p></li>
+<li><p><strong>- The level we would like to plot each monomial</strong> (<em>level</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>figures of the SOP of type k, from P_{num-1, k} down to P_{0, k}.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="plotting.plot_monomial">
+<code class="sig-prename descclassname">plotting.</code><code class="sig-name descname">plot_monomial</code><span class="sig-paren">(</span><em class="sig-param">num</em>, <em class="sig-param">k</em>, <em class="sig-param">level=7</em>, <em class="sig-param">T=None</em>, <em class="sig-param">symm=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plotting.html#plot_monomial"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plotting.plot_monomial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the Monomials</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>- Number of monomials we would like to plot</strong> (<em>num</em>) – </p></li>
+<li><p><strong>- Type of Monomial</strong> (<em>k</em>) – </p></li>
+<li><p><strong>- The level we would like to plot each monomial</strong> (<em>level</em>) – </p></li>
+<li><p><strong>- array of monomial values at the required level and degree or</strong> (<em>T</em>) – tuple of (filename of .npz/.npy file containing this array , array name key string)</p></li>
+<li><p><strong>- Boolean representing whether</strong><strong> or </strong><strong>not the fully symmetric orthogonal polynomials are needed</strong> (<em>symm</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>figures of the SOP of type k, from P_{num-1, k} down to P_{0, k}.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="plotting.plot_op">
+<code class="sig-prename descclassname">plotting.</code><code class="sig-name descname">plot_op</code><span class="sig-paren">(</span><em class="sig-param">num</em>, <em class="sig-param">k</em>, <em class="sig-param">level=7</em>, <em class="sig-param">T=None</em>, <em class="sig-param">coefs=None</em>, <em class="sig-param">symm=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plotting.html#plot_op"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plotting.plot_op" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the Sobolev Orthogonal Polynomials</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>- Number of Antisymmetric SOPs we would like to plot</strong> (<em>num</em>) – </p></li>
+<li><p><strong>- Type of SOP</strong> (<em>k</em>) – </p></li>
+<li><p><strong>- The level we would like to plot each SOP</strong> (<em>level</em>) – </p></li>
+<li><p><strong>- array of monomial values at the required level and degree or</strong> (<em>T</em>) – tuple of (filename of .npz/.npy file containing this array , array name key string)</p></li>
+<li><p><strong>- array of coefficient values at the required degree and symmetry or</strong> (<em>coefs</em>) – tuple of (filename of .npz/.npy file containing this array , array name key string)</p></li>
+<li><p><strong>- Boolean representing whether</strong><strong> or </strong><strong>not the fully symmetric orthogonal polynomials are needed</strong> (<em>symm</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>figures of the SOP of type k, from s_{num-1} down to s_{0}.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="plotting.qcontract">
+<code class="sig-prename descclassname">plotting.</code><code class="sig-name descname">qcontract</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">q</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plotting.html#qcontract"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plotting.qcontract" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function takes in a column of coordinate pairs and
+computes their image under the similarity which contracts
+distance to the point q by a factor of 1/2.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>-</strong> (<em>x</em>) – </p></li>
+<li><p><strong>- the number of points</strong> (<em>n</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>y - coordinates of the n images</p>
+</dd>
+</dl>
+<p>from <a class="reference external" href="http://www.math.cornell.edu/~mhall/SGprograms/qcontract.m">http://www.math.cornell.edu/~mhall/SGprograms/qcontract.m</a></p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="quadrature.html" class="btn btn-neutral float-right" title="quadrature module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ops_main.html" class="btn btn-neutral float-left" title="ops_main module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Sreeram Venkat, Shashank Sule, Tian Lan, Max Jiang, Xiaoduo Wang
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

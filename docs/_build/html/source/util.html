@@ -1,0 +1,611 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>util module &mdash; OP_on_SG 5/21/2020 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="symmetric module" href="symmetric.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> OP_on_SG
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="chebyshev.html">chebyshev module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="energy_ops.html">energy_ops module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="innerprods.html">innerprods module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monomials.html">monomials module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ops_main.html">ops_main module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">plotting module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quadrature.html">quadrature module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recursions.html">recursions module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="symmetric.html">symmetric module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">util module</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">OP_on_SG</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>util module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/util.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-util">
+<span id="util-module"></span><h1>util module<a class="headerlink" href="#module-util" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="util.HiddenPrints">
+<em class="property">class </em><code class="sig-prename descclassname">util.</code><code class="sig-name descname">HiddenPrints</code><a class="reference internal" href="../_modules/util.html#HiddenPrints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#util.HiddenPrints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This is a class that can be used to suppress stdout from function calls.</p>
+<dl class="simple">
+<dt>Usage:</dt><dd><dl class="simple">
+<dt>with HiddenPrints():</dt><dd><p>&gt;&gt;do stuff without printing</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="util.address_from_index">
+<code class="sig-prename descclassname">util.</code><code class="sig-name descname">address_from_index</code><span class="sig-paren">(</span><em class="sig-param">level</em>, <em class="sig-param">index</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/util.html#address_from_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#util.address_from_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes address vector from the index.</p>
+<dl class="simple">
+<dt>Returns the address vector of a point with certain TLR index in</dt><dd><p>a graph of SG at some fixed level.</p>
+</dd>
+</dl>
+<p>For point F_{w1} F_{w2} … F_{wm} q_{k} (0&lt;=wi&lt;=2, 0&lt;=k&lt;=2), we can
+represent it in two ways:
+1. Address Vector: [wm, …, w1, k] (Note that this represents</p>
+<blockquote>
+<div><p>picking transform F_{wm}, …, F_{w1} in this sequence and then
+finding vertex q_{k} in the final triangle. This order is weird
+but will prove to be useful)</p>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li><p>TLR Index: k = wm * 3^m + … + w1 * 3 + k + 1</p></li>
+</ol>
+<p>This function provides transform 2 -&gt; 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>level</strong> – A nonnegative integer representing the level of SG we’re
+working with.</p></li>
+<li><p><strong>index</strong> – A number in the range [1, 3^(level+1)] representing the
+TLR index of some point in level m.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>np.array of length (level+1) representing the address</dt><dd><p>of the point specified by index in a particular level of SG.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>address</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>address_from_index(1, 4) = [1, 0]
+address_from_index(2, 21) = [2, 1, 2]</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="util.alternate_address">
+<code class="sig-prename descclassname">util.</code><code class="sig-name descname">alternate_address</code><span class="sig-paren">(</span><em class="sig-param">level</em>, <em class="sig-param">address</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/util.html#alternate_address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#util.alternate_address" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the alternate address of a point.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>level</strong> – A nonnegative integer representing the level of SG we’re
+working with.</p></li>
+<li><p><strong>address</strong> – np.array of size (level+1) representing the address
+vector of a point in some SG graph.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>np.array of size (level+1) representing the</dt><dd><p>alternate address of the same point in some SG graph.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>alt_address</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>alternate_address(2, [0, 1, 2]) = [0, 2, 1] (F1F0q2 = F2F0q1)
+alternate_address(2, [1, 0, 0]) = [0, 1, 1] (F0F1q1 = F1F1q0)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="util.alternate_index">
+<code class="sig-prename descclassname">util.</code><code class="sig-name descname">alternate_index</code><span class="sig-paren">(</span><em class="sig-param">level</em>, <em class="sig-param">index</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/util.html#alternate_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#util.alternate_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the alternate TLR index of a point</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>level</strong> – A nonnegative integer representing the level of SG we’re
+working with.</p></li>
+<li><p><strong>index</strong> – A number in the range [1, 3^(level+1)] representing the
+TLR index of some point in level m.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A number in the range [1, 3^(level+1)] representing</dt><dd><p>the alternate TLR index of the point in level m.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>alt_index</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>alternate_index(1, 2) = 4
+alternate_index(1, 3) = 7</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="util.bmatrix">
+<code class="sig-prename descclassname">util.</code><code class="sig-name descname">bmatrix</code><span class="sig-paren">(</span><em class="sig-param">a</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/util.html#bmatrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#util.bmatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts np.array into a LaTeX bmatrix
+:param a: numpy array</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>LaTeX bmatrix of a as a string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="util.coeff_monomial_1_all">
+<code class="sig-prename descclassname">util.</code><code class="sig-name descname">coeff_monomial_1_all</code><span class="sig-paren">(</span><em class="sig-param">level</em>, <em class="sig-param">max_order</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/util.html#coeff_monomial_1_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#util.coeff_monomial_1_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the value of monomial P_{j1} up to some level</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>level</strong> – A nonnegative integer representing the highest level of
+SG we would like to calculate the monomial.</p></li>
+<li><p><strong>max_order</strong> – Maximal order of monomial P_{j3} that we would like
+to calculate</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>np.array + size (3^{(level+1)} * (max_order + 1)</dt><dd><p>First coordinate denote the TLR index, the second coordinate
+denote order of polynomial.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>monomial_mat_1</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="util.coeff_monomial_3_all">
+<code class="sig-prename descclassname">util.</code><code class="sig-name descname">coeff_monomial_3_all</code><span class="sig-paren">(</span><em class="sig-param">level</em>, <em class="sig-param">max_order</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/util.html#coeff_monomial_3_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#util.coeff_monomial_3_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the value of monomial P_{j3} up to some level</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>level</strong> – A nonnegative integer representing the highest level of
+SG we would like to calculate the monomial.</p></li>
+<li><p><strong>max_order</strong> – Maximal order of monomial P_{j3} that we would like
+to calculate</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>np.array + size (3^{(level+1)} * (max_order + 1)</dt><dd><p>First coordinate denote the TLR index, the second coordinate
+denote order of polynomial.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>monomial_mat_3</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="util.get_neighbors">
+<code class="sig-prename descclassname">util.</code><code class="sig-name descname">get_neighbors</code><span class="sig-paren">(</span><em class="sig-param">level</em>, <em class="sig-param">address</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/util.html#get_neighbors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#util.get_neighbors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the addresses of the 4 neighbors of a point</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>level</strong> – A nonnegative integer representing the level of SG we’re
+working with.</p></li>
+<li><p><strong>address</strong> – np.array of size (level+1) representing the address
+vector of a point in some SG graph.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>np.array of size (4, level+1) representing the</dt><dd><p>address of the 4 neighbors of the point.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>nbhd_mat</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="util.index_alternate_level">
+<code class="sig-prename descclassname">util.</code><code class="sig-name descname">index_alternate_level</code><span class="sig-paren">(</span><em class="sig-param">current_level</em>, <em class="sig-param">target_level</em>, <em class="sig-param">address</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/util.html#index_alternate_level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#util.index_alternate_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the index of a point in another level of SG</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>current_level</strong> – A nonnegative integer representing the current
+level of SG we’re working with.</p></li>
+<li><p><strong>target_level</strong> – A nonnegative integer representing the target
+level of SG we’re moving our point to. This should be larger
+than the current level.</p></li>
+<li><p><strong>address</strong> – np.array of size (current_level+1) representing the
+address vector of a point in some SG graph.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A number in the range [1, 3^(target_level+1)]</dt><dd><p>representing the TLR index of the point in target_level.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>target_index</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>index_alternate_level(1, 1, [0, 1]) = 2
+index_alternate_level(1, 2, [0, 1]) = 5
+index_alternate_level(1, 3, [0, 1]) = 14</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="util.index_from_address">
+<code class="sig-prename descclassname">util.</code><code class="sig-name descname">index_from_address</code><span class="sig-paren">(</span><em class="sig-param">level</em>, <em class="sig-param">address</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/util.html#index_from_address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#util.index_from_address" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes TLR Index from Address vector.</p>
+<dl class="simple">
+<dt>Returns the TLR index of a point with certain address vector in</dt><dd><p>a graph of SG at some fixed level.</p>
+</dd>
+<dt>For point F_{w1} F_{w2} … F_{wm} q_{k} (0&lt;=wi&lt;=2, 0&lt;=k&lt;=2), we</dt><dd><p>can represent it in two ways:</p>
+</dd>
+</dl>
+<ol class="arabic simple">
+<li><dl class="simple">
+<dt>Address Vector: [wm, …, w1, k] (Note that this represents</dt><dd><p>picking transform F_{wm}, …, F_{w1} in this sequence and then
+finding vertex q_{l} in the final triangle)</p>
+</dd>
+</dl>
+</li>
+<li><p>TLR Index: k = wm * 3^m + … + w1 * 3 + k + 1</p></li>
+</ol>
+<p>This function provides transform 1 -&gt; 2.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>level</strong> – A nonnegative integer representing the level of SG we’re
+working with.</p></li>
+<li><p><strong>address</strong> – np.array of size (level+1) representing the address
+vector of a point in some SG graph.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A number in the range [1, 3^(level+1)] representing the</dt><dd><p>TLR index of some point in level m.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>index</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="util.q_contract">
+<code class="sig-prename descclassname">util.</code><code class="sig-name descname">q_contract</code><span class="sig-paren">(</span><em class="sig-param">orig_mat</em>, <em class="sig-param">base_point</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/util.html#q_contract"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#util.q_contract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the image of points under some contraction.</p>
+<dl class="simple">
+<dt>Contracts all points represented in rows of v toward the base_point</dt><dd><p>with a contraction ratio of 1/2.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>orig_mat</strong> – A np.array of size (t, 2) for some integer t, with
+each row representing the coordinate of a point</p></li>
+<li><p><strong>base_point</strong> – A np.array of length 2 representing the coordinates
+of the point we’re contracting toward.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A np.array of size (t, 2) for some integer t, with</dt><dd><p>each row the contracted version of that in orig_mat.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>contract_mat</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="util.rotate_address">
+<code class="sig-prename descclassname">util.</code><code class="sig-name descname">rotate_address</code><span class="sig-paren">(</span><em class="sig-param">level</em>, <em class="sig-param">address</em>, <em class="sig-param">rotate_num</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/util.html#rotate_address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#util.rotate_address" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotates the address with respect to rotational symmetries of SG</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>level</strong> – A nonnegative integer representing the level of SG we’re
+working with.</p></li>
+<li><p><strong>address</strong> – np.array of size (level+1) representing the address
+vector of a point in some SG graph.</p></li>
+<li><p><strong>rotate_num</strong> – A number in {0, 1, 2} representing the type of
+rotation we’re making. 0 represent no rotation, 1 represent
+counterclockwise 2*np.pi/3, 2 represent counterclockwise
+4*np.pi/3.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>np.array of size (level+1) representing the address</dt><dd><p>vector of the rotated point in some SG graph.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>new_address</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="util.sg_coordinates">
+<code class="sig-prename descclassname">util.</code><code class="sig-name descname">sg_coordinates</code><span class="sig-paren">(</span><em class="sig-param">level</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/util.html#sg_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#util.sg_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the coordinates of points for SG at some level.</p>
+<dl class="simple">
+<dt>Given base points q0 = [cos(5*pi/12) sin(5*pi/12)], q1=[0 0],</dt><dd><p>q2=[cos(pi/12) sin(pi/12)], we calculate the coordinates of all
+points up to some level of the SG graph.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>level</strong> – A nonnegative integer representing the level of SG we’re
+working with.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A matrix with dimension (3^(level+1), 2), with each</dt><dd><p>row representing coordinate of one point in V_m</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>coord_mat</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="util.sg_edge_index">
+<code class="sig-prename descclassname">util.</code><code class="sig-name descname">sg_edge_index</code><span class="sig-paren">(</span><em class="sig-param">level</em>, <em class="sig-param">ind1</em>, <em class="sig-param">ind2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/util.html#sg_edge_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#util.sg_edge_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates an array of indices on a given edge</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>level</strong> – A nonnegative integer representing the level of SG we’re
+working with.</p></li>
+<li><p><strong>ind1</strong> – a number representing the index of the first boundary
+point (1, 2, or 3)</p></li>
+<li><p><strong>ind2</strong> – a number representing the index of the second boundary
+point (1, 2, or 3, should be larger than ind1)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>np.array of length 2^(m+1), representing array of</dt><dd><p>indices on the edge (each point is counted twice except
+for the two boundary points.)</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>index_arr</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>sg_edge_index(2, 0, 2) = [1, 3, 7, 9, 19, 21, 25, 27]</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="symmetric.html" class="btn btn-neutral float-left" title="symmetric module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Sreeram Venkat, Shashank Sule, Tian Lan, Max Jiang, Xiaoduo Wang
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

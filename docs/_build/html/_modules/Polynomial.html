@@ -1,0 +1,554 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Polynomial &mdash; OP_on_SG 5/21/2020 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> OP_on_SG
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../source/chebyshev.html">chebyshev module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/energy_ops.html">energy_ops module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/innerprods.html">innerprods module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/monomials.html">monomials module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/ops_main.html">ops_main module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/plotting.html">plotting module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/Polynomial.html">Polynomial module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/quadrature.html">quadrature module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/recursions.html">recursions module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/symmetric.html">symmetric module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/util.html">util module</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">OP_on_SG</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>Polynomial</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for Polynomial</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">gmpy2</span> <span class="k">as</span> <span class="nn">gm</span>
+<span class="kn">import</span> <span class="nn">tqdm</span>
+
+<span class="kn">from</span> <span class="nn">recursions</span> <span class="k">import</span> <span class="n">zeros_gm</span>
+<span class="kn">from</span> <span class="nn">innerprods</span> <span class="k">import</span> <span class="n">lis2str</span><span class="p">,</span> <span class="n">inner_dict</span><span class="p">,</span> <span class="n">symmetrize</span><span class="p">,</span> <span class="n">vals_dict</span><span class="p">,</span> <span class="n">norm_dict</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">This file contains the class Polynomial which is used to create orthogonal </span>
+<span class="sd">    polynomials with respect to various inner products.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+
+<div class="viewcode-block" id="Polynomial"><a class="viewcode-back" href="../source/Polynomial.html#Polynomial.Polynomial">[docs]</a><span class="k">class</span> <span class="nc">Polynomial</span><span class="p">:</span>
+    <span class="c1"># This stores the Gram Matrices for various inner products</span>
+
+    <span class="n">GM</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="Polynomial.has_GM"><a class="viewcode-back" href="../source/Polynomial.html#Polynomial.Polynomial.has_GM">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">has_GM</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">])):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        This function checks whether a Gram Matrix of a given size has </span>
+<span class="sd">            been built for a given inner product.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            n: size of Gram Matrix required</span>
+<span class="sd">            lam: array of lambda values for the inner product (default </span>
+<span class="sd">                is [1] which is the regular Sobolev inner product).</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Boolean value expressing whether such a Gram Matrix has been </span>
+<span class="sd">                constructed.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="ow">not</span> <span class="n">Polynomial</span><span class="o">.</span><span class="n">GM</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span>\
+            <span class="n">Polynomial</span><span class="o">.</span><span class="n">GM</span><span class="p">[</span><span class="n">lis2str</span><span class="p">(</span><span class="n">lam</span><span class="p">)]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">n</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coefs</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">])):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Constructor for Polynomial.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            coefs: np.array of coefficients of the polynomial in terms of </span>
+<span class="sd">                the monomial basis P_jk. (Note: the basis is ordered </span>
+<span class="sd">                {P_01, P_02, P_03, P_11, P_12, P_13, ...}).</span>
+<span class="sd">            j: degree of polynomial. If the length of coefs does not </span>
+<span class="sd">                equal 3*j + 3, zeros are added to the end of coefs.</span>
+<span class="sd">            k: family of polynomial. Since most of the polynomials we </span>
+<span class="sd">                will deal with will come only from a certain family </span>
+<span class="sd">                (k = 1, 2, or 3), setting the k value will allow us to </span>
+<span class="sd">                deal with only the basis {P_0k, P_1k, ...}.</span>
+<span class="sd">            lam: np.array of lambda_values used for calculating inner </span>
+<span class="sd">                products. If lam contains only one value, it is set as </span>
+<span class="sd">                a scalar. The default value is 1 (corresponding to the </span>
+<span class="sd">                regular Sobolev inner product).</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">coefs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="o">*</span><span class="n">j</span><span class="o">+</span><span class="mi">3</span><span class="p">:</span>
+            <span class="n">ad</span> <span class="o">=</span> <span class="n">zeros_gm</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">j</span><span class="o">+</span><span class="mi">3</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">coefs</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">coefs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coefs</span><span class="p">,</span> <span class="n">ad</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coefs</span> <span class="o">=</span> <span class="n">coefs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">j</span> <span class="o">=</span> <span class="n">j</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lam</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">lam</span> <span class="o">=</span> <span class="n">lam</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lam</span> <span class="o">=</span> <span class="n">lam</span>
+
+    <span class="k">def</span> <span class="nf">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Adds 2 polynomials by adding their coefficients</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">Polynomial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coefs</span><span class="o">+</span><span class="n">other</span><span class="o">.</span><span class="n">coefs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">j</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lam</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Polynomial.basis_inner"><a class="viewcode-back" href="../source/Polynomial.html#Polynomial.Polynomial.basis_inner">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">basis_inner</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">ip</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">])):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Computes any Sobolev inner product of &lt;P_ji, P_ki&#39;&gt;.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            j, i, k, ip: correspond to j, i, k, i&#39; in P_ji, P_ki&#39; </span>
+<span class="sd">                respectively.</span>
+<span class="sd">            lam: np.array of lambda values for the generalized Sobolev </span>
+<span class="sd">                inner product. The default value is 1 (corresponding to </span>
+<span class="sd">                the regular Sobolev inner product). </span>
+<span class="sd">                If lam = np.array([0]), this is the L2 inner product.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Sobolev inner product of &lt;P_ji, P_ki&#39;&gt; with given lambda </span>
+<span class="sd">                values.</span>
+<span class="sd">                </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="c1"># inner_dict is found in innerprods.py</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">inner_func</span> <span class="o">=</span> <span class="n">inner_dict</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">ip</span><span class="p">)]</span> <span class="c1">#Example: if i=1 and ip = 2 then inner_func is &lt;P_{j1}, P_{k2}&gt;_{L2} </span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">inner_func</span> <span class="o">=</span> <span class="n">inner_dict</span><span class="p">[(</span><span class="n">ip</span><span class="p">,</span> <span class="n">i</span><span class="p">)]</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="n">inner_func</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="c1">#Initialize to standard L2 inner product</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">lam</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span> 
+            <span class="n">res</span> <span class="o">+=</span> <span class="n">inner_func</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="o">-</span><span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="n">lam</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c1">#This is the step where you add the sobolev terms</span>
+
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Polynomial.slow_inner"><a class="viewcode-back" href="../source/Polynomial.html#Polynomial.Polynomial.slow_inner">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">slow_inner</span><span class="p">(</span><span class="n">arr1</span><span class="p">,</span> <span class="n">arr2</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">])):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Computes any inner product between two polynomials represented </span>
+<span class="sd">            as arrays of coefficients.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            arr1, arr2: arrays of coefficients of polynomials in monomial </span>
+<span class="sd">                basis.(Note: the basis is ordered </span>
+<span class="sd">                {P_01, P_02, P_03, P_11, P_12, P_13, ...}).</span>
+<span class="sd">            lam: np.array of lambda values for the generalized Sobolev </span>
+<span class="sd">                inner product. The default value is 1 (corresponding to </span>
+<span class="sd">                the regular Sobolev inner product). </span>
+<span class="sd">                If lam = np.array([0]), this is the L2 inner product.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Sobolev inner product between the polynomials represented </span>
+<span class="sd">                by arr1, and arr2 with the given lambda values.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">ind1</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">arr1</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">ind2</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">arr2</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">arr1</span><span class="p">[</span><span class="n">ind1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">arr2</span><span class="p">[</span><span class="n">ind2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="c1">#Here j,k,i, and ip are recovered based on the way the array of co-efficients indexes the polynomials</span>
+                <span class="n">j</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">ind1</span><span class="o">/</span><span class="mi">3</span><span class="p">))</span> 
+                <span class="n">k</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">ind2</span><span class="o">/</span><span class="mi">3</span><span class="p">))</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ind1</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">ip</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ind2</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">res</span> <span class="o">+=</span> \
+                    <span class="n">arr1</span><span class="p">[</span><span class="n">ind1</span><span class="p">]</span><span class="o">*</span><span class="n">arr2</span><span class="p">[</span><span class="n">ind2</span><span class="p">]</span>\
+                    <span class="o">*</span> <span class="n">Polynomial</span><span class="o">.</span><span class="n">basis_inner</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">ip</span><span class="p">,</span> <span class="n">lam</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Polynomial.build_GM"><a class="viewcode-back" href="../source/Polynomial.html#Polynomial.Polynomial.build_GM">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">build_GM</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">])):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Constructs Gram Matrix of a given size for a given generalized </span>
+<span class="sd">            Sobolev inner product. This is used to later compute inner </span>
+<span class="sd">            products more quickly.</span>
+<span class="sd">        The Gram Matrix is stored in the dictionary Polynomial.GM keyed </span>
+<span class="sd">            by the string representing the values of lambda.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            n: size of Gram Matrix</span>
+<span class="sd">            lam: np.array of lambda values for the generalized Sobolev </span>
+<span class="sd">                inner product. The default value is 1 (corresponding to </span>
+<span class="sd">                the regular Sobolev inner product).</span>
+<span class="sd">                If lam = np.array([0]), this is the L2 inner product.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">Polynomial</span><span class="o">.</span><span class="n">has_GM</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">3</span><span class="p">,</span> <span class="n">lam</span><span class="p">):</span>
+            <span class="k">return</span>
+
+
+        <span class="n">arr</span> <span class="o">=</span> <span class="n">zeros_gm</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">3</span><span class="p">)</span>
+        <span class="c1">#The following if else statements make an array lam_arr that represents the weights of all the integrals </span>
+        <span class="c1"># in the inner product formula. This is required because lam only describes the weights on the integrals with positive order laplacians because</span>
+        <span class="c1"># integrals with positive order laplacians as we consider the weight on the L2 inner product to be 1. </span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">lam</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">]))</span> \
+                <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">lam</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">]))):</span>
+            <span class="n">lam_arr</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">]),</span> <span class="n">lam</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">lam_arr</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">])]</span>
+
+        <span class="k">for</span> <span class="n">lamb</span> <span class="ow">in</span> <span class="n">lam_arr</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">ind1</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">ind2</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">ind1</span> <span class="o">&lt;=</span> <span class="n">ind2</span><span class="p">:</span>
+                        <span class="n">j</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">ind1</span><span class="o">/</span><span class="mi">3</span><span class="p">))</span>
+                        <span class="n">k</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">ind2</span><span class="o">/</span><span class="mi">3</span><span class="p">))</span>
+                        <span class="n">i</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ind1</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                        <span class="n">ip</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ind2</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                        <span class="n">arr</span><span class="p">[</span><span class="n">ind1</span><span class="p">,</span> <span class="n">ind2</span><span class="p">]</span> <span class="o">=</span> \
+                            <span class="n">Polynomial</span><span class="o">.</span><span class="n">basis_inner</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">ip</span><span class="p">,</span> <span class="n">lamb</span><span class="p">)</span>
+            <span class="n">Polynomial</span><span class="o">.</span><span class="n">GM</span><span class="p">[</span><span class="n">lis2str</span><span class="p">(</span><span class="n">lamb</span><span class="p">)]</span> <span class="o">=</span> <span class="n">symmetrize</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+
+      
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="Polynomial.build_condensed_GM"><a class="viewcode-back" href="../source/Polynomial.html#Polynomial.Polynomial.build_condensed_GM">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">build_condensed_GM</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">])):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        When we work with only polynomials from a certain family </span>
+<span class="sd">            (k = 1, 2, or 3), it is more convenient to only work with </span>
+<span class="sd">            the basis {P_0k, P_1k,...}. This function creates the </span>
+<span class="sd">            Gram Matrix for a given generalized Sobolev inner product.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            n: size of Gram Matrix required</span>
+<span class="sd">            i: family of polynomials (i represents k in the preceding </span>
+<span class="sd">                paragraph)</span>
+<span class="sd">            lam: np.array of lambda values for the generalized Sobolev </span>
+<span class="sd">                inner product. The default value is 1 (corresponding to </span>
+<span class="sd">                the regular Sobolev inner product).</span>
+<span class="sd">                If lam = np.array([0]), this is the L2 inner product.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">Polynomial</span><span class="o">.</span><span class="n">has_GM</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">3</span><span class="p">,</span> <span class="n">lam</span><span class="p">):</span>
+            <span class="k">return</span>
+
+        <span class="n">arr</span> <span class="o">=</span> <span class="n">zeros_gm</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">lam</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">]))</span> \
+                <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">lam</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">]))):</span>
+            <span class="n">lam_arr</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">]),</span> <span class="n">lam</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">lam_arr</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">])]</span>
+        <span class="k">for</span> <span class="n">lamb</span> <span class="ow">in</span> <span class="n">lam_arr</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">ind1</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">ind2</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">ind1</span> <span class="o">&lt;=</span> <span class="n">ind2</span><span class="p">:</span>
+                        <span class="n">arr</span><span class="p">[</span><span class="n">ind1</span><span class="p">,</span> <span class="n">ind2</span><span class="p">]</span> <span class="o">=</span> \
+                            <span class="n">Polynomial</span><span class="o">.</span><span class="n">basis_inner</span><span class="p">(</span><span class="n">ind1</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">ind2</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">lamb</span><span class="p">)</span>
+
+            <span class="n">Polynomial</span><span class="o">.</span><span class="n">GM</span><span class="p">[</span><span class="n">lis2str</span><span class="p">(</span><span class="n">lamb</span><span class="p">)]</span> <span class="o">=</span> <span class="n">symmetrize</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Polynomial.fast_inner"><a class="viewcode-back" href="../source/Polynomial.html#Polynomial.Polynomial.fast_inner">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">fast_inner</span><span class="p">(</span><span class="n">arr1</span><span class="p">,</span> <span class="n">arr2</span><span class="p">,</span> <span class="n">GM</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Computes any inner product between two polynomials represented </span>
+<span class="sd">            as arrays of coefficients.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            arr1, arr2: arrays of coefficients of polynomials in monomial </span>
+<span class="sd">                basis.</span>
+<span class="sd">            GM: Gram Matrix of inner product (Note: the baisis order </span>
+<span class="sd">                for arr1 and arr2 must match that of GM)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Sobolev inner product between the polynomials represented </span>
+<span class="sd">                by arr1, and arr2 for the inner product represented by GM.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="k">return</span> <span class="n">arr1</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">GM</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">arr2</span><span class="p">))</span></div>
+
+    <span class="c1"># This function pads the coefs arrays of 2 objects with zeros so that they have the same length</span>
+<div class="viewcode-block" id="Polynomial.pad"><a class="viewcode-back" href="../source/Polynomial.html#Polynomial.Polynomial.pad">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">pad</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span> <span class="n">obj2</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj1</span><span class="o">.</span><span class="n">coefs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj2</span><span class="o">.</span><span class="n">coefs</span><span class="p">):</span>
+           <span class="n">obj2</span><span class="o">.</span><span class="n">coefs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj2</span><span class="o">.</span><span class="n">coefs</span><span class="p">,</span> <span class="p">(</span><span class="n">zeros_gm</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">obj1</span><span class="o">.</span><span class="n">coefs</span><span class="p">)</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">obj2</span><span class="o">.</span><span class="n">coefs</span><span class="p">),</span> <span class="mi">1</span><span class="p">)))</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj1</span><span class="o">.</span><span class="n">coefs</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj2</span><span class="o">.</span><span class="n">coefs</span><span class="p">):</span>
+            <span class="n">obj1</span><span class="o">.</span><span class="n">coefs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj1</span><span class="o">.</span><span class="n">coefs</span><span class="p">,</span> <span class="p">(</span><span class="n">zeros_gm</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">obj2</span><span class="o">.</span><span class="n">coefs</span><span class="p">)</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">obj1</span><span class="o">.</span><span class="n">coefs</span><span class="p">),</span> <span class="mi">1</span><span class="p">)))</span>
+        <span class="n">arr1</span> <span class="o">=</span> <span class="n">obj1</span><span class="o">.</span><span class="n">coefs</span>
+        <span class="n">arr2</span> <span class="o">=</span> <span class="n">obj2</span><span class="o">.</span><span class="n">coefs</span>
+
+        <span class="k">return</span> <span class="n">arr1</span><span class="p">,</span> <span class="n">arr2</span></div>
+
+<div class="viewcode-block" id="Polynomial.inner"><a class="viewcode-back" href="../source/Polynomial.html#Polynomial.Polynomial.inner">[docs]</a>    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Computes the inner product between 2 Polynomial objects.</span>
+<span class="sd">            If the Gram Matrix is available, this function uses </span>
+<span class="sd">            fast_inner. Otherwise, this function uses slow_inner.    </span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">arr1</span><span class="p">,</span> <span class="n">arr2</span> <span class="o">=</span> <span class="n">Polynomial</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr1</span><span class="p">)</span>
+        <span class="n">GM_status</span> <span class="o">=</span> <span class="n">Polynomial</span><span class="o">.</span><span class="n">has_GM</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lam</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">GM_status</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Using Fast Inner Product&#39;</span><span class="p">)</span>
+            <span class="n">GM</span> <span class="o">=</span> <span class="n">Polynomial</span><span class="o">.</span><span class="n">GM</span><span class="p">[</span><span class="n">lis2str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lam</span><span class="p">)][:</span><span class="n">n</span><span class="p">,</span> <span class="p">:</span><span class="n">n</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">Polynomial</span><span class="o">.</span><span class="n">fast_inner</span><span class="p">(</span><span class="n">arr1</span><span class="p">,</span> <span class="n">arr2</span><span class="p">,</span> <span class="n">GM</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Using Slow Inner Product&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Polynomial</span><span class="o">.</span><span class="n">slow_inner</span><span class="p">(</span><span class="n">arr1</span><span class="p">,</span> <span class="n">arr2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lam</span><span class="p">)</span></div>
+
+    <span class="c1"># This function computes the norm of a Polynomial object.</span>
+<div class="viewcode-block" id="Polynomial.norm"><a class="viewcode-back" href="../source/Polynomial.html#Polynomial.Polynomial.norm">[docs]</a>    <span class="k">def</span> <span class="nf">norm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">gm</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Polynomial.get_condensed_coefs"><a class="viewcode-back" href="../source/Polynomial.html#Polynomial.Polynomial.get_condensed_coefs">[docs]</a>    <span class="k">def</span> <span class="nf">get_condensed_coefs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        This function returns the array of coefficients with respect to </span>
+<span class="sd">            the condensed basis {P_0k, P_1k,... } when we work with </span>
+<span class="sd">            polynomials from only one family (k = 1, 2, or 3).</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coefs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">::</span><span class="mi">3</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Polynomial.value"><a class="viewcode-back" href="../source/Polynomial.html#Polynomial.Polynomial.value">[docs]</a>    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        This function calculates the value of a polynomial on a </span>
+<span class="sd">            boundary point of SG</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            j: number of polynomials to evaluate</span>
+<span class="sd">            i: index of boundary point i = 0, 1, 2</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            value of the polynomial at q_i</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># array, vals_dict are found in innerprods.py</span>
+        <span class="n">ccoefs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_condensed_coefs</span><span class="p">()</span>
+        <span class="n">valarr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">vals_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">](</span><span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)])</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">ccoefs</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">valarr</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ccoefs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">res</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">res</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="o">-</span><span class="n">res</span></div>
+
+<div class="viewcode-block" id="Polynomial.dnvalue"><a class="viewcode-back" href="../source/Polynomial.html#Polynomial.Polynomial.dnvalue">[docs]</a>    <span class="k">def</span> <span class="nf">dnvalue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        This function calculates the value of the normal derivative of </span>
+<span class="sd">            a polynomial on a boundary point of SG</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            j: number of polynomials to evaluate</span>
+<span class="sd">            i: index of boundary point i = 0, 1, 2</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            value of the normal derivative of polynomial at q_i</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># array, norm_dict are found in innerprods.py</span>
+        <span class="n">ccoefs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_condensed_coefs</span><span class="p">()</span>
+        <span class="n">dnarr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">norm_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">](</span><span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)])</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">ccoefs</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">dnarr</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ccoefs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">res</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">res</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="o">-</span><span class="n">res</span></div>
+
+<div class="viewcode-block" id="Polynomial.get_condensed_GM"><a class="viewcode-back" href="../source/Polynomial.html#Polynomial.Polynomial.get_condensed_GM">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_condensed_GM</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">])):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        This function takes the existing Gram Matrix for a given </span>
+<span class="sd">            generalized Sobolev inner product expressed with respect to </span>
+<span class="sd">            the orginal monomial basis </span>
+<span class="sd">            {P_01, P_02, P_03, P_11, P_12, P_13, ...} and </span>
+<span class="sd">            returns the condensed matrix expressed with respect </span>
+<span class="sd">            to the basis {P_0k, P_1k,... }.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            k: index corresponding to &#39;k&#39; in the preceding paragraph</span>
+
+<span class="sd">            lam: np.array of lambda values for the generalized Sobolev </span>
+<span class="sd">                inner product. The default value is 1 (corresponding to </span>
+<span class="sd">                the regular Sobolev inner product).</span>
+<span class="sd">                If lam = np.array([0]), this is the L2 inner product.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Gram Matrix with of given inner product with respect </span>
+<span class="sd">                to the basis {P_0k, P_1k,... }.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">GM</span> <span class="o">=</span> <span class="n">Polynomial</span><span class="o">.</span><span class="n">GM</span><span class="p">[</span><span class="n">lis2str</span><span class="p">(</span><span class="n">lam</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">GM</span><span class="p">[</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">::</span><span class="mi">3</span><span class="p">,</span> <span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">::</span><span class="mi">3</span><span class="p">]</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Sreeram Venkat, Shashank Sule, Tian Lan, Max Jiang, Xiaoduo Wang
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
