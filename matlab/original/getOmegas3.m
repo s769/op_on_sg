@@ -2,8 +2,8 @@ function W = getOmegas3(level)
 %This function  reads in the values of the coefficents of the Pj for the
 %normalized antisymmetric OP (level indicates the number of OP)
 % flag indicates whether to take sobolev or legendre
-load sobk2_20 coefs
-W = coefs;
+load sob20coefs
+W = ops;
 
 % load leg20coefs ops
 % W2 = ops;

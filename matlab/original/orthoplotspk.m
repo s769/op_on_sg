@@ -23,13 +23,13 @@ for j=1:Num
 %     if mod(j, 2) == 0
 %         
 %     end
-    title(strcat('$T_{',num2str(j-1),'}$'), 'Interpreter','latex','FontSize', 40);
+    title(strcat('$s_{',num2str(j-1),'3}$'), 'Interpreter','latex','FontSize', 40);
     set(gca,'FontSize',20);
     set(gca,'TickLabelInterpreter','latex');
     % save each plot as an eps file 
     %saveas(gca,strcat('images/p',num2str(j-1),'.eps'),'eps');
     %save as png
-    filestring = strcat('images/H1_k2_lam1_0_20/T_',num2str(j-1),'.png');
+    filestring = strcat('images/H1_k3_lam1_0_20/s_',num2str(j-1),'.png');
     saveas(gca,filestring,'png');
 end
 
