@@ -23,9 +23,11 @@ j_max_rec = 1000
 def zeros_gm(m, n):
     '''
     This function creates an m x n array of gmpy2 zeros. 
-        It is used instead of np.zeros in places where rational 
-        arithmetic is required.
+    It is used instead of np.zeros in places where rational 
+    arithmetic is required.
+
     '''
+    
     arr = np.array([[gm.mpz(0) for i in range(n)] for j in range(m)])
     return arr
 
@@ -33,9 +35,11 @@ def zeros_gm(m, n):
 def eye_gm(n):
     '''
     This function creates an n x n identity matrix using gmpy2 ones 
-        and zeros. It is used instead of np.eye in places where rational 
-        arithmetic is required.
+    and zeros. It is used instead of np.eye in places where rational 
+    arithmetic is required.
+
     '''
+
     arr = zeros_gm(n, n)
     for i in range(n):
         arr[i, i] = gm.mpz(1)
@@ -44,9 +48,12 @@ def eye_gm(n):
 def mem(func):
     '''
     This is a decorator function that memoizes the recursive functions. 
+
     This function is used as a decorator in multiple places thoughout the 
-        code files.
+    code files.
+
     '''
+
     cache = dict()
 
     def memoized_func(*args):
@@ -61,17 +68,19 @@ def mem(func):
 def mem2(func):
     '''
     This is a decorator function that memoizes recursive functions that 
-        return arrays of values from index 0 to j. If the recursion has 
-        already been called on a higher index, this decorator will cause 
-        the function to automatically return those precomputed values.
+    return arrays of values from index 0 to j. If the recursion has 
+    already been called on a higher index, this decorator will cause 
+    the function to automatically return those precomputed values.
 
     Example: Suppose mem2 decorates the function alpha_array(j), 
-        which returns [alpha_0, ... , alpha_j]. Calling alpha_array(10) 
-        will return [alpha_0, ... , alpha_10].
-        Calling alpha_array(5) immediately after will return 
-        [alpha_0, ... , alpha_10] without having to compute
-        those values again.
+    which returns [alpha_0, ... , alpha_j]. Calling alpha_array(10) 
+    will return [alpha_0, ... , alpha_10].
+    Calling alpha_array(5) immediately after will return 
+    [alpha_0, ... , alpha_10] without having to compute
+    those values again.
+
     '''
+
     cache = dict()
 
     def memoized_func2(*args):
@@ -99,7 +108,8 @@ def mem2(func):
 
 @mem
 def alpha(j):
-    '''Calculates alpha_j.
+    '''
+    Calculates alpha_j.
 
     Args: 
         j: index of coefficient
@@ -107,6 +117,7 @@ def alpha(j):
     Returns:
         value of alpha_j
     '''
+
     # For large index j, switch to array evaluation mode
     if j >= j_max_rec:
         return alpha_array(j)[j]
@@ -124,7 +135,8 @@ def alpha(j):
 
 @mem
 def beta(j):
-    '''Calculates beta_j
+    '''
+    Calculates beta_j
 
     Args: 
         j: index of coefficient
@@ -133,6 +145,7 @@ def beta(j):
         value of beta_j
 
     '''
+
     # For large index j, switch to array evaluation mode
     if j >= j_max_rec:
         return beta_array(j)[j]
@@ -148,14 +161,16 @@ def beta(j):
 
 @mem
 def gamma(j):
-    '''Calculates gamma_j
+    '''
+    Calculates gamma_j
 
     Args: 
-    j: index of coefficient
+        j: index of coefficient
 
     Returns:
-    gamma_j value
+        gamma_j value
     '''
+
     # For large index j, switch to array evaluation mode
     if j >= j_max_rec:
         return gamma_array(j)[j]
@@ -166,7 +181,8 @@ def gamma(j):
 
 @mem
 def eta(j):
-    '''Calculates eta_j
+    '''
+    Calculates eta_j
 
     Args: 
         j: index of coefficient
@@ -174,6 +190,7 @@ def eta(j):
     Returns:
         value of eta_j
     '''
+
     # For large index j, switch to array evaluation mode
     if j >= j_max_rec:
         return eta_array(j)[j]
@@ -189,7 +206,8 @@ def eta(j):
 
 @mem
 def tau(j):
-    '''Calculates tau_j
+    '''
+    Calculates tau_j
 
     Args: 
         j: index of coefficient
@@ -197,6 +215,7 @@ def tau(j):
     Returns:
         value of tau_j
     '''
+
     # For large index j, switch to array evaluation mode
     if j >= j_max_rec:
         return tau_array(j)[j]
@@ -212,7 +231,8 @@ def tau(j):
 
 @mem
 def ap(j):
-    '''Calculates alpha'_j
+    '''
+    Calculates alpha'_j
 
     Args: 
         j: index of coefficient
@@ -220,6 +240,7 @@ def ap(j):
     Returns:
         alpha'_j value
     '''
+
     # For large index j, switch to array evaluation mode
     if j >= j_max_rec:
         return alpha_array(j)[j]
@@ -236,15 +257,17 @@ def ap(j):
 
 @mem2
 def alpha_array(max_order):
-    """Calculates the array of alpha_j up to some order
+    '''
+    Calculates the array of alpha_j up to some order
 
     Args:
         max_order: Maximum order of j to be calculated (should be >= 1)
 
     Returns: 
         alpha_arr: np.array of length (max_order+1) containing the first 
-            values of alpha up to alpha_{max_order}.
-    """
+        values of alpha up to alpha_{max_order}.
+    '''
+
     alpha_arr = zeros_gm(max_order + 1, 1)
     alpha_arr[0] = gm.mpz(1)
     alpha_arr[1] = gm.mpq(1,6)
@@ -259,15 +282,16 @@ def alpha_array(max_order):
 
 @mem2
 def beta_array(max_order):
-    """Calculates the array of beta_j up to some order
+    '''
+    Calculates the array of beta_j up to some order
 
     Args:
         max_order: Maximum order of j to be calculated (should be >= 1)
 
     Returns: 
         beta_arr: np.array of length (max_order+1) containing the first 
-            values of beta up to beta_{max_order}.
-    """
+        values of beta up to beta_{max_order}.
+    '''
 
     # alpha's are used in the calculation of beta, so we first calculate
     #   these
@@ -288,15 +312,16 @@ def beta_array(max_order):
 
 @mem2
 def gamma_array(max_order):
-    """Calculates the array of gamma_j up to some order
+    '''
+    Calculates the array of gamma_j up to some order
 
     Args:
         max_order: Maximum order of j to be calculated (should be >= 1)
 
     Returns: 
         gamma_arr: np.array of length (max_order+1) containing the first 
-            values of gamma up to gamma_{max_order}.
-    """
+        values of gamma up to gamma_{max_order}.
+    '''
 
     alpha_arr = alpha_array(max_order+2)
     gamma_arr = 3 * alpha_arr
@@ -305,15 +330,17 @@ def gamma_array(max_order):
 
 @mem2
 def eta_array(max_order):
-    """Calculates the array of eta_j up to some order
+    '''
+    Calculates the array of eta_j up to some order
 
     Args:
         max_order: Maximum order of j to be calculated (should be >= 1)
 
     Returns: 
         eta_arr: np.array of length (max_order+1) containing the first 
-            values of eta up to eta_{max_order}.
-    """
+        values of eta up to eta_{max_order}.
+    '''
+
     eta_arr = zeros_gm(max_order + 1, 1)
     eta_arr[0] = 0
     alpha_arr = alpha_array(max_order)
@@ -329,16 +356,19 @@ def eta_array(max_order):
 
 @mem2
 def tau_array(max_order):
-    """Calculates the array of tau_j up to some order (this is 
-        originally called t in the Calculus paper)
+    '''
+    Calculates the array of tau_j up to some order (this is 
+    originally called t in the Calculus paper)
 
     Args:
         max_order: Maximum order of j to be calculated (should be >= 1)
 
     Returns: 
         tau_arr: np.array of length (max_order+1) containing the first 
-            values of tau up to tau_{max_order}.
-    """
+        values of tau up to tau_{max_order}.
+
+    '''
+
     tau_arr = zeros_gm(max_order + 1, 1)
     tau_arr[0] = gm.mpq(-1, 2)
 
@@ -355,15 +385,17 @@ def tau_array(max_order):
 
 @mem2
 def ap_array(max_order):
-    """Calculates the array of alpha'_j up to some order
+    '''
+    Calculates the array of alpha'_j up to some order
 
     Args:
         max_order: Maximum order of j to be calculated (should be >= 1)
 
     Returns: 
         ap_arr: np.array of length (max_order+1) containing the first 
-            values of alpha' up to alpha'_{max_order}.
-    """
+        values of alpha' up to alpha'_{max_order}.
+    '''
+
     ap_arr = alpha_array(max_order)
     ap_arr[0] = gm.mpq(1, 2)
     return ap_arr

@@ -37,11 +37,12 @@ def energy_inner_pjkpmn(j, k, m, n, lam=np.array([1])):
     '''
         Calculates energy inner product between monomials P_{j,k} and P_{m, n}.
         Uses the Gauss-Green formula so that 
-            <P_{j,k}, P_{m,n}>_energy = <P_{j,k}, P_{m,n}>_L2 - lam*<P_{j-1,k}, P_{m,n}>_L2
-                                                    + lam*sum_V0{P_{m,n}*d_n(P_{j,k})}
+        <P_{j,k}, P_{m,n}>_energy = <P_{j,k}, P_{m,n}>_L2 - lam*<P_{j-1,k}, P_{m,n}>_L2 + lam*sum_V0{P_{m,n}*d_n(P_{j,k})}
+
         Args:
             j, k, m, n: Represent monomial indices P_{j,k} and P_{m, n}
             lam: represents weight given to the energy part of the inner product
+        
         Returns: 
             <P_{j,k}, P_{m,n}>_energy
     '''

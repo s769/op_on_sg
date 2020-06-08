@@ -1,0 +1,376 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ops_main module &mdash; OP_on_SG 5/21/2020 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="plotting module" href="plotting.html" />
+    <link rel="prev" title="monomials module" href="monomials.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> OP_on_SG
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="chebyshev.html">chebyshev module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="energy_ops.html">energy_ops module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="innerprods.html">innerprods module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monomials.html">monomials module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ops_main module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">plotting module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quadrature.html">quadrature module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recursions.html">recursions module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="symmetric.html">symmetric module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">util module</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">OP_on_SG</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>ops_main module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/ops_main.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-ops_main">
+<span id="ops-main-module"></span><h1>ops_main module<a class="headerlink" href="#module-ops_main" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="ops_main.generate_f">
+<code class="sig-prename descclassname">ops_main.</code><code class="sig-name descname">generate_f</code><span class="sig-paren">(</span><em class="sig-param">j</em>, <em class="sig-param">k</em>, <em class="sig-param">frac=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ops_main.html#generate_f"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ops_main.generate_f" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>j</strong> – maximum degree of polynomials</p></li>
+<li><p><strong>k</strong> – family of monomials to use in the construction of the f_i
+(only k = 2,3 supported currently)</p></li>
+<li><p><strong>frac</strong> – Boolean representing whether the coefficients should remain as fractions or should be
+converted to floating point numbers at the end of all calculations</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>np.array of coefficients of the f_j polynomials with</dt><dd><p>respect to the basis {P_0k, P_1k,…, P_jk}. Each row in
+this array is an f_i , and there are j+1 rows and j+1
+columns.</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="ops_main.generate_op">
+<code class="sig-prename descclassname">ops_main.</code><code class="sig-name descname">generate_op</code><span class="sig-paren">(</span><em class="sig-param">n</em>, <em class="sig-param">k</em>, <em class="sig-param">normalized=False</em>, <em class="sig-param">lam=array([1])</em>, <em class="sig-param">frac=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ops_main.html#generate_op"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ops_main.generate_op" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates orthogonal polynomials with respect to a generalized Sobolev
+inner product. If possible, a recursion formula is used to improve efficiency.
+Otherwise, the Gram-Schmidt algorithm is used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> – Maximum degree of orthogonal polynomial.</p></li>
+<li><p><strong>k</strong> – family of monomials to use in Gram-Schmidt (k = 1, 2, or 3)</p></li>
+<li><p><strong>normalized</strong> – Boolean representing whether the resulting polynomials
+should be normalized or monic.</p></li>
+<li><p><strong>lam</strong> – np.array of lambda values for the generalized Sobolev inner
+product. The default value is 1 (corresponding to the regular
+Sobolev inner product). If lam = np.array([0]),
+this is the L2 inner product.</p></li>
+<li><p><strong>frac</strong> – Boolean representing whether the coefficients should remain as fractions or should be</p></li>
+<li><p><strong>to floating point numbers at the end of all calculations.</strong> (<em>converted</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>np.array of coefficients of the orthogonal polynomials with</dt><dd><p>respect to the basis {P_0k, P_1k,…, P_nk}. Each row in
+this array is a polynomial, and there are n+1 rows and n+1
+columns.
+If normalized is True, the polynomials will be normalized.
+Otherwise, the polynomials will be monic. If normalized is True, frac must be False
+to obtain normalized coefficients.</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="ops_main.generate_op_GS">
+<code class="sig-prename descclassname">ops_main.</code><code class="sig-name descname">generate_op_GS</code><span class="sig-paren">(</span><em class="sig-param">n</em>, <em class="sig-param">k</em>, <em class="sig-param">normalized=False</em>, <em class="sig-param">lam=array([1])</em>, <em class="sig-param">frac=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ops_main.html#generate_op_GS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ops_main.generate_op_GS" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Generates orthogonal polynomials with respect to a generalized Sobolev</dt><dd><p>inner product. The Gram-Schmidt algorithm is implemented here.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> – Maximum degree of orthogonal polynomial.</p></li>
+<li><p><strong>k</strong> – family of monomials to use in Gram-Schmidt (k = 1, 2, or 3)</p></li>
+<li><p><strong>normalized</strong> – Boolean representing whether the resulting polynomials
+should be normalized or monic.</p></li>
+<li><p><strong>lam</strong> – np.array of lambda values for the generalized Sobolev inner
+product. The default value is 1 (corresponding to the regular
+Sobolev inner product). If lam = np.array([0]),
+this is the L2 inner product.</p></li>
+<li><p><strong>frac</strong> – Boolean representing whether the coefficients should remain as fractions or should be</p></li>
+<li><p><strong>to floating point numbers at the end of all calculations.</strong> (<em>converted</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>np.array of coefficients of the orthogonal polynomials with</dt><dd><p>respect to the basis {P_0k, P_1k,…, P_nk}. Each row in
+this array is a polynomial, and there are n+1 rows and n+1
+columns.
+If normalized is True, the polynomials will be normalized.
+Otherwise, the polynomials will be monic. If normalized is True, frac must be False
+to obtain normalized coefficients.</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="ops_main.leg_ops_recursion">
+<code class="sig-prename descclassname">ops_main.</code><code class="sig-name descname">leg_ops_recursion</code><span class="sig-paren">(</span><em class="sig-param">j</em>, <em class="sig-param">k</em>, <em class="sig-param">normalized=False</em>, <em class="sig-param">frac=True</em>, <em class="sig-param">return_f=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ops_main.html#leg_ops_recursion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ops_main.leg_ops_recursion" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function uses the three term recursion from the Kasso Tuley paper to generate the first j
+Legendre orthogonal polynomials.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>j</strong> – maximum degree of polynomials</p></li>
+<li><p><strong>k</strong> – family of monomials to use in the construction of the orthogonal polynomials
+(only k = 2,3 supported currently)</p></li>
+<li><p><strong>normalized</strong> – Boolean representing whether the resulting polynomials
+should be normalized or monic.</p></li>
+<li><p><strong>frac</strong> – Boolean representing whether the coefficients should remain as fractions or should be
+converted to floating point numbers at the end of all calculations</p></li>
+<li><p><strong>return_f</strong> – Boolean representing whether the f polynomials should also be returned</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>np.array of coefficients of the Legendre orthogonal polynomials with</dt><dd><p>respect to the basis {P_0k, P_1k,…, P_jk}. Each row in
+this array is a polynomial, and there are j+1 rows and j+1
+columns. If normalized is True, the polynomials will be normalized.
+Otherwise, the polynomials will be monic. If normalized is True, frac must be False
+to obtain normalized coefficients. If return_f is True, a tuple containing the Legendre
+coefficients and the f polynomial coefficients is returned.</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="ops_main.sob_ops_recursion">
+<code class="sig-prename descclassname">ops_main.</code><code class="sig-name descname">sob_ops_recursion</code><span class="sig-paren">(</span><em class="sig-param">j</em>, <em class="sig-param">k</em>, <em class="sig-param">normalized=False</em>, <em class="sig-param">frac=True</em>, <em class="sig-param">leg_omegas=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ops_main.html#sob_ops_recursion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ops_main.sob_ops_recursion" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function uses the three term recursion we developed to generate the first j
+Sobolev orthogonal polynomials.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>j</strong> – maximum degree of polynomials</p></li>
+<li><p><strong>k</strong> – family of monomials to use in the construction of the orthogonal polynomials
+(only k = 2,3 supported currently)</p></li>
+<li><p><strong>normalized</strong> – Boolean representing whether the resulting polynomials
+should be normalized or monic.</p></li>
+<li><p><strong>frac</strong> – Boolean representing whether the coefficients should remain as fractions or should be
+converted to floating point numbers at the end of all calculations</p></li>
+<li><p><strong>leg_omegas</strong> – array of Legendre coefficient values at the required degree and symmetry or
+tuple of (filename of .npz/.npy file containing this array , array name key string)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>np.array of coefficients of the Sobolev orthogonal polynomials with</dt><dd><p>respect to the basis {P_0k, P_1k,…, P_jk}. Each row in
+this array is a polynomial, and there are j+1 rows and j+1
+columns. If normalized is True, the polynomials will be normalized.
+Otherwise, the polynomials will be monic. If normalized is True, frac must be False
+to obtain normalized coefficients.</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="plotting.html" class="btn btn-neutral float-right" title="plotting module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="monomials.html" class="btn btn-neutral float-left" title="monomials module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Sreeram Venkat, Shashank Sule, Tian Lan, Max Jiang, Xiaoduo Wang
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

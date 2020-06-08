@@ -1,7 +1,7 @@
 Polynomial module
 =================
 
-.. autoclass:: Polynomial
+.. automodule:: Polynomial
    :members:
    :undoc-members:
    :show-inheritance:

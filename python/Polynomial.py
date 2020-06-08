@@ -76,6 +76,7 @@ class Polynomial:
     def basis_inner(j, i, k, ip, lam=np.array([1])):
         '''
         Computes any Sobolev inner product of <P_ji, P_ki'>.
+
         Args:
             j, i, k, ip: correspond to j, i, k, i' in P_ji, P_ki' 
                 respectively.
@@ -87,6 +88,7 @@ class Polynomial:
         Returns:
             Sobolev inner product of <P_ji, P_ki'> with given lambda 
                 values.
+                
         '''
 
         # inner_dict is found in innerprods.py

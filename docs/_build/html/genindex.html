@@ -87,6 +87,7 @@
 <li class="toctree-l1"><a class="reference internal" href="source/monomials.html">monomials module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="source/ops_main.html">ops_main module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="source/plotting.html">plotting module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/Polynomial.html">Polynomial module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="source/quadrature.html">quadrature module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="source/recursions.html">recursions module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="source/symmetric.html">symmetric module</a></li>
@@ -168,6 +169,7 @@
  | <a href="#I"><strong>I</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
  | <a href="#O"><strong>O</strong></a>
  | <a href="#P"><strong>P</strong></a>
  | <a href="#Q"><strong>Q</strong></a>
@@ -204,6 +206,8 @@
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="source/Polynomial.html#Polynomial.Polynomial.basis_inner">basis_inner() (Polynomial.Polynomial static method)</a>
+</li>
       <li><a href="source/recursions.html#recursions.beta">beta() (in module recursions)</a>
 </li>
       <li><a href="source/recursions.html#recursions.beta_array">beta_array() (in module recursions)</a>
@@ -213,6 +217,10 @@
       <li><a href="source/quadrature.html#quadrature.block_to_regular">block_to_regular() (in module quadrature)</a>
 </li>
       <li><a href="source/util.html#util.bmatrix">bmatrix() (in module util)</a>
+</li>
+      <li><a href="source/Polynomial.html#Polynomial.Polynomial.build_condensed_GM">build_condensed_GM() (Polynomial.Polynomial static method)</a>
+</li>
+      <li><a href="source/Polynomial.html#Polynomial.Polynomial.build_GM">build_GM() (Polynomial.Polynomial static method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -236,11 +244,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/symmetric.html#symmetric.d_pnj1">d_pnj1() (in module symmetric)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/innerprods.html#innerprods.dnpj2">dnpj2() (in module innerprods)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/innerprods.html#innerprods.dnpj3">dnpj3() (in module innerprods)</a>
+</li>
+      <li><a href="source/Polynomial.html#Polynomial.Polynomial.dnvalue">dnvalue() (Polynomial.Polynomial method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -282,6 +292,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="source/Polynomial.html#Polynomial.Polynomial.fast_inner">fast_inner() (Polynomial.Polynomial static method)</a>
+</li>
       <li><a href="source/plotting.html#plotting.fi">fi() (in module plotting)</a>
 </li>
   </ul></td>
@@ -306,10 +318,10 @@
 </li>
       <li><a href="source/ops_main.html#ops_main.generate_op">generate_op() (in module ops_main)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/ops_main.html#ops_main.generate_op_GS">generate_op_GS() (in module ops_main)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/symmetric.html#symmetric.generate_symm_ops">generate_symm_ops() (in module symmetric)</a>
 </li>
       <li><a href="source/monomials.html#monomials.generate_T">generate_T() (in module monomials)</a>
@@ -318,17 +330,27 @@
 </li>
       <li><a href="source/monomials.html#monomials.generate_W">generate_W() (in module monomials)</a>
 </li>
+      <li><a href="source/Polynomial.html#Polynomial.Polynomial.get_condensed_coefs">get_condensed_coefs() (Polynomial.Polynomial method)</a>
+</li>
+      <li><a href="source/Polynomial.html#Polynomial.Polynomial.get_condensed_GM">get_condensed_GM() (Polynomial.Polynomial static method)</a>
+</li>
       <li><a href="source/util.html#util.get_neighbors">get_neighbors() (in module util)</a>
 </li>
       <li><a href="source/quadrature.html#quadrature.get_weights">get_weights() (in module quadrature)</a>
 </li>
       <li><a href="source/plotting.html#plotting.getOmegas">getOmegas() (in module plotting)</a>
 </li>
+      <li><a href="source/Polynomial.html#Polynomial.Polynomial.GM">GM (Polynomial.Polynomial attribute)</a>
+</li>
   </ul></td>
 </tr></table>
 
 <h2 id="H">H</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="source/Polynomial.html#Polynomial.Polynomial.has_GM">has_GM() (Polynomial.Polynomial static method)</a>
+</li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/util.html#util.HiddenPrints">HiddenPrints (class in util)</a>
 </li>
@@ -341,6 +363,8 @@
       <li><a href="source/util.html#util.index_alternate_level">index_alternate_level() (in module util)</a>
 </li>
       <li><a href="source/util.html#util.index_from_address">index_from_address() (in module util)</a>
+</li>
+      <li><a href="source/Polynomial.html#Polynomial.Polynomial.inner">inner() (Polynomial.Polynomial method)</a>
 </li>
       <li><a href="source/innerprods.html#innerprods.inner0_j1k1">inner0_j1k1() (in module innerprods)</a>
 </li>
@@ -407,6 +431,14 @@
   </ul></td>
 </tr></table>
 
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="source/Polynomial.html#Polynomial.Polynomial.norm">norm() (Polynomial.Polynomial method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -419,6 +451,8 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/monomials.html#monomials.p_jk_addr_list">p_jk_addr_list() (in module monomials)</a>
+</li>
+      <li><a href="source/Polynomial.html#Polynomial.Polynomial.pad">pad() (Polynomial.Polynomial static method)</a>
 </li>
       <li><a href="source/plotting.html#plotting.plot_easy_basis">plot_easy_basis() (in module plotting)</a>
 </li>
@@ -440,6 +474,12 @@
 </li>
       <li><a href="source/symmetric.html#symmetric.pnj1">pnj1() (in module symmetric)</a>
 </li>
+      <li><a href="source/Polynomial.html#Polynomial.Polynomial">Polynomial (class in Polynomial)</a>
+
+      <ul>
+        <li><a href="source/Polynomial.html#module-Polynomial">(module)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -482,6 +522,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="source/Polynomial.html#Polynomial.Polynomial.slow_inner">slow_inner() (Polynomial.Polynomial static method)</a>
+</li>
       <li><a href="source/ops_main.html#ops_main.sob_ops_recursion">sob_ops_recursion() (in module ops_main)</a>
 </li>
       <li><a href="source/symmetric.html#module-symmetric">symmetric (module)</a>
@@ -500,8 +542,6 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/recursions.html#recursions.tau_array">tau_array() (in module recursions)</a>
 </li>
-      <li><a href="source/testing.html#module-testing">testing (module)</a>
-</li>
   </ul></td>
 </tr></table>
 
@@ -515,6 +555,10 @@
 
 <h2 id="V">V</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="source/Polynomial.html#Polynomial.Polynomial.value">value() (Polynomial.Polynomial method)</a>
+</li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/quadrature.html#quadrature.vandermonde">vandermonde() (in module quadrature)</a>
 </li>

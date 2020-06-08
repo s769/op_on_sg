@@ -7,7 +7,7 @@ Welcome to OP_on_SG's documentation!
 ====================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
    source/chebyshev
@@ -16,6 +16,7 @@ Welcome to OP_on_SG's documentation!
    source/monomials
    source/ops_main
    source/plotting
+   source/Polynomial
    source/quadrature
    source/recursions
    source/symmetric
