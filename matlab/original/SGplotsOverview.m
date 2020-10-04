@@ -1,6 +1,6 @@
 function SGplotsOverview(T)
 
-Num=19;
+Num=5;
 
 %This reads in the values of the polynomials Pj for j=0,...,19
 %T is a large matrix with the values of the polynomials up to level m=7
@@ -46,7 +46,7 @@ orthoplotspk(T,Num);
 
 %Here I call interlacing function 
 
-% for i = 1:Num 
-%    
-%     interlacing(i,7,T)
-% end
+for i = 1:Num 
+   
+    interlacing(i,7,T)
+end

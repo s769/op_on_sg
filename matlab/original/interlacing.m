@@ -4,8 +4,8 @@ bottomedgeindices = SGedge23(level);
 load sob20coefs ops
 W1 = ops;
 
-%load leg20coefs ops
-%W2 = ops;
+load leg20coefs ops
+W2 = ops;
 
 % load sobolevsymmetric20 sobsymmtricops20
 % W2 = sobsymmtricops20;
@@ -13,14 +13,14 @@ W1 = ops;
 m=level;
 %Generating legendre values
 %coefflegendre=W2(deg,:);
-%coefflegendre=W2(deg+1,:);
-%legendrevalues=zeros(3^(m+1),1);
-legendrevalues = SGorthoPolyssk(T,deg);
-% for k=0:deg
-%     
-%         legendrevalues = legendrevalues + coefflegendre(k+1)*T(:,k+1,3);
-%     
-% end
+coefflegendre=W2(deg+1,:);
+legendrevalues=zeros(3^(m+1),1);
+%legendrevalues = SGorthoPolyspk(T,deg);
+for k=0:deg
+    
+        legendrevalues = legendrevalues + coefflegendre(k+1)*T(:,k+1,3);
+    
+end
 
 %Generating sobolev values 
 coeffsobolev=W1(deg,:);
@@ -103,32 +103,38 @@ z=zeros(size(bottomedgeindices));
 % hold on
 % plot(real(edgelegendre), 'b-','LineWidth',1,'DisplayName','Legendre');
 
-plot(real(edgesobolev), 'r-','LineWidth',1,'DisplayName',strcat("S_{",num2str(deg-1),"}"));
+plot(1000*real(edgesobolev), 'r-','LineWidth',1,'DisplayName','Sobolev');
 hold on
-plot(real(edgelegendre), 'b-','LineWidth',1,'DisplayName',strcat("D_{",num2str(deg-1),"}"));
+plot(real(edgelegendre), 'b-','LineWidth',1,'DisplayName','Legendre');
 
 
 plot(z,'LineWidth',1,'Color','Black','Handlevisibility','off');
 set(gca, 'XLim',[0,max(size(bottomedgeindices))-1]);
 
 ax1 = gca; 
-legend('Location','SouthWest');
-title(strcat("Degree = ",num2str(deg-1))); 
-xlabel('Bottom Edge');
-ax2 = axes('Position',[0.25 0.7 0.5 0.2]);
+set(ax1,'FontSize',15);
+set(ax1,'TickLabelInterpreter','latex');
+legend('Location','SouthWest','Interpreter','latex');
+title(strcat("Degree = ",num2str(deg-1)),'Interpreter','latex','FontSize',40); 
+xlabel('Bottom Edge', 'Interpreter','latex');
+ax2 = axes('Position',[0.25 0.5 0.5 0.2]);
+
 
 box on;
     plot(w(1,:),x,'b*','DisplayName',strcat(legstring,num2str(deg),'}'));
     hold on
     plot(w(2,:),x,'ro','DisplayName',strcat(sobstring,num2str(deg),'}'));
     plot(1:max(size(x)),x,'k-','HandleVisibility','off');
+    title('Zeroes','Interpreter','latex');
     set(gca,'XLim',[0,max(size(x))]);
     set(gca,'YLim',[-0.01,0.01]);
+    set(gca,'FontSize',15);
+    set(ax2,'TickLabelInterpreter','latex');
     %legend({strcat(legstring,num2str(deg),'}'),strcat(sobstring,num2str(deg),'}'),'zero'},'Location','EastOutside');
     %legend();
 
     set(ax2,'XTick',[]);
 
-saveas(gca,strcat('sd',num2str(deg-1)),'png');
+%saveas(gca,strcat('sd',num2str(deg-1)),'png');
     %set(gca,'YTick',-1:4:3);
 
